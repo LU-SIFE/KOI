@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOI</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="holdBarContainer">
+        <div id="holdBar"></div>
+    </div>
+
+    <div id="fishAlert"></div>
+    <div id="menu" class="hide">
+        <div id="tutorial">
+            <h2>Welcome to <b>KOI</b>!</h2><br>
+            <p>You can bring up the upgrade menu anytime by pressing <b>E</b>.</p><br>
+            <p>Move your bobber using <b>W/S</b>, and <b>A/D</b> to turn.</p><br>
+            <p>Once close to ripples, hold <b>SPACE</b> to catch a fish!</p>
+            <button class="start" onclick="start();"><b>START</b></button>
+        </div>
+
+        <div id="upgrades">
+            <span id="catchCount">Fish Caught: 0</span><br><br>
+            <hr><br>
+
+            <h2>Upgrades:</h2>
+            <h5>(The Price is meaningless rn)</h5>
+
+            <div class="upgrade_container">
+                <div class="price_col">
+                    <span id="speed_price">$20</span>
+                    <span id="fish_price">$80</span>
+                    <span id="fisher_price">$300</span>
+                </div>
+                <div class="left_col">
+                    <button onclick="upgrade_speed();">Fishing Speed</button>
+                    <button onclick="upgrade_fish();">Max Fish</button>
+                    <button onclick="upgrade_fisher();">Auto Fisher</button>
+                </div>
+                <div class="right_col">
+                    <span id="speed_info">10 Seconds</span>
+                    <span id="fish_info">1 Max Fish</span>
+                    <span id="fisher_info">0 Fishers</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <canvas id="game"></canvas>
+</body>
+<script src="fishdex.js"></script>
+<script src="index.js"></script>
+<script src="upgrades.js"></script>
+
+</html>
