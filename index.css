@@ -166,3 +166,7 @@ hr {
 .left_col button:hover {
   background-color: var(--col2);
 }
+
+#upgrades {
+  display: none;
+}
