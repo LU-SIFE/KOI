@@ -249,3 +249,21 @@ canvas {filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));}
 #settings_btn img {
   height: 1.5rem;
 }
+
+.settings_block {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.settings_block button {
+  margin-left: 0.25em;
+  margin-right: 0.25em;
+}
+
+.no-m {
+  margin-left: 0em;
+}

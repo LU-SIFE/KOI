@@ -70,13 +70,17 @@
             <h2>Settings</h2><br>
             <hr><br>
 
+            <div class="settings_block">
+            <button onclick="toggleFullscreen()">Fullscreen</button>
+            <button onclick="quoteToggle();">Quotes</button>
             <button onclick="toggleAmbientPause();">Ambience</button>
             <button onclick="oscToggle();">SFX</button>
-            <button onclick="quoteToggle();">Quotes</button>
+            </div>
+
         </div>
 
         <div class="menu_block">
-            <button id="upgrades_btn" onclick="swap_menu('upgrade');">Upgrades</button>
+            <button id="upgrades_btn" onclick="swap_menu('upgrade');" class="no-m">Upgrades</button>
             <button id="market_btn" onclick="swap_menu('market');">Market</button>
             <button id="inventory_btn" onclick="swap_menu('inventory');">Inventory</button>
             <button id="settings_btn" onclick="swap_menu('settings');"><img src="assets/gear.svg" alt=""
@@ -102,5 +106,6 @@
 <script src="world/audio.js"></script>
 <script src="ui/menus.js"></script>
 <script src="ui/settings.js"></script>
+<script src="ui/fullscreen.js"></script>
 
 </html>
