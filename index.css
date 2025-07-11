@@ -31,7 +31,6 @@ body {
   height: fit-content;
   text-align: center;
   padding: 1em;
-  background-color: var(--col1);
   border: 2px solid var(--col2);
   border-radius: 12px;
 
@@ -49,7 +48,7 @@ body {
 }
 
 #fishAlert.hide {
-  left: -20em; /* slide back out */
+  left: -25em; /* slide back out */
 }
 
 #menu {
@@ -65,15 +64,20 @@ body {
   text-align: center;
   background-color: var(--col1-l);
 
-  transition: right 0.3s ease-in-out;
+  transition: right 0.3s ease-in-out, width 0.3s ease-in-out;
 }
 
 #menu.show {
   right: 1em; /* slide into view */
 }
 
+#menu.wide {
+  width: 50em;
+}
+
 #menu.hide {
   right: -25em; /* slide back out */
+  width: 25em;
 }
 
 .start {
@@ -89,7 +93,7 @@ body {
   background-color: var(--col2);
 }
 
-#game {
+#game, #glCanvas {
     width: 100vw;
     height: 100vh;
 }
@@ -133,7 +137,7 @@ hr {
 .left_col { width: 40%;}
 .right_col {width: 40%;}
 
-.left_col button {
+.left_col button, .menu_block button, #settings button {
   font-size: 1rem;
   margin-bottom: 1em;
   border: 2px solid var(--col2);
@@ -160,7 +164,7 @@ hr {
   font-weight: bold;
 }
 
-.left_col button:hover {
+.left_col button:hover, .menu_block button:hover, #settings button:hover {
   background-color: var(--col2);
 }
 
@@ -180,6 +184,7 @@ hr {
   width: fit-content;
   white-space: nowrap;
   opacity: 0.5;
+  font-style: italic;
 }
 
 #quotes.hide {
@@ -190,23 +195,57 @@ hr {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03), transparent 80%);
-  animation: shimmer 30s ease-in-out infinite;
-  z-index: 10;
-  mix-blend-mode: screen;
+  background-image: radial-gradient(rgba(255, 202, 212,0.35) 1px, transparent 1px);
+  background-size: 100px 100px;
+  transform: translate(-25%, 0);
+  animation: sparkleGrid 20s linear infinite;
+  rotate: 20deg;
+  width: 175%;
+  height: 175%;
 }
 
-@keyframes shimmer {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@keyframes sparkleGrid {
+  0% { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
 }
 
-canvas {filter: drop-shadow(0 0 10px rgba(255, 202, 212, 1));}
+canvas {filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));}
 
 .ui-panel {
   z-index: 9;
   backdrop-filter: blur(10px) brightness(1.2);
   border-radius: 1rem;
   padding: 1rem;
+}
+
+#settings, #market, #inventory {
+  display: none;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.menu_block {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  text-align: right;
+  padding: 0 1em;
+  display: flex;
+  justify-content: right;
+}
+
+.menu_block button {
+  margin-left: 0.5em;
+  text-align: center;
+}
+
+#settings_btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#settings_btn img {
+  height: 1.5rem;
 }

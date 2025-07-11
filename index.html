@@ -19,6 +19,7 @@
 
     <div id="fishAlert" class="ui-panel"></div>
     <div id="quotes"></div>
+
     <div id="menu" class="hide ui-panel">
         <div id="tutorial">
             <h2>Welcome to <b>KOI</b>!</h2><br>
@@ -29,7 +30,7 @@
         </div>
 
         <div id="upgrades">
-            <span id="catchCount">Fish Caught: 0</span><br><br>
+            <h2 id="catchCount">Fish Caught: 0</h2><br>
             <hr><br>
 
             <h2>Upgrades:</h2>
@@ -53,10 +54,39 @@
                 </div>
             </div>
         </div>
+
+        <div id="market">
+            <h2>Market</h2><br>
+            <hr><br>
+            Come back later!
+        </div>
+        <div id="inventory">
+            <h2>Inventory</h2><br>
+            <hr><br>
+            Come back later!
+        </div>
+
+        <div id="settings">
+            <h2>Settings</h2><br>
+            <hr><br>
+
+            <button onclick="toggleAmbientPause();">Ambience</button>
+            <button onclick="oscToggle();">SFX</button>
+            <button onclick="quoteToggle();">Quotes</button>
+        </div>
+
+        <div class="menu_block">
+            <button id="upgrades_btn" onclick="swap_menu('upgrade');">Upgrades</button>
+            <button id="market_btn" onclick="swap_menu('market');">Market</button>
+            <button id="inventory_btn" onclick="swap_menu('inventory');">Inventory</button>
+            <button id="settings_btn" onclick="swap_menu('settings');"><img src="assets/gear.svg" alt=""
+                    srcset=""></button>
+        </div>
+
     </div>
-    <div class="overlay"></div>
     <canvas id="game"></canvas>
-  <canvas id="reflectionCanvas"></canvas>
+    <div class="overlay"></div>
+    <canvas id="shadow"></canvas>
 </body>
 <script src="ui/quotes.js"></script>
 <script src="world/fishdex.js"></script>
@@ -65,10 +95,12 @@
 <script src="world/fishspots.js"></script>
 <script src="ui/holdBar.js"></script>
 <script src="main/draw.js"></script>
-<script src="ui/oscillator.js"></script>
+<script src="world/oscillator.js"></script>
 <script src="main/update.js"></script>
 <script src="ui/inventory.js"></script>
 <script src="ui/upgrades.js"></script>
-<script src="ui/audio.js"></script>
+<script src="world/audio.js"></script>
+<script src="ui/menus.js"></script>
+<script src="ui/settings.js"></script>
 
 </html>

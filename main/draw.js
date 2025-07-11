@@ -1,5 +1,5 @@
 const trail = [];
-const maxTrailLength = 30; // length of the streamer
+const maxTrailLength = 40; // length of the streamer
 
 const diamond = {
   x: canvas.width / 2,
@@ -10,7 +10,7 @@ const diamond = {
   maxSpeed: 1.25,
   acceleration: 0.015,
   friction: 0.0175,
-  turnSpeed: 0.02,
+  turnSpeed: 0.025,
 };
 
 function drawTrail() {
@@ -64,9 +64,12 @@ function drawRipples() {
     fish.rippleSize += 0.3;
     if (fish.rippleSize > rippleRadius * 1.75) fish.rippleSize = 0;
 
+    const alpha = 1 - (fish.rippleSize / rippleRadius);
+    const [r, g, b] = rarityColorsRgb[fish.fish.rarity] || [160, 216, 239];
+
     ctx.beginPath();
     ctx.arc(fish.x, fish.y, fish.rippleSize, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(160, 216, 239, ${1 - fish.rippleSize / rippleRadius})`;
+    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
     ctx.lineWidth = 1;
     ctx.stroke();
   }

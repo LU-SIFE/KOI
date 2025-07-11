@@ -42,12 +42,11 @@ function update() {
     if (trail.length > maxTrailLength) trail.shift();
 
     if (keys[" "]) {
-        // Only try to fish if space is held
         let inRipple = false;
 
-        for (const fish of fishSpots) {
-            const dx = diamond.x - fish.x;
-            const dy = diamond.y - fish.y;
+        for (const fishSpot of fishSpots) {
+            const dx = diamond.x - fishSpot.x;
+            const dy = diamond.y - fishSpot.y;
             const distance = Math.hypot(dx, dy);
 
             if (distance < rippleRadius) {
@@ -58,35 +57,50 @@ function update() {
                     holdTime = 0;
                 }
 
-                holdTime += 16.67; // ~60fps
+                holdTime += 16.67; // ~60fps frame time
 
                 if (holdTime >= timeToCatch) {
-                    rollFish();
+                    const caughtFish = fishSpot.fish;
+                    caughtFish.caught++;
+                    catchCount++;
+                    localStorage.setItem("catchCount", catchCount);
 
-                    // Replace caught fish
-                    let newFish;
+                    // Use 'an' before vowels
+                    const article = caughtFish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
+                    const message = `You caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
+
+                    showFishAlert(message);
+                    document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
+                    sellFish(caughtFish.rarity);
+                    saveFishdex();
+
+                    // Create new spot with position and new pre-rolled fish
+                    let newFishSpot;
                     let attempts = 0;
                     const padding = 50;
 
                     do {
-                        newFish = {
+                        newFishSpot = {
                             x: padding + Math.random() * (canvas.width - 2 * padding),
                             y: padding + Math.random() * (canvas.height - 2 * padding),
                             rippleSize: 0,
+                            fish: rollFishWeighted() // assign new fish for spot
                         };
                         attempts++;
                     } while (
-                        fishSpots.some(f => Math.hypot(f.x - newFish.x, f.y - newFish.y) < minDistanceBetweenFish) &&
-                        attempts < 100
+                        fishSpots.some(f =>
+                            Math.hypot(f.x - newFishSpot.x, f.y - newFishSpot.y) < minDistanceBetweenFish
+                        ) && attempts < 100
                     );
 
-                    fishSpots[fishSpots.indexOf(fish)] = newFish;
+                    // Replace the old spot with new
+                    fishSpots[fishSpots.indexOf(fishSpot)] = newFishSpot;
 
                     isHolding = false;
                     holdTime = 0;
                 }
 
-                break; // Found a ripple, stop checking
+                break; // exit loop when caught
             }
         }
 
@@ -98,6 +112,7 @@ function update() {
         isHolding = false;
         holdTime = 0;
     }
+
 
 
     if (keys["e"]) {

@@ -21,6 +21,16 @@ const fishdex = [
   { caught: 0, name: "Walleye", rarity: "Common" }
 ];
 
+const rarityColorsRgb = {
+  Common: [250, 250, 250],       // Soft Snow White ☁️
+  Uncommon: [180, 245, 200],     // Pastel Mint Green 🍃
+  Rare: [180, 210, 255],         // Powdery Sky Blue 💎
+  Legendary: [255, 200, 150]     // Soft Tangerine Gold ✨
+};
+
+
+
+
 let catchCount = 0;
 
 const rarityWeights = {
@@ -39,6 +49,15 @@ for (const fish of fishdex) {
   if (weight > 0) {
     cumulativeWeight += weight;
     weightedFish.push({ fish, cumulativeWeight });
+  }
+}
+
+function rollFishWeighted() {
+  const rand = Math.random() * cumulativeWeight; // cumulativeWeight and weightedFish from fishdex.js
+  for (const entry of weightedFish) {
+    if (rand < entry.cumulativeWeight) {
+      return entry.fish;
+    }
   }
 }
 

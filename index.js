@@ -4,6 +4,7 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+
 //canvas resive
 window.addEventListener('resize', resizeCanvas, false);
 function resizeCanvas() {
@@ -18,6 +19,8 @@ let isHolding = false;
 let holdTime = 0;
 let timeToCatch = 10000;
 
+let quoteInterval;
+
 //
 // !! Main Loop
 //
@@ -28,10 +31,11 @@ function loop() {
   updateHoldBar();
   drawRipples();
   drawTrail();
+  drawAutofisherTrails();
   drawDiamond(diamond.x, diamond.y, diamond.size, diamond.angle);
 
   for (const autofisher of autofishers) {
-    drawDiamond(autofisher.x, autofisher.y, autofisher.size, autofisher.angle, "rgba(146, 191, 137, 1)");
+    drawDiamond(autofisher.x, autofisher.y, autofisher.size, autofisher.angle, "rgba(173, 235, 177, 1)");
   }
 
   requestAnimationFrame(loop);
@@ -46,13 +50,14 @@ function start() {
     document.getElementById("upgrades").style.display = "block";
 
   start_state = true;
+  upgrade_state = true;
   localStorage.setItem("start_state", JSON.stringify(start_state)); // string "true"
 
   const savedCatchCount = localStorage.getItem("catchCount");
   catchCount = savedCatchCount ? parseInt(savedCatchCount) : 0;
   document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
   quote_cycle();
-  setInterval(quote_cycle, 15000);
+  quoteInterval = setInterval(quote_cycle, 15000);
   loop();
 }
 
@@ -63,7 +68,6 @@ window.onload = function () {
     document.getElementById("menu").classList.remove("hide");
     document.getElementById("menu").classList.add("show");
     document.getElementById("upgrades").style.display = "none";
-    setTimeout(function () { menu_state = true; }, 300);
   }
 
   loadFishdex();

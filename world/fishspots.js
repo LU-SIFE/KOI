@@ -9,7 +9,7 @@ function generateFishSpots(count) {
       x: padding + Math.random() * (canvas.width - 2 * padding),
       y: padding + Math.random() * (canvas.height - 2 * padding),
       rippleSize: 0,
-
+      fish: rollFishWeighted() // Assign a pre-rolled fish to the spot
     };
 
     const tooClose = spots.some(fish =>
@@ -22,5 +22,10 @@ function generateFishSpots(count) {
   return spots;
 }
 
+
 let fishMax = 1;
 let fishSpots = generateFishSpots(fishMax);
+fishSpots = fishSpots.map(spot => {
+  spot.fish = rollFishWeighted(); // This returns a fish object with rarity
+  return spot;
+});

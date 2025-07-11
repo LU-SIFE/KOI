@@ -4,8 +4,6 @@ const audioCtx = new AudioContext();
 const oscillator = audioCtx.createOscillator();
 const gainNode = audioCtx.createGain();
 const filterNode = audioCtx.createBiquadFilter();
-const tremoloGain = audioCtx.createGain();
-const tremoloOsc = audioCtx.createOscillator();
 
 // Custom wave: dreamy shimmering sawtooth-ish
 const real = new Float32Array([0, 0, 0, 0, 0, 0]);
@@ -18,29 +16,22 @@ filterNode.type = 'lowpass';
 filterNode.frequency.value = 0;  // start warm and soft
 filterNode.Q.value = 1;
 
-// Tremolo: subtle amplitude modulation to add magic "wobble"
-tremoloOsc.frequency.value = 1; // 5 Hz tremolo speed, gentle rocking
-tremoloGain.gain.value = 0.05;
 gainNode.gain.value = 0;         // start muted
 
 // Connect oscillator through filter, then to gainNode (for volume control)
 oscillator.connect(filterNode);
 filterNode.connect(gainNode);
 
-// Setup tremolo: oscillator modulates gainNode.gain
-tremoloOsc.connect(tremoloGain);
-tremoloGain.connect(gainNode.gain);
-
 // Output to speakers
 gainNode.connect(audioCtx.destination);
 
 oscillator.frequency.value = 0;  // start lower freq for more warmth
 oscillator.start();
-tremoloOsc.start();
 
 let lastRampTime = 0;
 
 function updateToneBasedOnSpeed(speed, maxSpeed) {
+  if (!isPlaying) return;
   const now = audioCtx.currentTime;
   if (now - lastRampTime < 0.1) return; // throttle
   lastRampTime = now;
@@ -72,3 +63,27 @@ window.addEventListener('click', () => {
     audioCtx.resume();
   }
 });
+
+let isPlaying = true;
+
+function oscToggle() {
+  if (audioCtx.state === 'suspended') {
+    audioCtx.resume(); // In case autoplay blocked it
+  }
+
+  const now = audioCtx.currentTime;
+
+  if (!isPlaying) {
+    // Fade in (or restore dynamic gain control)
+    gainNode.gain.cancelScheduledValues(now);
+    gainNode.gain.setValueAtTime(gainNode.gain.value, now); // anchor current value
+    gainNode.gain.linearRampToValueAtTime(0.1, now + 0.1); // or whatever volume
+    isPlaying = true;
+  } else {
+    // Fade out to silence
+    gainNode.gain.cancelScheduledValues(now);
+    gainNode.gain.setValueAtTime(gainNode.gain.value, now); // anchor current value
+    gainNode.gain.linearRampToValueAtTime(0.0, now + 0.1);
+    isPlaying = false;
+  }
+}
