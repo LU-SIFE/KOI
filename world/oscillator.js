@@ -5,7 +5,6 @@ const oscillator = audioCtx.createOscillator();
 const gainNode = audioCtx.createGain();
 const filterNode = audioCtx.createBiquadFilter();
 
-// Custom wave: dreamy shimmering sawtooth-ish
 const real = new Float32Array([0, 0, 0, 0, 0, 0]);
 const imag = new Float32Array([0, 1, 0.5, 0.33, 0.25, 0.2]);
 const customWave = audioCtx.createPeriodicWave(real, imag);
@@ -37,10 +36,10 @@ function updateToneBasedOnSpeed(speed, maxSpeed) {
   lastRampTime = now;
 
   const minFreq = 0;   // shifted min freq up for warmth
-  let maxFreq = 60;    // wider frequency range for shimmer
+  let maxFreq = 70;    // wider frequency range for shimmer
 
   if (typeof speedMultiplier !== 'undefined' && speedMultiplier === 2) {
-    maxFreq = 70;
+    maxFreq = 80;
   }
 
   const normalizedSpeed = Math.min(Math.abs(speed) / maxSpeed, 1);

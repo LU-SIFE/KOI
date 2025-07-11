@@ -1,14 +1,22 @@
-const ambientAudio = document.getElementById('ambient');
+const ambientAudios = [
+  [document.getElementById('sea-ambience'), 0.05],
+  [document.getElementById('rain-ambience'), 0.25],
+  [document.getElementById('park-ambience'), 0.15],
+  // You can add more audio elements here later!
+];
+
 let ambientStarted = false;
 let ambientPaused = false;
+let currentAmbient = null;
 
-function startAmbient() {
+function startAmbient(ambientAudio, volume) {
   if (!ambientStarted) {
     ambientAudio.play()
       .then(() => {
-        ambientAudio.volume = 0.05;
+        ambientAudio.volume = volume;
         ambientStarted = true;
         ambientPaused = false;
+        currentAmbient = ambientAudio;
       })
       .catch(e => {
         console.log("Autoplay blocked — will try again on user input.");
@@ -17,16 +25,34 @@ function startAmbient() {
 }
 
 function toggleAmbientPause() {
-  if (!ambientStarted) return; // can't pause what hasn't started
+  if (!ambientStarted || !currentAmbient) return;
 
   if (ambientPaused) {
-    ambientAudio.play();
+    currentAmbient.play();
     ambientPaused = false;
   } else {
-    ambientAudio.pause();
+    currentAmbient.pause();
     ambientPaused = true;
   }
 }
 
-window.addEventListener('click', startAmbient, { once: true });
-window.addEventListener('keydown', startAmbient, { once: true });
+function randomAmbient() {
+  const randomIndex = Math.floor(Math.random() * ambientAudios.length);
+  startAmbient(ambientAudios[randomIndex][0], ambientAudios[randomIndex][1]);
+}
+
+function handleFirstInteraction() {
+  randomAmbient();
+  window.removeEventListener('click', handleFirstInteraction);
+  window.removeEventListener('keydown', handleFirstInteraction);
+}
+
+window.addEventListener('click', handleFirstInteraction);
+window.addEventListener('keydown', handleFirstInteraction);
+
+
+// Fish-up audio
+const fishUp = document.getElementById('fishUp');
+function fishSfx() {
+  fishUp.play();
+}
