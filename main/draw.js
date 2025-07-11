@@ -31,13 +31,13 @@ function drawTrail() {
     ctx.lineTo(0, -height * 0.5);
     ctx.closePath();
 
-    ctx.fillStyle = `rgba(243, 146, 131, ${opacity})`;
+    ctx.fillStyle = `rgba(255, 202, 212, ${opacity})`;
     ctx.fill();
     ctx.restore();
   }
 }
 
-function drawDiamond(x, y, size, angle, color = "rgba(243, 146, 131, 1)", borderColor = "rgba(243, 146, 131, 0.4)", borderWidth = 4) {
+function drawDiamond(x, y, size, angle, color = "rgba(255, 202, 212, 1)") {
   const width = size;
   const height = size * 0.5;
 
@@ -55,14 +55,9 @@ function drawDiamond(x, y, size, angle, color = "rgba(243, 146, 131, 1)", border
   ctx.fillStyle = color;
   ctx.fill();
 
-  // Outline the shape
-  ctx.lineWidth = borderWidth;
-  ctx.strokeStyle = borderColor;
-  ctx.stroke();
 
   ctx.restore();
 }
-
 
 function drawRipples() {
   for (const fish of fishSpots) {
@@ -71,7 +66,7 @@ function drawRipples() {
 
     ctx.beginPath();
     ctx.arc(fish.x, fish.y, fish.rippleSize, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(243, 146, 131, ${1 - fish.rippleSize / rippleRadius})`;
+    ctx.strokeStyle = `rgba(160, 216, 239, ${1 - fish.rippleSize / rippleRadius})`;
     ctx.lineWidth = 1;
     ctx.stroke();
   }

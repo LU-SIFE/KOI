@@ -12,13 +12,14 @@
 </head>
 
 <body>
+    <audio id="ambient" src="assets/sea.mp3" loop preload="auto"></audio>
     <div id="holdBarContainer">
         <div id="holdBar"></div>
     </div>
 
-    <div id="fishAlert"></div>
+    <div id="fishAlert" class="ui-panel"></div>
     <div id="quotes"></div>
-    <div id="menu" class="hide">
+    <div id="menu" class="hide ui-panel">
         <div id="tutorial">
             <h2>Welcome to <b>KOI</b>!</h2><br>
             <p>You can bring up the upgrade menu anytime by pressing <b>E</b>.</p><br>
@@ -53,7 +54,9 @@
             </div>
         </div>
     </div>
+    <div class="overlay"></div>
     <canvas id="game"></canvas>
+  <canvas id="reflectionCanvas"></canvas>
 </body>
 <script src="ui/quotes.js"></script>
 <script src="world/fishdex.js"></script>
@@ -66,5 +69,6 @@
 <script src="main/update.js"></script>
 <script src="ui/inventory.js"></script>
 <script src="ui/upgrades.js"></script>
+<script src="ui/audio.js"></script>
 
 </html>
