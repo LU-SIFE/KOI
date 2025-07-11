@@ -21,3 +21,22 @@ function spendMoney(amount) {
     return false;
   }
 }
+
+function sellFish(fishRarity) {
+  switch (fishRarity) {
+    case "Common":
+      inventory.money += 1;
+      break;
+    case "Uncommon":
+      inventory.money += 3;
+      break;
+    case "Rare":
+      inventory.money += 7;
+      break;
+    case "Legendary":
+      inventory.money += 15;
+      break;
+  }
+
+  document.getElementById("money").innerHTML = `$${inventory.money}`;
+}

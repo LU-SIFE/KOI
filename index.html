@@ -17,6 +17,7 @@
     </div>
 
     <div id="fishAlert"></div>
+    <div id="quotes"></div>
     <div id="menu" class="hide">
         <div id="tutorial">
             <h2>Welcome to <b>KOI</b>!</h2><br>
@@ -31,7 +32,7 @@
             <hr><br>
 
             <h2>Upgrades:</h2>
-            <h5>(The Price is meaningless rn)</h5>
+            <h5 id="money">$0</h5>
 
             <div class="upgrade_container">
                 <div class="price_col">
@@ -50,18 +51,18 @@
                     <span id="fisher_info">0 Fishers</span>
                 </div>
             </div>
-
         </div>
     </div>
     <canvas id="game"></canvas>
 </body>
+<script src="ui/quotes.js"></script>
 <script src="world/fishdex.js"></script>
-<script src="ui/oscillator.js"></script>
 <script src="entities/autofishers.js"></script>
 <script src="index.js"></script>
 <script src="world/fishspots.js"></script>
 <script src="ui/holdBar.js"></script>
 <script src="main/draw.js"></script>
+<script src="ui/oscillator.js"></script>
 <script src="main/update.js"></script>
 <script src="ui/inventory.js"></script>
 <script src="ui/upgrades.js"></script>

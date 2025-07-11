@@ -1,4 +1,5 @@
 const keys = {};
+let speedMultiplier = 1;
 
 window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
 window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
@@ -7,7 +8,7 @@ function update() {
     updateToneBasedOnSpeed(diamond.speed, diamond.maxSpeed)
     updateAutofishers();
 
-    const speedMultiplier = keys["shift"] ? 2 : 1;
+    speedMultiplier = keys["shift"] ? 2 : 1;
 
     // Accelerate / decelerate
     if (keys["w"]) {

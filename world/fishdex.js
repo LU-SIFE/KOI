@@ -57,7 +57,7 @@ function rollFish() {
 
       showFishAlert(message);
       document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
-      inventory.money += 10; //replace later!
+      sellFish(entry.fish.rarity);
 
       saveFishdex();
       return entry.fish;
