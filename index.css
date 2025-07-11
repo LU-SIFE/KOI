@@ -195,18 +195,20 @@ hr {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(rgba(255, 202, 212,0.35) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 202, 212,1) 1px, transparent 1px);
   background-size: 100px 100px;
   transform: translate(-25%, 0);
-  animation: sparkleGrid 20s linear infinite;
+  animation: grid 15s linear infinite;
+  opacity: 0.2;
   rotate: 20deg;
   width: 175%;
   height: 175%;
 }
 
-@keyframes sparkleGrid {
-  0% { background-position: 0 0; }
-  100% { background-position: 100px 100px; }
+@keyframes grid {
+  0% { background-position: 0 0; opacity: 0.2;}
+  50% { opacity: 0.5; }
+  100% { background-position: 100px 100px; opacity: 0.2;}
 }
 
 canvas {filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));}
