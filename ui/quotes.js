@@ -13,6 +13,11 @@ const quote_array = [
     ["We're glad you're okay!"],
     ["Thanks for sticking with us!"],
     ["Really, the fish do swim! So can you!"],
+    ["You've made it this far. That matters more than you know."],
+    ["Even the smallest ripples reach the shore eventually."],
+    ["Some treasures can't be caught, only noticed and loved."],
+    ["Rest is part of the journey. The fish take naps too!"],
+    ["Even if the tide pulls you under, you will surface again."],
 ];
 
 let lastQuoteIndex = -1;
