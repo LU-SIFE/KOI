@@ -56,6 +56,11 @@ function start() {
   const savedCatchCount = localStorage.getItem("catchCount");
   catchCount = savedCatchCount ? parseInt(savedCatchCount) : 0;
   document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
+
+  loadInventory();
+  renderInventory();
+  loadUpgrades();
+
   quote_cycle();
   quoteInterval = setInterval(quote_cycle, 15000);
   loop();

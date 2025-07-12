@@ -28,16 +28,18 @@ const rarityColorsRgb = {
   Legendary: [255, 200, 150]     // Soft Tangerine Gold ✨
 };
 
-
-
+function getFishRarity(name) {
+  const fish = fishdex.find(f => f.name === name);
+  return fish?.rarity ?? "Common"; // default fallback
+}
 
 let catchCount = 0;
 
 const rarityWeights = {
-  Common: 70,
-  Uncommon: 24,
-  Rare: 5,
-  Legendary: 1
+  Common: 65,
+  Uncommon: 20,
+  Rare: 10,
+  Legendary: 5
 };
 
 // Build cumulative weight array once for efficient weighted random selection
@@ -61,29 +63,6 @@ function rollFishWeighted() {
   }
 }
 
-function rollFish() {
-  const rand = Math.random() * cumulativeWeight;
-  
-  for (const entry of weightedFish) {
-    if (rand < entry.cumulativeWeight) {
-      entry.fish.caught++;
-      catchCount++;
-      localStorage.setItem("catchCount", catchCount);
-
-      // Use 'an' before vowels
-      const article = entry.fish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
-      const message = `You caught ${article} ${entry.fish.rarity} ${entry.fish.name}!<br>Caught: ${entry.fish.caught}`;
-
-      showFishAlert(message);
-      document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
-      sellFish(entry.fish.rarity);
-
-      saveFishdex();
-      return entry.fish;
-    }
-  }
-}
-
 // Fish alert popup handler
 const fishAlert = document.getElementById("fishAlert");
 let alertTimeout;
@@ -101,6 +80,25 @@ function showFishAlert(message) {
   alertTimeout = setTimeout(() => {
     fishAlert.classList.remove("show");
     fishAlert.classList.add("hide");
+  }, 3000);
+}
+
+const fishInspect = document.getElementById("fishInspect");
+let inspectTimeout;
+
+function showFishInspect(message) {
+  if (inspectTimeout) clearTimeout(inspectTimeout);
+
+  fishInspect.innerHTML = message;
+  fishInspect.classList.remove("hide");
+  fishInspect.classList.add("show");
+
+  // Trigger reflow for CSS animation restart
+  void fishInspect.offsetWidth;
+
+  alertTimeout = setTimeout(() => {
+    fishInspect.classList.remove("show");
+    fishInspect.classList.add("hide");
   }, 3000);
 }
 

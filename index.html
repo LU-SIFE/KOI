@@ -12,18 +12,34 @@
 </head>
 
 <body>
+
+    <!-- Audio Sources -->
+    <!-- Ambience -->
     <audio id="sea-ambience" src="assets/sea-ambience.mp3" loop preload="auto"></audio>
     <audio id="rain-ambience" src="assets/rain-ambience.mp3" loop preload="auto"></audio>
     <audio id="park-ambience" src="assets/park-ambience.mp3" loop preload="auto"></audio>
+    <!-- Sound Effects -->
     <audio id="fishUp" src="assets/splash.mp3" preload="auto"></audio>
+
+    <!-- Game UI Elements -->
+    <!-- Fishing Progress Bar -->
     <div id="holdBarContainer">
         <div id="holdBar"></div>
     </div>
 
+    <!-- Fish Alert Box -->
     <div id="fishAlert" class="ui-panel"></div>
+
+    <!-- Fish Alert Box -->
+    <div id="fishInspect" class="ui-panel"></div>
+
+    <!-- Quote Container -->
     <div id="quotes"></div>
 
+    <!-- Main UI Container -->
     <div id="menu" class="hide ui-panel">
+
+        <!-- Tutorial Content -->
         <div id="tutorial">
             <h2>Welcome to <b>KOI</b>!</h2><br>
             <p>You can bring up the upgrade menu anytime by pressing <b>E</b>.</p><br>
@@ -32,6 +48,7 @@
             <button class="start" onclick="start();"><b>START</b></button>
         </div>
 
+        <!-- Upgrade Content -->
         <div id="upgrades">
             <h2 id="catchCount">Fish Caught: 0</h2><br>
             <hr><br>
@@ -58,56 +75,78 @@
             </div>
         </div>
 
+        <!-- Market Content -->
         <div id="market">
             <h2>Market</h2><br>
             <hr><br>
-            Come back later!
+            Under Construction!
         </div>
+
+        <!-- Inventory Content -->
         <div id="inventory">
             <h2>Inventory</h2><br>
             <hr><br>
-            Come back later!
+            <!-- Fish caught, items, boosts, chests,  -->
+             <div class="inventory_container">
+             <div class="left_inv">
+                <h2>Fish</h2>
+                <hr>
+                <div id="inventory_fish_content" class="inventory-grid"></div>
+             </div>
+
+             <div class="right_inv">
+                <h2>Items</h2>
+                <hr>
+             </div>
+             </div>
         </div>
 
+        <!-- Settings Content -->
         <div id="settings">
             <h2>Settings</h2><br>
             <hr><br>
 
             <div class="settings_block">
-            <button onclick="toggleFullscreen()">Fullscreen</button>
-            <button onclick="quoteToggle();">Quotes</button>
-            <button onclick="SoundManager.muteAmbienceToggle();">Ambience</button>
-            <button onclick="SoundManager.muteSfxToggle();">SFX</button>
+                <button onclick="toggleFullscreen()">Fullscreen</button>
+                <button onclick="quoteToggle();">Quotes</button>
+                <button onclick="SoundManager.muteAmbienceToggle();">Ambience</button>
+                <button onclick="SoundManager.muteSfxToggle();">SFX</button>
             </div>
-
         </div>
 
+        <!-- Menu Navigation -->
         <div class="menu_block">
             <button id="upgrades_btn" onclick="swap_menu('upgrade');" class="no-m">Upgrades</button>
             <button id="market_btn" onclick="swap_menu('market');">Market</button>
             <button id="inventory_btn" onclick="swap_menu('inventory');">Inventory</button>
-            <button id="settings_btn" onclick="swap_menu('settings');"><img src="assets/gear.svg" alt=""
-                    srcset=""></button>
+            <button id="settings_btn" onclick="swap_menu('settings');"><img src="assets/gear.svg"></button>
         </div>
-
     </div>
-    <canvas id="game"></canvas>
+
+    <!-- Game & Overlay -->
     <div class="overlay"></div>
-    <canvas id="shadow"></canvas>
+    <canvas id="game"></canvas>
 </body>
+
+
+<!-- Javascript -->
 <script src="ui/quotes.js"></script>
-<script src="world/fishdex.js"></script>
-<script src="entities/autofishers.js"></script>
-<script src="index.js"></script>
-<script src="world/fishspots.js"></script>
 <script src="ui/holdBar.js"></script>
-<script src="main/draw.js"></script>
-<script src="main/update.js"></script>
 <script src="ui/inventory.js"></script>
 <script src="ui/upgrades.js"></script>
-<script src="world/audio.js"></script>
 <script src="ui/menus.js"></script>
 <script src="ui/settings.js"></script>
 <script src="ui/fullscreen.js"></script>
 
+
+<!-- Load this First! -->
+<script src="index.js"></script>
+
+<!-- Most of these are dependent on index.js -->
+<script src="world/fishdex.js"></script>
+<script src="world/fishspots.js"></script>
+<script src="world/audio.js"></script>
+<script src="main/draw.js"></script>
+<script src="main/update.js"></script>
+<script src="entities/autofishers.js"></script>
 </html>

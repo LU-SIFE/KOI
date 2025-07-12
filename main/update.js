@@ -71,9 +71,11 @@ function update() {
 
                     showFishAlert(message);
                     document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
-                    sellFish(caughtFish.rarity);
                     SoundManager.playFishSfx();
                     saveFishdex();
+                    addItem("fish", fishSpot.fish.name);
+                    renderInventory();
+                    saveInventory();
 
                     // Create new spot with position and new pre-rolled fish
                     let newFishSpot;
