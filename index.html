@@ -107,10 +107,10 @@
             <hr><br>
 
             <div class="settings_block">
-                <button onclick="toggleFullscreen()">Fullscreen</button>
-                <button onclick="quoteToggle();">Quotes</button>
-                <button onclick="SoundManager.muteAmbienceToggle();">Ambience</button>
-                <button onclick="SoundManager.muteSfxToggle();">SFX</button>
+                <button onclick="this.blur(); toggleFullscreen()">Fullscreen</button>
+                <button onclick="this.blur(); toggle_quotes();">Quotes</button>
+                <button onclick="this.blur(); SoundManager.muteAmbienceToggle();">Ambience</button>
+                <button onclick="this.blur(); SoundManager.muteSfxToggle();">SFX</button>
             </div>
         </div>
 
@@ -135,7 +135,6 @@
 <script src="ui/inventory.js"></script>
 <script src="ui/upgrades.js"></script>
 <script src="ui/menus.js"></script>
-<script src="ui/settings.js"></script>
 <script src="ui/fullscreen.js"></script>
 
 

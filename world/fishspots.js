@@ -1,7 +1,7 @@
 // Constants for fish spawning and ripple radius
 const rippleRadius = 50;
 const minDistanceBetweenFish = rippleRadius * 2.5;
-const fishSpawnPadding = 50;  // Unified padding constant for all spawning
+const fishSpawnPadding = 100;  // Unified padding constant for all spawning
 const maxSpawnAttempts = 100;
 
 function createFishSpot() {
