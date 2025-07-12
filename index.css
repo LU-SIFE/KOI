@@ -206,7 +206,7 @@ hr {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: radial-gradient(rgba(255, 202, 212, 1) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 202, 212, 1) 1px, transparent 2px);
   background-size: 100px 100px;
   transform: translate(-25%, 0);
   animation: grid 15s linear infinite;

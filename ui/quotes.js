@@ -20,8 +20,6 @@ const quote_array = [
     ["Even if the tide pulls you under, you will surface again."],
 ];
 
-let lastQuoteIndex = -1;
-
 function quote_cycle() {
     const quoteElement = document.getElementById("quotes");
 
@@ -49,7 +47,6 @@ function quote_cycle() {
     }, 600);
 }
 
-let quote_vis = true;
 function toggle_quotes() {
     if (quote_vis === true) {
         quote_vis = false;

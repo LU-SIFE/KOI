@@ -1,16 +1,3 @@
-let inventory = {
-  fish: {},
-  items: {},
-  money: 0
-};
-
-const rarityOrder = {
-  Legendary: 0,
-  Rare: 1,
-  Uncommon: 2,
-  Common: 3
-};
-
 function addItem(type, name, amount = 1) {
   if (!inventory[type][name]) {
     inventory[type][name] = 0;

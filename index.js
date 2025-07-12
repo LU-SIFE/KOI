@@ -1,25 +1,9 @@
-//canvas init
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-
 //canvas resive
 window.addEventListener('resize', resizeCanvas, false);
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-
-//game states
-let caughtThisPress = false; // Prevent multiple alerts per space press
-let menu_state = false;
-let isHolding = false;
-let holdTime = 0;
-let timeToCatch = 10000;
-
-let quoteInterval;
 
 //
 // !! Main Loop
@@ -41,17 +25,18 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-let start_state = localStorage.getItem("start_state");
-start_state = start_state ? JSON.parse(start_state) : false;
-
 function start() {
   document.getElementById("tutorial").style.display = "none";
   document.getElementById("menu").classList.add("hide");
-    document.getElementById("upgrades").style.display = "block";
+  document.getElementById("upgrades").style.display = "block";
 
-  start_state = true;
+  localStorage.setItem("start_state", JSON.stringify(true));
   upgrade_state = true;
-  localStorage.setItem("start_state", JSON.stringify(start_state)); // string "true"
+
+  const savedPond = localStorage.getItem("currentPond");
+  if (savedPond) currentPond = savedPond;
+
+  buildWeights(currentPond);
 
   const savedCatchCount = localStorage.getItem("catchCount");
   catchCount = savedCatchCount ? parseInt(savedCatchCount) : 0;
@@ -60,18 +45,18 @@ function start() {
   loadInventory();
   renderInventory();
   loadUpgrades();
+  updateUpgradeUI();
 
   quote_cycle();
   quoteInterval = setInterval(quote_cycle, 15000);
-
-  
   fishSpots = generateFishSpots(fishMax);
   loop();
 }
 
-let fishMax = 1;
-
 window.onload = function () {
+
+  start_state = localStorage.getItem("start_state") ? JSON.parse(localStorage.getItem("start_state")) : false;
+
   if (start_state === true) {
     start();
   } else {

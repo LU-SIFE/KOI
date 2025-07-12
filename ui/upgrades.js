@@ -1,124 +1,285 @@
-function upgrade_speed() {
-  const minCatchTime = 1000;
-  if (timeToCatch <= minCatchTime) return;
+let upgrades = {
+  Base: {
+    Speed: {
+      Value: 0,
+      Max: 9,
+      Prices: [20, 40, 60, 80, 100, 120, 140, 160, 180]
+    },
 
-  const baseCost = 20;
-  // Calculate how many steps you've upgraded so far
-  const upgradesDone = (10000 - timeToCatch) / 1000;
-  const cost = baseCost * (upgradesDone + 1);
+    FishAmount: {
+      Value: 1,
+      Max: 10,
+      Prices: [80, 130, 180, 230, 280, 330, 380, 430, 480, 530]
+    },
 
-  if (!spendMoney(cost)) {
-    console.log("Not enough money for speed upgrade!");
+    Fishers: {
+      Value: 0,
+      Max: 7,
+      Prices: [250, 450, 650, 850, 1050, 1250, 1450]
+    },
+
+    NextPond: {
+      Value: 0,
+      Max: 1,
+      Prices: [5000],
+      PondType: "Frozen"
+    }
+  },
+
+  Frozen: {
+    Speed: {
+      Value: 0,
+      Max: 9,
+      Prices: [40, 75, 110, 145, 180, 215, 250, 285, 320]
+    },
+
+    FishAmount: {
+      Value: 1,
+      Max: 10,
+      Prices: [80, 130, 180, 230, 280, 330, 380, 430, 480, 530]
+    },
+
+    Fishers: {
+      Value: 0,
+      Max: 7,
+      Prices: [250, 450, 650, 850, 1050, 1250, 1450]
+    },
+
+    NextPond: {
+      Value: 0,
+      Max: 1,
+      Prices: [7000],
+      PondType: "Base"
+    }
+  }
+};
+
+
+function upgradeUpgrade(type) {
+  const pondUpgrades = upgrades[currentPond];
+
+  if (!pondUpgrades || !pondUpgrades[type]) return;
+
+  const upgrade = pondUpgrades[type];
+  const currentValue = upgrade.Value;
+  const maxValue = upgrade.Max;
+
+  // 🧠 Allow switching ponds if upgrade is maxed
+  if (currentValue >= maxValue) {
+    if (type === "NextPond" && upgrade.PondType && upgrades[upgrade.PondType]) {
+      switchPond(upgrade.PondType);
+    }
     return;
   }
 
-  timeToCatch -= 1000;
-  const newSeconds = timeToCatch / 1000;
+  // 🛒 Normal purchase and effect logic
+  const cost = upgrade.Prices[currentValue];
+  if (!spendMoney(cost)) return;
 
-  document.getElementById('speed_info').innerText = `${newSeconds} Second${newSeconds === 1 ? '' : 's'}`;
-  document.getElementById('speed_price').innerText = timeToCatch === minCatchTime ? "MAX" : `$${baseCost * ((10000 - timeToCatch) / 1000 + 1)}`;
-  saveUpgrades();
+  upgrade.Value++;
 
-}
+  // Apply effects
+  switch (type) {
+    case "Speed":
+      timeToCatch = 10000 - upgrade.Value * 1000;
+      break;
 
-function upgrade_fish() {
-  const maxFish = 10;
-  const baseCost = 80;
+    case "FishAmount":
+      fishMax = upgrade.Value;
+      const newSpot = spawnNewFishSpot(fishSpots);
+      fishSpots.push(newSpot);
+      break;
 
-  if (fishMax >= maxFish) return;
+    case "Fishers":
+      autofishers.push(createAutofisher());
+      break;
 
-  const cost = baseCost * (fishMax + 1);
-
-  if (!spendMoney(cost)) {
-    console.log("Not enough money for max fish upgrade!");
-    return;
+    case "NextPond":
+      // Switch only if pond is defined
+      if (upgrade.PondType && upgrades[upgrade.PondType]) {
+        switchPond(upgrade.PondType);
+      }
+      break;
   }
 
-  fishMax++;
-  document.getElementById('fish_info').innerText = `${fishMax} Max Fish`;
-  document.getElementById('fish_price').innerText =
-    fishMax === maxFish ? "MAX" : `$${baseCost * (fishMax + 1)}`;
-
-  // Use spawnNewFishSpot helper to add a new spot safely!
-  const newSpot = spawnNewFishSpot(fishSpots);
-  fishSpots.push(newSpot);
-
   saveUpgrades();
+  updateUpgradeUI();
+  updateMoneyDisplay();
+
 }
-
-
-function upgrade_fisher() {
-  const maxFishers = 7;
-  const baseCost = 300;
-
-  if (autofishers.length >= maxFishers) return;
-
-  const cost = baseCost * (autofishers.length + 1);
-
-  if (!spendMoney(cost)) {
-    console.log("Not enough money for autofisher upgrade!");
-    return;
-  }
-
-  autofishers.push(createAutofisher());
-  const fisherCount = autofishers.length;
-  saveUpgrades();
-
-  document.getElementById('fisher_info').innerText = `${fisherCount} Fisher${fisherCount === 1 ? '' : 's'}`;
-  document.getElementById('fisher_price').innerText = fisherCount >= maxFishers ? "MAX" : `$${baseCost * (fisherCount + 1)}`;
-}
-
 
 function saveUpgrades() {
-  const upgrades = {
-    timeToCatch,
-    fishMax,
-    autofisherCount: autofishers.length
-  };
   localStorage.setItem("gameUpgrades", JSON.stringify(upgrades));
+  localStorage.setItem("currentPond", currentPond);
 }
 
 function loadUpgrades() {
   const saved = localStorage.getItem("gameUpgrades");
+
   if (saved) {
-    const upgrades = JSON.parse(saved);
-    if (upgrades.timeToCatch !== undefined) timeToCatch = upgrades.timeToCatch;
-    if (upgrades.fishMax !== undefined) fishMax = upgrades.fishMax;
+    upgrades = JSON.parse(saved);
+  }
 
-    // For autofishers, recreate that many autofishers
-    if (upgrades.autofisherCount !== undefined) {
-      autofishers.length = 0; // clear current autofishers
-      for (let i = 0; i < upgrades.autofisherCount; i++) {
-        autofishers.push(createAutofisher());
-      }
+  const pondUpgrades = upgrades[currentPond];
+
+  if (!pondUpgrades) {
+    console.warn(`No upgrades found for pond: ${currentPond}`);
+    return;
+  }
+
+  // Apply loaded upgrade values to your game state
+  if (pondUpgrades.Speed) {
+    timeToCatch = 10000 - pondUpgrades.Speed.Value * 1000;
+  }
+
+  if (pondUpgrades.FishAmount) {
+    fishMax = pondUpgrades.FishAmount.Value;
+    while (fishSpots.length < fishMax) {
+      const newSpot = spawnNewFishSpot(fishSpots);
+      fishSpots.push(newSpot);
     }
+  }
 
-    // Update UI to reflect loaded upgrades
-    updateUpgradeUI();
+  if (pondUpgrades.Fishers) {
+    autofishers.length = 0;
+    for (let i = 0; i < pondUpgrades.Fishers.Value; i++) {
+      autofishers.push(createAutofisher());
+    }
   }
 }
 
 function updateUpgradeUI() {
+  const pondUpgrades = upgrades[currentPond];
+
   // Speed
-  const newSeconds = timeToCatch / 1000;
-  const minCatchTime = 1000;
-  const baseSpeedCost = 20;
-  document.getElementById('speed_info').innerText = `${newSeconds} Second${newSeconds === 1 ? '' : 's'}`;
-  document.getElementById('speed_price').innerText =
-    timeToCatch === minCatchTime ? "MAX" : `$${baseSpeedCost * ((10000 - timeToCatch) / 1000 + 1)}`;
+  const speedVal = pondUpgrades.Speed.Value;
+  const speedMax = pondUpgrades.Speed.Max;
+  const speedNext = pondUpgrades.Speed.Prices[speedVal];
+  const speedSeconds = (10000 - speedVal * 1000) / 1000;
 
-  // Fish max
-  const maxFish = 10;
-  const baseFishCost = 80;
-  document.getElementById('fish_info').innerText = `${fishMax} Max Fish`;
-  document.getElementById('fish_price').innerText =
-    fishMax === maxFish ? "MAX" : `$${baseFishCost * (fishMax + 1)}`;
+  document.getElementById('speed_info').innerText = `${speedSeconds} Second${speedSeconds === 1 ? '' : 's'}`;
+  document.getElementById('speed_price').innerText = speedVal >= speedMax ? "MAX" : `$${speedNext}`;
 
-  // Autofishers
-  const maxFishers = 7;
-  const baseFisherCost = 300;
-  const fisherCount = autofishers.length;
-  document.getElementById('fisher_info').innerText = `${fisherCount} Fisher${fisherCount === 1 ? '' : 's'}`;
-  document.getElementById('fisher_price').innerText =
-    fisherCount >= maxFishers ? "MAX" : `$${baseFisherCost * (fisherCount + 1)}`;
+  // FishAmount
+  const fishVal = pondUpgrades.FishAmount.Value;
+  const fishMax = pondUpgrades.FishAmount.Max;
+  const fishNext = pondUpgrades.FishAmount.Prices[fishVal];
+
+  document.getElementById('fish_info').innerText = `${fishVal} Max Fish`;
+  document.getElementById('fish_price').innerText = fishVal >= fishMax ? "MAX" : `$${fishNext}`;
+
+  // Fishers
+  const fisherVal = pondUpgrades.Fishers.Value;
+  const fisherMax = pondUpgrades.Fishers.Max;
+  const fisherNext = pondUpgrades.Fishers.Prices[fisherVal];
+
+  document.getElementById('fisher_info').innerText = `${fisherVal} Fisher${fisherVal === 1 ? '' : 's'}`;
+  document.getElementById('fisher_price').innerText = fisherVal >= fisherMax ? "MAX" : `$${fisherNext}`;
+
+  // NextPond upgrade UI
+  const nextPondVal = pondUpgrades.NextPond.Value;
+  const nextPondMax = pondUpgrades.NextPond.Max;
+  const nextPondNext = pondUpgrades.NextPond.Prices[nextPondVal];
+
+  const nextPondInfo = document.getElementById('nextpond_info');
+  const nextPondPrice = document.getElementById('nextpond_price');
+
+  if (!nextPondInfo || !nextPondPrice) return; // safety check
+
+  if (nextPondVal >= nextPondMax) {
+    nextPondInfo.innerText = `(Unlocked)`;
+    nextPondPrice.innerText = "";
+  } else {
+    nextPondInfo.innerText = `(Locked)`;
+    nextPondPrice.innerText = `${nextPondNext}`;
+  }
 }
+
+function switchPond(newPond) {
+  saveUpgrades();
+  currentPond = newPond;
+
+  // Load upgrades for the new pond first
+  loadUpgrades();
+
+  // Now update UI and weights *after* loading upgrades
+  updateUpgradeUI();
+  buildWeights(currentPond);
+
+  // Reset fish spots for new pond
+  fishSpots = generateFishSpots(fishMax);
+
+  // Update overlay color
+  update_overlay(currentPond);
+
+  console.log("Pond switched to", currentPond);
+}
+
+
+function updateUpgradeUI() {
+  const pondUpgrades = upgrades[currentPond];
+
+  // Speed
+  const speedVal = pondUpgrades.Speed.Value;
+  const speedMax = pondUpgrades.Speed.Max;
+  const speedNext = pondUpgrades.Speed.Prices[speedVal];
+  const speedSeconds = (10000 - speedVal * 1000) / 1000;
+
+  document.getElementById('speed_info').innerText = `${speedSeconds} Second${speedSeconds === 1 ? '' : 's'}`;
+  document.getElementById('speed_price').innerText = speedVal >= speedMax ? "MAX" : `$${speedNext}`;
+
+  // FishAmount
+  const fishVal = pondUpgrades.FishAmount.Value;
+  const fishMax = pondUpgrades.FishAmount.Max;
+  const fishNext = pondUpgrades.FishAmount.Prices[fishVal];
+
+  document.getElementById('fish_info').innerText = `${fishVal} Max Fish`;
+  document.getElementById('fish_price').innerText = fishVal >= fishMax ? "MAX" : `$${fishNext}`;
+
+  // Fishers
+  const fisherVal = pondUpgrades.Fishers.Value;
+  const fisherMax = pondUpgrades.Fishers.Max;
+  const fisherNext = pondUpgrades.Fishers.Prices[fisherVal];
+
+  document.getElementById('fisher_info').innerText = `${fisherVal} Fisher${fisherVal === 1 ? '' : 's'}`;
+  document.getElementById('fisher_price').innerText = fisherVal >= fisherMax ? "MAX" : `$${fisherNext}`;
+
+
+  const nextPondVal = pondUpgrades.NextPond.Value;
+  const nextPondMax = pondUpgrades.NextPond.Max;
+  const nextPondNext = pondUpgrades.NextPond.Prices[nextPondVal];
+
+  const nextPondInfo = document.getElementById('nextpond_info');
+  const nextPondPrice = document.getElementById('nextpond_price');
+
+  if (nextPondVal >= nextPondMax) {
+    nextPondInfo.innerText = `(Unlocked)`;
+    nextPondPrice.innerText = "";
+  } else {
+    nextPondInfo.innerText = `(Locked)`;
+    nextPondPrice.innerText = `$${nextPondNext}`;
+  }
+
+
+}
+
+
+function update_overlay(pond) {
+  const r = pondColors[pond][0];
+  const g = pondColors[pond][1];
+  const b = pondColors[pond][2];
+  document.getElementById("overlay").style.backgroundImage = `radial-gradient(rgba(${r}, ${g}, ${b}, 1) 1px, transparent 2px)`;
+
+  canvas.style.filter = `drop-shadow(5px 30px 4px rgba(${r}, ${g}, ${b}, 0.4))`;
+}
+
+function switchPond(newPond) {
+  saveUpgrades();
+  currentPond = newPond;
+  loadUpgrades();
+  buildWeights(currentPond);
+  fishSpots = generateFishSpots(fishMax);
+  updateUpgradeUI();
+  update_overlay(currentPond);
+}
+

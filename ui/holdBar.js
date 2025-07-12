@@ -1,6 +1,3 @@
-const holdBarContainer = document.getElementById("holdBarContainer");
-const holdBar = document.getElementById("holdBar");
-
 function updateHoldBar() {
   if (isHolding) {
     holdBarContainer.style.display = "block";

@@ -61,16 +61,19 @@
                     <span id="speed_price">$20</span>
                     <span id="fish_price">$80</span>
                     <span id="fisher_price">$300</span>
+                    <span id="nextpond_price">$5000</span>
                 </div>
                 <div class="left_col">
-                    <button onclick="upgrade_speed();">Fishing Speed</button>
-                    <button onclick="upgrade_fish();">Max Fish</button>
-                    <button onclick="upgrade_fisher();">Auto Fisher</button>
+                    <button onclick="upgradeUpgrade('Speed');">Fishing Speed</button>
+                    <button onclick="upgradeUpgrade('FishAmount');">Max Fish</button>
+                    <button onclick="upgradeUpgrade('Fishers');">Auto Fisher</button>
+                    <button onclick="upgradeUpgrade('NextPond');">Next Pond</button>
                 </div>
                 <div class="right_col">
                     <span id="speed_info">10 Seconds</span>
                     <span id="fish_info">1 Max Fish</span>
                     <span id="fisher_info">0 Fishers</span>
+                    <span id="nextpond_info">(Locked)</span>
                 </div>
             </div>
         </div>
@@ -124,12 +127,14 @@
     </div>
 
     <!-- Game & Overlay -->
-    <div class="overlay"></div>
+    <div id="overlay" class="overlay"></div>
     <canvas id="game"></canvas>
 </body>
 
 
 <!-- Javascript -->
+ <script src="init.js"></script>
+
 <script src="ui/quotes.js"></script>
 <script src="ui/holdBar.js"></script>
 <script src="ui/inventory.js"></script>

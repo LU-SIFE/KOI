@@ -1,5 +1,3 @@
-const autofishers = [];
-
 function createAutofisher() {
   return {
     x: Math.random() * canvas.width,

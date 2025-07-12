@@ -1,8 +1,3 @@
-let settings_state = false;
-let market_state = false;
-let inventory_state = false;
-let upgrade_state = false;
-
 function swap_menu(menu_value) {
     if (!start_state) {return;}
     if (menu_value == "settings" && !settings_state) {
