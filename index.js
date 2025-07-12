@@ -63,8 +63,13 @@ function start() {
 
   quote_cycle();
   quoteInterval = setInterval(quote_cycle, 15000);
+
+  
+  fishSpots = generateFishSpots(fishMax);
   loop();
 }
+
+let fishMax = 1;
 
 window.onload = function () {
   if (start_state === true) {

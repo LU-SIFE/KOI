@@ -51,7 +51,3 @@ function spawnNewFishSpot(existingSpots) {
 
   return newSpot;
 }
-
-// Example usage:
-let fishMax = 1;
-let fishSpots = generateFishSpots(fishMax);
