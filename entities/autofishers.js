@@ -83,7 +83,7 @@ function updateAutofishers() {
     if (autofisher.y < 0) autofisher.y = canvas.height;
     if (autofisher.y > canvas.height) autofisher.y = 0;
 
-        autofisher.trail.push({ x: autofisher.x, y: autofisher.y, angle: autofisher.angle });
+    autofisher.trail.push({ x: autofisher.x, y: autofisher.y, angle: autofisher.angle });
     if (autofisher.trail.length > maxTrailLength) {
       autofisher.trail.shift();
     }
@@ -107,23 +107,8 @@ function updateAutofishers() {
         sellFish(caughtFish.rarity);
         saveFishdex();
 
-        // Replace caught fish
-        let newFish;
-        let attempts = 0;
-        const padding = 50;
-
-        do {
-          newFish = {
-            x: padding + Math.random() * (canvas.width - 2 * padding),
-            y: padding + Math.random() * (canvas.height - 2 * padding),
-            rippleSize: 0,
-            fish: rollFishWeighted() // Pre-roll again for ripple
-          };
-          attempts++;
-        } while (
-          fishSpots.some(f => Math.hypot(f.x - newFish.x, f.y - newFish.y) < minDistanceBetweenFish)
-          && attempts < 100
-        );
+        // Use helper to spawn new fish spot, replacing old one
+        const newFish = spawnNewFishSpot(fishSpots);
 
         const index = fishSpots.indexOf(target);
         if (index !== -1) fishSpots[index] = newFish;
@@ -138,6 +123,7 @@ function updateAutofishers() {
     }
   }
 }
+
 
 function drawAutofisherTrails() {
   for (const autofisher of autofishers) {

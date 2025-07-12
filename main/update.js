@@ -41,80 +41,64 @@ function update() {
     trail.push({ x: diamond.x, y: diamond.y, angle: diamond.angle });
     if (trail.length > maxTrailLength) trail.shift();
 
-    if (keys[" "]) {
-        let inRipple = false;
+if (keys[" "]) {
+  let inRipple = false;
 
-        for (const fishSpot of fishSpots) {
-            const dx = diamond.x - fishSpot.x;
-            const dy = diamond.y - fishSpot.y;
-            const distance = Math.hypot(dx, dy);
+  for (const fishSpot of fishSpots) {
+    const dx = diamond.x - fishSpot.x;
+    const dy = diamond.y - fishSpot.y;
+    const distance = Math.hypot(dx, dy);
 
-            if (distance < rippleRadius) {
-                inRipple = true;
+    if (distance < rippleRadius) {
+      inRipple = true;
 
-                if (!isHolding) {
-                    isHolding = true;
-                    holdTime = 0;
-                }
+      if (!isHolding) {
+        isHolding = true;
+        holdTime = 0;
+      }
 
-                holdTime += 16.67; // ~60fps frame time
+      holdTime += 16.67; // ~60fps frame time
 
-                if (holdTime >= timeToCatch) {
-                    const caughtFish = fishSpot.fish;
-                    caughtFish.caught++;
-                    catchCount++;
-                    localStorage.setItem("catchCount", catchCount);
+      if (holdTime >= timeToCatch) {
+        const caughtFish = fishSpot.fish;
+        caughtFish.caught++;
+        catchCount++;
+        localStorage.setItem("catchCount", catchCount);
 
-                    // Use 'an' before vowels
-                    const article = caughtFish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
-                    const message = `You caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
+        const article = caughtFish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
+        const message = `You caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
 
-                    showFishAlert(message);
-                    document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
-                    SoundManager.playFishSfx();
-                    saveFishdex();
-                    addItem("fish", fishSpot.fish.name);
-                    renderInventory();
-                    saveInventory();
+        showFishAlert(message);
+        document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
+        SoundManager.playFishSfx();
+        saveFishdex();
+        addItem("fish", fishSpot.fish.name);
+        renderInventory();
+        saveInventory();
 
-                    // Create new spot with position and new pre-rolled fish
-                    let newFishSpot;
-                    let attempts = 0;
-                    const padding = 50;
+        // Use spawnNewFishSpot helper here!
+        const newFishSpot = spawnNewFishSpot(fishSpots);
 
-                    do {
-                        newFishSpot = {
-                            x: padding + Math.random() * (canvas.width - 2 * padding),
-                            y: padding + Math.random() * (canvas.height - 2 * padding),
-                            rippleSize: 0,
-                            fish: rollFishWeighted() // assign new fish for spot
-                        };
-                        attempts++;
-                    } while (
-                        fishSpots.some(f =>
-                            Math.hypot(f.x - newFishSpot.x, f.y - newFishSpot.y) < minDistanceBetweenFish
-                        ) && attempts < 100
-                    );
+        // Replace the old spot with the new one
+        fishSpots[fishSpots.indexOf(fishSpot)] = newFishSpot;
 
-                    // Replace the old spot with new
-                    fishSpots[fishSpots.indexOf(fishSpot)] = newFishSpot;
-
-                    isHolding = false;
-                    holdTime = 0;
-                }
-
-                break; // exit loop when caught
-            }
-        }
-
-        if (!inRipple) {
-            isHolding = false;
-            holdTime = 0;
-        }
-    } else {
         isHolding = false;
         holdTime = 0;
+      }
+
+      break; // exit loop when caught
     }
+  }
+
+  if (!inRipple) {
+    isHolding = false;
+    holdTime = 0;
+  }
+} else {
+  isHolding = false;
+  holdTime = 0;
+}
+
 
 
 

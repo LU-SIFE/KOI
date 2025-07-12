@@ -39,31 +39,13 @@ function upgrade_fish() {
   document.getElementById('fish_price').innerText =
     fishMax === maxFish ? "MAX" : `$${baseCost * (fishMax + 1)}`;
 
-  // Spawn new fish spot logic...
-  const padding = 50;
-  const maxAttempts = 100;
-  let attempts = 0;
+  // Use spawnNewFishSpot helper to add a new spot safely!
+  const newSpot = spawnNewFishSpot(fishSpots);
+  fishSpots.push(newSpot);
 
-  while (attempts < maxAttempts) {
-    const candidate = {
-      x: padding + Math.random() * (canvas.width - 2 * padding),
-      y: padding + Math.random() * (canvas.height - 2 * padding),
-      rippleSize: 0
-    };
-
-    const tooClose = fishSpots.some(f =>
-      Math.hypot(f.x - candidate.x, f.y - candidate.y) < minDistanceBetweenFish
-    );
-
-    if (!tooClose) {
-      fishSpots.push(candidate);
-      break;
-    }
-
-    attempts++;
-  }
   saveUpgrades();
 }
+
 
 function upgrade_fisher() {
   const maxFishers = 7;
