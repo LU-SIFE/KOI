@@ -110,12 +110,10 @@ item.innerHTML = `
   updateMoneyDisplay();
 }
 
-
 function inspectItem(name) {
   const rarity = getFishRarity(name);
   showFishInspect(`${name} (${rarity})<br>A fine catch, well worth admiring`);
 }
-
 
 function saveInventory() {
   const data = {

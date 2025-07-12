@@ -62,45 +62,29 @@ function rollFishWeighted() {
     }
   }
 }
+function createPopupHandler(elementId) {
+  const element = document.getElementById(elementId);
+  let timeout;
 
-// Fish alert popup handler
-const fishAlert = document.getElementById("fishAlert");
-let alertTimeout;
+  return function showPopup(message) {
+    if (timeout) clearTimeout(timeout);
 
-function showFishAlert(message) {
-  if (alertTimeout) clearTimeout(alertTimeout);
+    element.innerHTML = message;
+    element.classList.remove("hide");
+    element.classList.add("show");
 
-  fishAlert.innerHTML = message;
-  fishAlert.classList.remove("hide");
-  fishAlert.classList.add("show");
+    // Trigger reflow for CSS animation restart
+    void element.offsetWidth;
 
-  // Trigger reflow for CSS animation restart
-  void fishAlert.offsetWidth;
-
-  alertTimeout = setTimeout(() => {
-    fishAlert.classList.remove("show");
-    fishAlert.classList.add("hide");
-  }, 3000);
+    timeout = setTimeout(() => {
+      element.classList.remove("show");
+      element.classList.add("hide");
+    }, 3000);
+  };
 }
 
-const fishInspect = document.getElementById("fishInspect");
-let inspectTimeout;
-
-function showFishInspect(message) {
-  if (inspectTimeout) clearTimeout(inspectTimeout);
-
-  fishInspect.innerHTML = message;
-  fishInspect.classList.remove("hide");
-  fishInspect.classList.add("show");
-
-  // Trigger reflow for CSS animation restart
-  void fishInspect.offsetWidth;
-
-  alertTimeout = setTimeout(() => {
-    fishInspect.classList.remove("show");
-    fishInspect.classList.add("hide");
-  }, 3000);
-}
+const showFishAlert = createPopupHandler("fishAlert");
+const showFishInspect = createPopupHandler("fishInspect");
 
 function saveFishdex() {
   // Only save the `caught` count for each fish
