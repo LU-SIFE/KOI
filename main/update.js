@@ -5,7 +5,7 @@ window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
 window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
 
 function update() {
-    updateToneBasedOnSpeed(diamond.speed, diamond.maxSpeed)
+    SoundManager.updateToneBasedOnSpeed(diamond.speed, diamond.maxSpeed)
     updateAutofishers();
 
     speedMultiplier = keys["shift"] ? 2 : 1;
@@ -72,7 +72,7 @@ function update() {
                     showFishAlert(message);
                     document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
                     sellFish(caughtFish.rarity);
-                    fishSfx();
+                    SoundManager.playFishSfx();
                     saveFishdex();
 
                     // Create new spot with position and new pre-rolled fish

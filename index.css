@@ -211,7 +211,9 @@ hr {
   100% { background-position: 100px 100px; opacity: 0.2;}
 }
 
-canvas {filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));}
+canvas {
+  filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));
+}
 
 .ui-panel {
   z-index: 9;
