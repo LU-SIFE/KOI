@@ -72,7 +72,7 @@ function update() {
                     document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
                     SoundManager.playFishSfx();
                     saveFishdex();
-                    addItem("fish", fishSpot.fish.name);
+                    addItem("fish", caughtFish.name);
                     renderInventory();
                     saveInventory();
 

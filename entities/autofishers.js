@@ -104,8 +104,10 @@ function updateAutofishers() {
 
         showFishAlert(message);
         document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
-        sellFish(caughtFish.rarity);
         saveFishdex();
+        addItem("fish", caughtFish.name);
+        renderInventory();
+        saveInventory();
 
         // Use helper to spawn new fish spot, replacing old one
         const newFish = spawnNewFishSpot(fishSpots);
