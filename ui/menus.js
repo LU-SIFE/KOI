@@ -1,5 +1,5 @@
 function swap_menu(menu_value) {
-    if (!start_state) {return;}
+    if (start_state === false) {return;}
     if (menu_value == "settings" && !settings_state) {
         hide_current_menu();
         document.getElementById("settings").style.display = "block";

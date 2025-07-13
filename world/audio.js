@@ -118,6 +118,7 @@ const SoundManager = {
     if (this.ambienceMuted) {
       this.pauseCurrentAmbient();
     } else {
+      SoundManager.cycleAmbientTrack();
       this.resumeOrStartAmbient();
     }
   },

@@ -3,6 +3,7 @@
   --col1: rgb(30, 32, 34, 1);        /* Primary background */
   --col1-l: rgb(30, 32, 34, 0.75);   /* Transparent variant */
   --col2: rgba(255, 202, 212, 1);    /* Accent (pink) */
+  --col2-l: rgba(255, 202, 212, 0.5);    /* Accent (pink) */
   --col5: rgba(236, 231, 224, 1);    /* Light background */
 }
 
@@ -24,36 +25,50 @@ body {
 }
 
 /* === Alert Box === */
+/* Shared styles for both alerts */
 #fishAlert, #fishInspect {
   color: var(--col2);
   position: absolute;
-  top: 1em;
-  left: -20em; /* hidden by default */
   padding: 1em;
   border: 2px solid var(--col2);
   border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-weight: bold;
-  transition: left 0.3s ease-in-out;
   width: fit-content;
   height: fit-content;
   text-align: center;
+  transition: left 0.3s ease-in-out, bottom 0.3s ease-in-out;
 }
 
+/* fishAlert specific styles */
+#fishAlert {
+  top: 1em;
+  left: -25em; /* hidden by default */
+}
+
+#fishAlert.show {
+  left: 1em;
+}
+
+#fishAlert.hide {
+  left: -25em;
+}
+
+/* fishInspect specific styles */
 #fishInspect {
-  top:unset;
+  left: 1em;
+  bottom: -7em; /* hidden by default */
+  top: unset;
+}
+
+#fishInspect.show {
   bottom: 1em;
 }
 
-#fishAlert.show, #fishInspect.show {
-  left: 1em; /* slide in */
+#fishInspect.hide {
+  bottom: -7em;
 }
 
-#fishAlert.hide, #fishInspect.hide {
-  left: -25em; /* slide out */
-}
+
 
 /* === Side Menu Panel === */
 #menu {
@@ -95,7 +110,7 @@ body {
 }
 
 .start:hover {
-  background-color: var(--col2);
+  background-color: var(--col2-1);
 }
 
 /* === Fullscreen Canvas === */
@@ -163,7 +178,7 @@ hr {
 .left_col button:hover,
 .menu_block button:hover,
 #settings button:hover {
-  background-color: var(--col2);
+  background-color: var(--col2-l);
 }
 
 /* === Upgrade Labels === */
@@ -299,6 +314,14 @@ canvas {
   border-bottom: 2px solid var(--col2);
 }
 
+.left_inv {
+  width: 55%;
+}
+
+.right_inv {
+  width: 45%;
+}
+
 .left_inv {border-right: 1px solid var(--col2);}
 .right_inv {border-left: 1px solid var(--col2);}
 
@@ -314,11 +337,16 @@ canvas {
   margin-top: 1em;
 }
 
+.inventory-item:last-child {
+  margin-bottom: 1em;
+}
+
 .inventory-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem;
+  margin-bottom: 0.125rem;
   background-color: var(--col1);
   border-radius: 12px;
   border-top-right-radius: 0;
@@ -355,6 +383,12 @@ canvas {
   font-weight: bold;
 }
 
-.item-actions button:hover {
-  background: var(--col2);
+.button-hover {
+  border: 2px solid var(--btn-color);
+  color: var(--btn-color);
+  transition: background-color 0.3s ease;
+}
+
+.button-hover:hover {
+  background-color: var(--btn-hover-bg);
 }

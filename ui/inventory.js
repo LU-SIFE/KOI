@@ -17,20 +17,13 @@ function spendMoney(amount) {
 }
 
 function sellFish(fishRarity) {
-  switch (fishRarity) {
-    case "Common":
-      inventory.money += 1;
-      break;
-    case "Uncommon":
-      inventory.money += 3;
-      break;
-    case "Rare":
-      inventory.money += 7;
-      break;
-    case "Legendary":
-      inventory.money += 15;
-      break;
+
+  if (rarityPrices.hasOwnProperty(fishRarity)) {
+    inventory.money += rarityPrices[fishRarity];
+  } else {
+    console.warn(`Unknown fish rarity: ${fishRarity}`);
   }
+
 
   document.getElementById("money").innerHTML = `$${inventory.money}`;
 }
@@ -77,18 +70,34 @@ function renderInventory() {
     const [r, g, b] = rarityColorsRgb[rarity] || [255, 255, 255];
 
     const item = document.createElement("div");
-    item.className = "inventory-item";
-    item.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.15)`;
+    item.className = "inventory-item"; item.style.backgroundImage = `linear-gradient(to left, rgba(${r}, ${g}, ${b}, 0.1) 0%, rgba(${r}, ${g}, ${b}, 0.2) 100%)`;
+
+    item.style.border = `2px solid rgba(${r}, ${g}, ${b}, 1)`;
     item.style.borderLeft = `12px solid rgba(${r}, ${g}, ${b}, 1)`;
+    item.style.borderRight = 'none';
+
+const styleColor = `style="color: rgba(${r}, ${g}, ${b}, 1)"`;
+
+const btnStyle = `
+  style="
+    --btn-color: rgba(${r}, ${g}, ${b}, 1);
+    --btn-hover-bg: rgba(${r}, ${g}, ${b}, 0.5);
+    border: 2px solid var(--btn-color);
+    color: var(--btn-color);
+    transition: background-color 0.1s ease;
+  "
+  class="button-hover"
+`;
 
 item.innerHTML = `
-  <span class="item-name">${amount}x ${name}</span>
+  <span class="item-name" ${styleColor}>${amount}x ${name}</span>
   <span class="item-actions">
-    <small class="item-rarity" style="color: rgba(${r}, ${g}, ${b}, 1)">[${rarity}]</small>
-    <button onclick="sellItem('${name}')">Sell</button>
-    <button onclick="inspectItem('${name}')">Inspect</button>
+    <small class="item-rarity" ${styleColor}>[${rarity}]</small>
+    <button ${btnStyle} onclick="sellItem('${name}')">Sell</button>
+    <button ${btnStyle} onclick="inspectItem('${name}')">Inspect</button>
   </span>
 `;
+
 
 
     container.appendChild(item);
@@ -99,8 +108,10 @@ item.innerHTML = `
 
 function inspectItem(name) {
   const rarity = getFishRarity(name);
-  showFishInspect(`${name} (${rarity})<br>A fine catch, well worth admiring`);
+  const quote = inspect_quotes[rarity] || "A fine catch, well worth admiring";
+  showFishInspect(`<h3>${name} [${rarity}]</h3><br>${quote}`);
 }
+
 
 function saveInventory() {
   const data = {

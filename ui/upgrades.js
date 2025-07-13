@@ -49,9 +49,64 @@ let upgrades = {
       Value: 0,
       Max: 1,
       Prices: [7000],
+      PondType: "Fireproof"
+    }
+  },
+
+  Fireproof: {
+    Speed: {
+      Value: 0,
+      Max: 9,
+      Prices: [50, 100, 150, 200, 250, 300, 350, 400, 450]
+    },
+
+    FishAmount: {
+      Value: 1,
+      Max: 10,
+      Prices: [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+    },
+
+    Fishers: {
+      Value: 0,
+      Max: 7,
+      Prices: [300, 550, 800, 1050, 1300, 1550, 1800]
+    },
+
+    NextPond: {
+      Value: 0,
+      Max: 1,
+      Prices: [14000],
+      PondType: "Night"
+    }
+  },
+
+  Night: {
+    Speed: {
+      Value: 0,
+      Max: 9,
+      Prices: [70, 140, 210, 280, 350, 420, 490, 560, 630]
+    },
+
+    FishAmount: {
+      Value: 1,
+      Max: 10,
+      Prices: [140, 280, 420, 560, 700, 840, 980, 1120, 1260, 1400]
+    },
+
+    Fishers: {
+      Value: 0,
+      Max: 7,
+      Prices: [420, 770, 1120, 1470, 1820, 2170, 2520]
+    },
+
+    NextPond: {
+      Value: 0,
+      Max: 1,
+      Prices: [20000],
       PondType: "Base"
     }
   }
+
 };
 
 

@@ -39,18 +39,60 @@ let inventory = {
 const rarityOrder = {
   Mythical: 0,
   Legendary: 1,
-  Night: 2,
-  Fireproof: 3,
-  Frozen: 4,
-  Rare: 5,
-  Uncommon: 6,
-  Common: 7
+  Chromatic: 2,
+  Crystalline: 3,
+  Cursed: 4,
+  Ethereal: 5,
+  Night: 6,
+  Fireproof: 7,
+  Frozen: 8,
+  Rare: 9,
+  Uncommon: 10,
+  Common: 11
+};
+
+const rarityPrices = {
+  Common: 1,
+  Uncommon: 5,
+  Rare: 15,
+  Frozen: 25,
+  Night: 22,
+  Fireproof: 28,
+  Ethereal: 30,
+  Cursed: 35,
+  Crystalline: 40,
+  Chromatic: 45,
+  Legendary: 60,
+  Mythical: 80
 };
 
 let pondColors = {
-    Base: [255, 202, 212],
-    Frozen: [150, 220, 255],
+  Base: [255, 202, 212],
+  Frozen: [150, 220, 255],
+  Fireproof: [255, 100, 70],
+  Night: [80, 80, 120],
+  Ethereal: [210, 210, 255],
+  Cursed: [140, 0, 50],
+  Crystalline: [190, 255, 255],
+  Chromatic: [255, 180, 255],
 };
+
+
+const inspect_quotes = {
+  Common: "A humble fish, common but dependable.",
+  Uncommon: "A little rarer, showing promise beneath the waves.",
+  Rare: "A prize catch that few have the skill to reel in.",
+  Frozen: "Chilled by icy waters, with a frost-kissed glow.",
+  Night: "This fish shines softly under the moon's watchful eye.",
+  Fireproof: "Forged in fiery currents, it defies the flames.",
+  Ethereal: "A shimmering spirit of the water, barely caught between worlds.",
+  Cursed: "Beware the shadows it carries, for fortune has a price.",
+  Crystalline: "Sparkling like gemstones, it's a treasure from the depths.",
+  Chromatic: "A dazzling burst of colors, ever-changing and mesmerizing.",
+  Legendary: "A legendary catch, tales will be told of this one.",
+  Mythical: "A creature of legend, almost too magical to be real."
+};
+
 
 let catchCount = 0;
 

@@ -26,11 +26,13 @@ function loop() {
 }
 
 function start() {
+  console.log(fishdex.length + " fish loaded!");
   document.getElementById("tutorial").style.display = "none";
   document.getElementById("menu").classList.add("hide");
   document.getElementById("upgrades").style.display = "block";
 
   localStorage.setItem("start_state", JSON.stringify(true));
+  start_state = true;
   upgrade_state = true;
 
   const savedPond = localStorage.getItem("currentPond");
