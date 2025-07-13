@@ -36,6 +36,7 @@ function start() {
   const savedPond = localStorage.getItem("currentPond");
   if (savedPond) currentPond = savedPond;
 
+  switchPond(currentPond);
   buildWeights(currentPond);
 
   const savedCatchCount = localStorage.getItem("catchCount");
