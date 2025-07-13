@@ -164,7 +164,8 @@ hr {
 /* === Button Styles === */
 .left_col button,
 .menu_block button,
-#settings button {
+#settings button,
+a {
   font-size: 1rem;
   margin-bottom: 1em;
   padding: 0.75em;
@@ -175,9 +176,14 @@ hr {
   color: var(--col2);
 }
 
+a {
+  text-decoration: none;
+}
+
 .left_col button:hover,
 .menu_block button:hover,
-#settings button:hover {
+#settings button:hover,
+a:hover {
   background-color: var(--col2-l);
 }
 
