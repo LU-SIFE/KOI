@@ -201,9 +201,15 @@ function createPopupHandler(elementId) {
   const element = document.getElementById(elementId);
   let timeout;
 
-  return function showPopup(message) {
+  return function showPopup(message, color) {
     if (timeout) clearTimeout(timeout);
-
+    if (color) {
+      let r = color[0]
+      let g = color[1]
+      let b = color[2]
+      element.style.color = `rgba(${r}, ${g}, ${b}, 1)`;
+      element.style.borderColor = `rgba(${r}, ${g}, ${b}, 1)`;
+    }
     element.innerHTML = message;
     element.classList.remove("hide");
     element.classList.add("show");

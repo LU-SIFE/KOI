@@ -100,7 +100,7 @@ function updateAutofishers() {
         const article = caughtFish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
         const message = `An autofisher caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
 
-        showFishAlert(message);
+        showFishAlert(message, rarityColorsRgb[caughtFish.rarity]);
         catchUpdate(catchCount);
         saveFishdex();
         addItem("fish", caughtFish.name);
