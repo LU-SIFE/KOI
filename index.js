@@ -35,20 +35,29 @@ function start() {
   start_state = true;
   upgrade_state = true;
 
-  const savedPond = localStorage.getItem("currentPond");
-  if (savedPond) currentPond = savedPond;
-
-  switchPond(currentPond);
   buildWeights(currentPond);
 
   const savedCatchCount = localStorage.getItem("catchCount");
   catchCount = savedCatchCount ? parseInt(savedCatchCount) : 0;
-  document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
+  catchUpdate(catchCount);
 
   loadInventory();
   renderInventory();
   loadUpgrades();
   updateUpgradeUI();
+  loadPondStates();
+  updatePondButtons();
+
+  const savedPond = localStorage.getItem("currentPond");
+  if (savedPond) {
+    currentPond = savedPond;
+  } else {
+    currentPond = "Base";
+  }
+  
+
+  switchPond(currentPond);
+  
 
   quote_cycle();
   quoteInterval = setInterval(quote_cycle, 15000);

@@ -43,6 +43,25 @@ function sellItem(name) {
   }
 }
 
+function sellAllFish() {
+  for (const name in inventory.fish) {
+    const count = inventory.fish[name];
+    const rarity = getFishRarity(name);
+
+    for (let i = 0; i < count; i++) {
+      sellFish(rarity); // adds money
+    }
+
+    // Clean up after selling
+    delete inventory.fish[name];
+  }
+
+  renderInventory();
+  updateMoneyDisplay();
+  saveInventory();
+}
+
+
 function updateMoneyDisplay() {
   document.getElementById("money").innerHTML = `$${inventory.money}`;
 }

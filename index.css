@@ -5,6 +5,8 @@
   --col2: rgba(255, 202, 212, 1);    /* Accent (pink) */
   --col2-l: rgba(255, 202, 212, 0.5);    /* Accent (pink) */
   --col5: rgba(236, 231, 224, 1);    /* Light background */
+
+  --green: rgba(180, 245, 200, 1),
 }
 
 /* === Global Reset === */
@@ -68,8 +70,6 @@ body {
   bottom: -7em;
 }
 
-
-
 /* === Side Menu Panel === */
 #menu {
   position: absolute;
@@ -77,7 +77,7 @@ body {
   right: 1em;
   bottom: 1em;
   width: 25em;
-  border: 2px solid var(--col2);
+  border: 2px solid var(--col2-l);
   border-radius: 12px;
   padding: 1em;
   background-color: var(--col1-l);
@@ -148,23 +148,16 @@ hr {
 /* === Upgrade Panel Layout === */
 .upgrade_container {
   display: flex;
-}
-
-.left_col, .right_col, .price_col {
-  margin-top: 1em;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
+  margin-top: 1em;
 }
-
-.left_col { width: 40%; }
-.right_col { width: 40%; }
-.price_col { width: 20%; }
 
 /* === Button Styles === */
-.left_col button,
+.upgrade_row button,
 .menu_block button,
 #settings button,
+#pond_select button,
+.inv_header button,
 a {
   font-size: 1rem;
   margin-bottom: 1em;
@@ -180,9 +173,11 @@ a {
   text-decoration: none;
 }
 
-.left_col button:hover,
+.upgrade_row button:hover,
 .menu_block button:hover,
 #settings button:hover,
+#pond_select button:hover,
+.inv_header button:hover,
 a:hover {
   background-color: var(--col2-l);
 }
@@ -196,6 +191,32 @@ a:hover {
   color: var(--col2);
   font-weight: bold;
 }
+
+.upgrade_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin: 0.5em 0;
+}
+
+.upgrade_row span {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--col2);
+  text-align: center;
+}
+
+.upgrade_row button {
+  margin: 0;
+  flex: 0 0 9em; /* fixed width */
+}
+
+.upgrade_row button:hover {
+  background-color: var(--btn-hover-bg, rgba(255,255,255,0.1));
+}
+
 
 /* === Hidden by Default === */
 #upgrades {
@@ -397,4 +418,82 @@ canvas {
 
 .button-hover:hover {
   background-color: var(--btn-hover-bg);
+}
+
+#pond_select {
+  position: absolute;
+  left: -15em;
+  top: 50%;
+  transform: translate(0, -50%);
+  height: fit-content;
+  width: fit-content;
+  display: flex;
+  border: 2px solid var(--col2-l);
+  flex-direction: column;
+  gap: 0.5em;
+  transition: left 0.3s ease-in-out;
+  padding: 0.5em;
+}
+
+#pond_select.show {
+  left: 1em;
+}
+#pond_select.hide {
+  left: -15em;
+}
+
+#pond_select button {
+  margin: 0;
+  border: 2px solid var(--btn-color);
+  color: var(--btn-color);
+}
+
+#pond_select button:hover {
+  background-color: var(--btn-hover-bg);
+
+}
+
+#pond_select .hide {
+  display: none;
+}
+
+#pond_select .show {
+  display: block;
+}
+
+.inv_header {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 0.5em;
+}
+
+.inv_header button {
+  position: absolute;
+  right: 1em;
+  height: 100%;
+  text-align: center;
+  padding: 0em 1em;
+}
+
+.hotkeys {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+
+.hotkey_container {
+  margin-top: 1em;
+}
+
+.hotkey_row span {
+  font-weight: bold;
+}
+
+.hotkey_row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

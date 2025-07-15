@@ -15,7 +15,7 @@
             height: 100vh;
         }
     </style>
-    
+
     <link rel="stylesheet" href="index.css">
     <meta name="author" content="webkoi">
     <meta name="description"
@@ -54,6 +54,13 @@
     <!-- Quote Container -->
     <div id="quotes"></div>
 
+    <div id="pond_select" class="hide ui-panel">
+        <button class="hide button-hover" id="BaseBtn" onclick="switchPond('Base');">Base</button>
+        <button class="hide" id="FrozenBtn" onclick="switchPond('Frozen');">Frozen</button>
+        <button class="hide" id="FireproofBtn" onclick="switchPond('Fireproof');">Lava</button>
+        <button class="hide" id="NightBtn" onclick="switchPond('Night');">Twilight</button>
+    </div>
+
     <!-- Main UI Container -->
     <div id="menu" class="hide ui-panel">
 
@@ -62,7 +69,8 @@
             <h2>Welcome to <b>KOI</b>!</h2><br>
             <p>You can bring up the upgrade menu anytime by pressing <b>E</b>.</p><br>
             <p>Move your bobber using <b>W/S</b>, and <b>A/D</b> to turn.</p><br>
-            <p>Once close to ripples, hold <b>SPACE</b> to catch a fish!</p>
+            <p>Once close to ripples, hold <b>SPACE</b> to catch a fish!</p><br>
+            <p>Open the pond selection menu with <b>F</b>.</p>
             <button class="start" onclick="start();"><b>START</b></button>
         </div>
 
@@ -75,24 +83,30 @@
             <h5 id="money">$0</h5>
 
             <div class="upgrade_container">
-                <div class="price_col">
+                <div class="upgrade_row">
                     <span id="speed_price">$20</span>
-                    <span id="fish_price">$80</span>
-                    <span id="fisher_price">$300</span>
-                    <span id="nextpond_price">$5000</span>
-                </div>
-                <div class="left_col">
                     <button onclick="upgradeUpgrade('Speed');">Fishing Speed</button>
-                    <button onclick="upgradeUpgrade('FishAmount');">Max Fish</button>
-                    <button onclick="upgradeUpgrade('Fishers');">Auto Fisher</button>
-                    <button onclick="this.blur(); upgradeUpgrade('NextPond');">Next Pond</button>
-                </div>
-                <div class="right_col">
                     <span id="speed_info">10 Seconds</span>
+                </div>
+
+                <div class="upgrade_row">
+                    <span id="fish_price">$80</span>
+                    <button onclick="upgradeUpgrade('FishAmount');">Max Fish</button>
                     <span id="fish_info">1 Max Fish</span>
+                </div>
+
+                <div class="upgrade_row">
+                    <span id="fisher_price">$300</span>
+                    <button onclick="upgradeUpgrade('Fishers');">Auto Fisher</button>
                     <span id="fisher_info">0 Fishers</span>
+                </div>
+
+                <div class="upgrade_row">
+                    <span id="nextpond_price">$5000</span>
+                    <button onclick="this.blur(); upgradeUpgrade('NextPond');">Next Pond</button>
                     <span id="nextpond_info">(Locked)</span>
                 </div>
+
             </div>
         </div>
 
@@ -110,13 +124,18 @@
             <!-- Fish caught, items, boosts, chests,  -->
             <div class="inventory_container">
                 <div class="left_inv">
-                    <h2>Fish</h2>
+                    <div class="inv_header">
+                        <h2>Fish</h2>
+                        <button onclick="sellAllFish();">Sell All</button>
+                    </div>
                     <hr>
                     <div id="inventory_fish_content" class="inventory-grid"></div>
                 </div>
 
                 <div class="right_inv">
-                    <h2>Items</h2>
+                    <div class="inv_header">
+                        <h2>Items</h2>
+                    </div>
                     <hr>
                 </div>
             </div>
@@ -137,6 +156,29 @@
                 <a href="roadmap/index.html">Roadmap</a>
                 <a href="changelog/index.html">Changelog</a>
                 <a href="http://coff.ee/lusife">Support me!</a>
+            </div><br>
+
+            <h2>Hotkeys:</h2><br>
+            <hr>
+
+            <div class="hotkeys">
+                <div class="hotkey_container">
+                    <div class="hotkey_row">
+                        <span>Accelerate:</span><span>[ W/S ]</span>
+                    </div>
+                    <div class="hotkey_row">
+                        <span>Turn: </span><span>[ A/D ]</span>
+                    </div>
+                    <div class="hotkey_row">
+                        <span>Reel Fish:</span><span>[ Space ]</span>
+                    </div>
+                    <div class="hotkey_row">
+                        <span>Open Menu:</span><span>[ E ]</span>
+                    </div>
+                    <div class="hotkey_row">
+                        <span>Select Pond:</span><span>[ F ]</span>
+                    </div>
+                </div>
             </div>
         </div>
 

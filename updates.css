@@ -89,6 +89,10 @@ h1 {
     margin-top: 1.5em;
 }
 
+.update_container {
+    margin-bottom: 3em;
+}
+
 .header_content {
     display: flex;
     justify-content: space-between;
@@ -99,9 +103,12 @@ h1 {
 }
 
 .version {
-    position: absolute;
-    left: -4em;
+  position: absolute;
+  left: -8em;
+  width: 6em;
+  text-align: right;
 }
+
 
 .header_content i {
     font-weight: bold;
@@ -117,7 +124,7 @@ h1 {
     color: var(--col2-l);
 }
 
-.patch_notes p i, .patch_notes li i {
+.patch_notes p *, .patch_notes li * {
     color: var(--col2-l);
 }
 
@@ -135,4 +142,9 @@ footer {
     font-weight: bold;
     padding: 5em 0;
     text-align: center;
+}
+
+img {
+    transform: scaleY(1.35) translateX(-1.4em);
+    z-index: -1;
 }

@@ -66,7 +66,7 @@ function update() {
                     const message = `You caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
 
                     showFishAlert(message);
-                    document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
+                    catchUpdate(catchCount);
                     SoundManager.playFishSfx();
                     saveFishdex();
                     addItem("fish", caughtFish.name);
@@ -105,6 +105,20 @@ function update() {
             document.getElementById("menu").classList.remove("show");
             document.getElementById("menu").classList.add("hide");
             setTimeout(function () { menu_state = false; }, 300);
+        }
+    }
+
+    if (keys["f"]) {
+        if (start_state) {
+            if (pond_select_state === false) {
+                document.getElementById("pond_select").classList.remove("hide");
+                document.getElementById("pond_select").classList.add("show");
+                setTimeout(function () { pond_select_state = true; }, 300);
+            } else {
+                document.getElementById("pond_select").classList.remove("show");
+                document.getElementById("pond_select").classList.add("hide");
+                setTimeout(function () { pond_select_state = false; }, 300);
+            }
         }
     }
 }

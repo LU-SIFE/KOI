@@ -7,6 +7,7 @@ canvas.height = window.innerHeight;
 //game states
 let caughtThisPress = false;
 let menu_state = false;
+let pond_select_state = false;
 let isHolding = false;
 let holdTime = 0;
 let timeToCatch = 10000;

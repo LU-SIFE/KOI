@@ -101,7 +101,7 @@ function updateAutofishers() {
         const message = `An autofisher caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
 
         showFishAlert(message);
-        document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
+        catchUpdate(catchCount);
         saveFishdex();
         addItem("fish", caughtFish.name);
         renderInventory();

@@ -294,6 +294,8 @@ function updateUpgradeUI() {
     nextPondInfo.innerText = `(Locked)`;
     nextPondPrice.innerText = `$${nextPondNext}`;
   }
+
+  updatePondButtons();
 }
 
 function update_overlay(pond) {
@@ -306,7 +308,7 @@ function update_overlay(pond) {
 }
 
 function switchPond(newPond) {
-  if (unlockedPonds[newPond] === false) { return; }
+  if (unlockedPonds[newPond] === false || start_state === false) { return; }
   saveUpgrades();
   currentPond = newPond;
   loadUpgrades();
@@ -314,5 +316,54 @@ function switchPond(newPond) {
   fishSpots = generateFishSpots(fishMax);
   updateUpgradeUI();
   update_overlay(currentPond);
+  saveUpgrades();
 }
 
+function updatePondButtons() {
+  for (let pond in unlockedPonds) {
+    if (unlockedPonds[pond] === true) {
+      
+      const btn = document.getElementById(pond + "Btn");
+      btn.classList.remove('hide');
+      btn.classList.add('show');
+      let r = pondColors[pond][0];
+      let g = pondColors[pond][1];
+      let b = pondColors[pond][2];
+
+      if (!btn.classList.contains('button-hover')) {
+        btn.classList.add('button-hover');
+      }
+
+      // Apply custom CSS variables for your button styles
+      btn.style.setProperty('--btn-color', `rgba(${r}, ${g}, ${b}, 1)`);
+      btn.style.setProperty('--btn-hover-bg', `rgba(${r}, ${g}, ${b}, 0.5)`);
+
+      // Optional: Reset any previously set border/color if needed
+      btn.style.border = '';
+      btn.style.color = '';
+
+    } else {
+      document.getElementById(pond + "Btn").classList.remove('show');
+      document.getElementById(pond + "Btn").classList.add('hide');
+    }
+  }
+}
+
+
+function loadPondStates() {
+
+  let saved = localStorage.getItem("unlockedPonds");
+
+  if (saved) {
+    saved = JSON.parse(saved);
+  unlockedPonds = saved;
+  }
+}
+
+function catchUpdate(count) {
+  if (count >= 999999) {
+    document.getElementById("catchCount").innerHTML = `Fish Caught: A Lot`;
+  } else {
+    document.getElementById("catchCount").innerHTML = `Fish Caught: ${catchCount}`;
+  }
+}
