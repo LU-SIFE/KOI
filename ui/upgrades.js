@@ -109,7 +109,6 @@ let upgrades = {
 
 };
 
-
 function upgradeUpgrade(type) {
   const pondUpgrades = upgrades[currentPond];
 
@@ -152,6 +151,7 @@ function upgradeUpgrade(type) {
     case "NextPond":
       // Switch only if pond is defined
       if (upgrade.PondType && upgrades[upgrade.PondType]) {
+        unlockedPonds[upgrade.PondType] = true;
         switchPond(upgrade.PondType);
       }
       break;
@@ -166,6 +166,7 @@ function upgradeUpgrade(type) {
 function saveUpgrades() {
   localStorage.setItem("gameUpgrades", JSON.stringify(upgrades));
   localStorage.setItem("currentPond", currentPond);
+  localStorage.setItem("unlockedPonds", JSON.stringify(unlockedPonds));
 }
 
 function loadUpgrades() {
@@ -250,27 +251,6 @@ function updateUpgradeUI() {
   }
 }
 
-function switchPond(newPond) {
-  saveUpgrades();
-  currentPond = newPond;
-
-  // Load upgrades for the new pond first
-  loadUpgrades();
-
-  // Now update UI and weights *after* loading upgrades
-  updateUpgradeUI();
-  buildWeights(currentPond);
-
-  // Reset fish spots for new pond
-  fishSpots = generateFishSpots(fishMax);
-
-  // Update overlay color
-  update_overlay(currentPond);
-
-  console.log("Pond switched to", currentPond);
-}
-
-
 function updateUpgradeUI() {
   const pondUpgrades = upgrades[currentPond];
 
@@ -314,10 +294,7 @@ function updateUpgradeUI() {
     nextPondInfo.innerText = `(Locked)`;
     nextPondPrice.innerText = `$${nextPondNext}`;
   }
-
-
 }
-
 
 function update_overlay(pond) {
   const r = pondColors[pond][0];
@@ -329,6 +306,7 @@ function update_overlay(pond) {
 }
 
 function switchPond(newPond) {
+  if (unlockedPonds[newPond] === false) { return; }
   saveUpgrades();
   currentPond = newPond;
   loadUpgrades();

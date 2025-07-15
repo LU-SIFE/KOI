@@ -77,6 +77,12 @@ let pondColors = {
   Chromatic: [255, 180, 255],
 };
 
+let unlockedPonds = {
+  Base: true,
+  Frozen: false,
+  Fireproof: false,
+  Night: false
+};
 
 const inspect_quotes = {
   Common: "A humble fish, common but dependable.",
