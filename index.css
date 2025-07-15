@@ -1,7 +1,7 @@
 /* === Root Variables === */
 :root {
-  --col1: rgb(30, 32, 34, 1);        /* Primary background */
-  --col1-l: rgb(30, 32, 34, 0.75);   /* Transparent variant */
+  --col1: rgba(30, 32, 34, 1);        /* Primary background */
+  --col1-l: rgba(30, 32, 34, 0.75);   /* Transparent variant */
   --col2: rgba(255, 202, 212, 1);    /* Accent (pink) */
   --col2-l: rgba(255, 202, 212, 0.5);    /* Accent (pink) */
   --col5: rgba(236, 231, 224, 1);    /* Light background */
