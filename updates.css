@@ -1,0 +1,138 @@
+/* === Root Variables === */
+:root {
+    --col1: rgb(30, 32, 34, 1);
+    /* Primary background */
+    --col1-l: rgb(30, 32, 34, 0.75);
+    /* Transparent variant */
+    --col2: rgba(255, 202, 212, 1);
+    /* Accent (pink) */
+    --col2-l: rgba(255, 202, 212, 0.7);
+    /* Accent (pink) */
+    --col5: rgba(236, 231, 224, 1);
+    --col3-l: rgba(255, 255, 255, 0.05);
+    /* Light background */
+}
+
+/* === Global Reset === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+    color: var(--col2);
+}
+
+/* === Base Layout === */
+html,
+body {
+    background-color: var(--col1);
+    width: 100vw;
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.main_header {
+    width: 55%;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 3rem;
+    color: var(--col2);
+}
+
+.back_btn {
+    font-size: 1rem;
+    margin-bottom: 1em;
+    padding: 0.75em;
+    font-weight: bold;
+    background-color: var(--col1-l);
+    border: 2px solid var(--col2);
+    border-radius: 12px;
+    color: var(--col2);
+    text-decoration: none;
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+}
+
+.back_btn:hover {
+    background-color: var(--col2-l);
+}
+
+.changelog_container {
+    position: relative;
+    padding-left: 4px; /* make space for the bar */
+    margin-top: 4em;
+    width: 55%;
+}
+
+.left_bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 4px;
+    border-radius: 10rem;
+    background-color: var(--col2);
+}
+
+.timeline_container {
+    margin-left: 1em;
+    margin-top: 1.5em;
+}
+
+.header_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid var(--col2);
+    position: relative;
+}
+
+.version {
+    position: absolute;
+    left: -4em;
+}
+
+.header_content i {
+    font-weight: bold;
+}
+
+.patch_notes {
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+.patch_notes p, .patch_notes li {
+    margin-bottom: 0.25em;
+    color: var(--col2-l);
+}
+
+.patch_notes p i, .patch_notes li i {
+    color: var(--col2-l);
+}
+
+.patch_notes li {
+    list-style: inside;
+}
+
+.bg_container {
+    background-color: var(--col3-l);
+    padding: 12px;
+    border-radius: 12px;
+}
+
+footer {
+    font-weight: bold;
+    padding: 5em 0;
+    text-align: center;
+}
