@@ -355,30 +355,40 @@ function updateQuoteColors() {
 
 function updatePondButtons() {
   for (let pond in unlockedPonds) {
+    const btn = document.getElementById(pond + "Btn");
+    
+    // Safety check: if the button doesn't exist, skip this pond
+    if (!btn) {
+      console.warn(`Button for pond "${pond}" not found.`);
+      continue;
+    }
+
     if (unlockedPonds[pond] === true) {
-      
-      const btn = document.getElementById(pond + "Btn");
+      const color = pondColors[pond];
+
+      // Validate pondColors entry
+      if (!Array.isArray(color) || color.length < 3) {
+        console.warn(`Invalid or missing color data for pond "${pond}".`);
+        continue;
+      }
+
+      const [r, g, b] = color;
+
       btn.classList.remove('hide');
       btn.classList.add('show');
-      let r = pondColors[pond][0];
-      let g = pondColors[pond][1];
-      let b = pondColors[pond][2];
 
       if (!btn.classList.contains('button-hover')) {
         btn.classList.add('button-hover');
       }
 
-      // Apply custom CSS variables for your button styles
+      // Apply custom CSS variables safely
       btn.style.setProperty('--btn-color', `rgba(${r}, ${g}, ${b}, 1)`);
       btn.style.setProperty('--btn-hover-bg', `rgba(${r}, ${g}, ${b}, 0.5)`);
-
-      // Optional: Reset any previously set border/color if needed
       btn.style.border = '';
       btn.style.color = '';
-
     } else {
-      document.getElementById(pond + "Btn").classList.remove('show');
-      document.getElementById(pond + "Btn").classList.add('hide');
+      btn.classList.remove('show');
+      btn.classList.add('hide');
     }
   }
 }
