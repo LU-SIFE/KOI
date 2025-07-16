@@ -76,11 +76,11 @@ let upgrades = {
       Value: 0,
       Max: 1,
       Prices: [14000],
-      PondType: "Night"
+      PondType: "Twilight"
     }
   },
 
-  Night: {
+  Twilight: {
     Speed: {
       Value: 0,
       Max: 9,

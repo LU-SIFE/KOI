@@ -68,15 +68,15 @@ const fishdex = [
   { name: "Ashscale Pike", rarity: "Fireproof" },
   { name: "Blazegill Grouper", rarity: "Fireproof" },
 
-  //Night Fish
-  { name: "Twilight Ray", rarity: "Night" },
-  { name: "Lanternbelly", rarity: "Night" },
-  { name: "Duskgill Carp", rarity: "Night" },
-  { name: "Moonshadow Eel", rarity: "Night" },
-  { name: "Stargazer Minnow", rarity: "Night" },
-  { name: "Nocturne Catfish", rarity: "Night" },
-  { name: "Nightlight Tetra", rarity: "Night" },
-  { name: "Gloamfin Barracuda", rarity: "Night" },
+  //Twilight Fish
+  { name: "Twilight Ray", rarity: "Twilight" },
+  { name: "Lanternbelly", rarity: "Twilight" },
+  { name: "Duskgill Carp", rarity: "Twilight" },
+  { name: "Moonshadow Eel", rarity: "Twilight" },
+  { name: "Stargazer Minnow", rarity: "Twilight" },
+  { name: "Nocturne Catfish", rarity: "Twilight" },
+  { name: "Nightlight Tetra", rarity: "Twilight" },
+  { name: "Gloamfin Barracuda", rarity: "Twilight" },
 
   //Ethereal Fish
   { name: "Phantom Guppy", rarity: "Ethereal" },
@@ -140,7 +140,7 @@ const rarityInfo = {
     quote: "Forged in fiery currents, it defies the flames."
   },
 
-  Night: {
+  Twilight: {
     order: 6, price: 30, color: [80, 80, 120],
     quote: "This fish shines softly under the moon's watchful eye."
   },
@@ -182,7 +182,7 @@ const rarityColorsRgb = {
   Crystalline: [190, 255, 255],
   Cursed: [140, 0, 50],
   Ethereal: [210, 210, 255],
-  Night: [80, 80, 120],
+  Twilight: [80, 80, 120],
   Fireproof: [255, 100, 70],
   Frozen: [100, 180, 255],
   Rare: [180, 190, 255],
@@ -216,12 +216,12 @@ const poolWeights = {
     Common: 23,
   },
 
-  Night: {
+  Twilight: {
     Mythical: 1,
     Legendary: 6,
     Rare: 9,
     Frozen: 10,
-    Night: 25,
+    Twilight: 25,
     Uncommon: 18,
     Common: 30,
   },
@@ -231,7 +231,7 @@ const poolWeights = {
     Legendary: 6,
     Rare: 9,
     Ethereal: 10,
-    Night: 25,
+    Twilight: 25,
     Uncommon: 18,
     Common: 30,
   }

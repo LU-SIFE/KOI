@@ -40,7 +40,7 @@ let pondColors = {
   Base: [255, 202, 212],
   Frozen: [150, 220, 255],
   Fireproof: [255, 100, 70],
-  Night: [80, 80, 120],
+  Twilight: [80, 80, 120],
   Ethereal: [210, 210, 255],
   Cursed: [140, 0, 50],
   Crystalline: [190, 255, 255],
@@ -51,7 +51,7 @@ let fisherColors = {
   Base: [255, 120, 200],
   Frozen: [0, 180, 255],
   Fireproof: [255, 60, 0],
-  Night: [120, 0, 255],
+  Twilight: [120, 0, 255],
   Ethereal: [210, 210, 255],
   Cursed: [255, 0, 90],
   Crystalline: [0, 255, 230],
@@ -62,7 +62,7 @@ let unlockedPonds = {
   Base: true,
   Frozen: false,
   Fireproof: false,
-  Night: false,
+  Twilight: false,
   Ethereal: false
 };
 
