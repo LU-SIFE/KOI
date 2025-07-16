@@ -145,7 +145,13 @@ function drawAutofisherTrails() {
       ctx.lineTo(0, -height * 0.5);
       ctx.closePath();
 
-      ctx.fillStyle = `rgba(173, 235, 177, ${opacity})`;
+      const colors = fisherColors[currentPond];
+      const r = colors[0];
+      const g = colors[1];
+      const b = colors[2];
+
+
+      ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
       ctx.fill();
       ctx.restore();
     }

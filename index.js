@@ -19,7 +19,13 @@ function loop() {
   drawDiamond(diamond.x, diamond.y, diamond.size, diamond.angle);
 
   for (const autofisher of autofishers) {
-    drawDiamond(autofisher.x, autofisher.y, autofisher.size, autofisher.angle, "rgba(173, 235, 177, 1)");
+    const colors = fisherColors[currentPond];
+    const r = colors[0];
+    const g = colors[1];
+    const b = colors[2];
+
+    drawDiamond(autofisher.x, autofisher.y, autofisher.size, autofisher.angle, `rgba(${r}, ${g}, ${b}, 1)`);
+
   }
 
   requestAnimationFrame(loop);
@@ -54,10 +60,10 @@ function start() {
   } else {
     currentPond = "Base";
   }
-  
+
 
   switchPond(currentPond);
-  
+
 
   quote_cycle();
   quoteInterval = setInterval(quote_cycle, 15000);
