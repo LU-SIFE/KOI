@@ -114,6 +114,67 @@ for (const fish of fishdex) {
   fish.caught = 0; //i didn't wanna write "caught" a hundred times :P
 }
 
+const rarityInfo = {
+  Common: {
+    order: 11, price: 1, color: [250, 250, 250],
+    quote: "A humble fish, common but dependable."
+  },
+
+  Uncommon: {
+    order: 10, price: 5, color: [180, 245, 200],
+    quote: "A little rarer, showing promise beneath the waves."
+  },
+
+  Rare: {
+    order: 9, price: 15, color: [180, 190, 255],
+    quote: "A prize catch that few have the skill to reel in."
+  },
+
+  Frozen: {
+    order: 8, price: 25, color: [100, 180, 255],
+    quote: "Chilled by icy waters, with a frost-kissed glow."
+  },
+
+  Fireproof: {
+    order: 7, price: 28, color: [255, 100, 70],
+    quote: "Forged in fiery currents, it defies the flames."
+  },
+
+  Night: {
+    order: 6, price: 30, color: [80, 80, 120],
+    quote: "This fish shines softly under the moon's watchful eye."
+  },
+
+  Ethereal: {
+    order: 5, price: 30, color: [210, 210, 255],
+    quote: "A shimmering spirit of the water, barely caught between worlds."
+  },
+
+  Cursed: {
+    order: 4, price: 35, color: [140, 0, 50],
+    quote: "Beware the shadows it carries, for fortune has a price."
+  },
+
+  Crystalline: {
+    order: 3, price: 40, color: [190, 255, 255],
+    quote: "Sparkling like gemstones, it's a treasure from the depths."
+  },
+
+  Chromatic: {
+    order: 2, price: 45, color: [255, 180, 255],
+    quote: "A dazzling burst of colors, ever-changing and mesmerizing."
+  },
+
+  Legendary: {
+    order: 1, price: 50, color: [255, 200, 150],
+    quote: "A legendary catch, tales will be told of this one."
+  },
+
+  Mythical: {order: 0, price: 70, color: [200, 150, 255],
+    quote: "A creature of legend, almost too magical to be real."
+  }
+};
+
 const rarityColorsRgb = {
   Mythical: [200, 150, 255],
   Legendary: [255, 200, 150],
@@ -160,6 +221,16 @@ const poolWeights = {
     Legendary: 6,
     Rare: 9,
     Frozen: 10,
+    Night: 25,
+    Uncommon: 18,
+    Common: 30,
+  },
+
+  Ethereal: {
+    Mythical: 1,
+    Legendary: 6,
+    Rare: 9,
+    Ethereal: 10,
     Night: 25,
     Uncommon: 18,
     Common: 30,

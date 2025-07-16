@@ -103,10 +103,36 @@ let upgrades = {
       Value: 0,
       Max: 1,
       Prices: [20000],
+      PondType: "Ethereal"
+    }
+  },
+
+  Ethereal: {
+    Speed: {
+      Value: 0,
+      Max: 9,
+      Prices: [80, 160, 240, 320, 400, 480, 560, 640, 720]
+    },
+
+    FishAmount: {
+      Value: 1,
+      Max: 10,
+      Prices: [160, 320, 480, 640, 800, 960, 1120, 1280, 1440, 1600]
+    },
+
+    Fishers: {
+      Value: 0,
+      Max: 7,
+      Prices: [480, 960, 1440, 1920, 2400, 2880, 3360]
+    },
+
+    NextPond: {
+      Value: 0,
+      Max: 1,
+      Prices: [30000],
       PondType: "Base"
     }
   }
-
 };
 
 function upgradeUpgrade(type) {

@@ -65,7 +65,7 @@ function drawRipples() {
     if (fish.rippleSize > rippleRadius * 1.75) fish.rippleSize = 0;
 
     const alpha = 1 - (fish.rippleSize / rippleRadius);
-    const [r, g, b] = rarityColorsRgb[fish.fish.rarity] || [160, 216, 239];
+    const [r, g, b] = rarityInfo[fish.fish.rarity].color || [160, 216, 239];
 
     ctx.beginPath();
     ctx.arc(fish.x, fish.y, fish.rippleSize, 0, Math.PI * 2);

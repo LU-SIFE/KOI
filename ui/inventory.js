@@ -18,8 +18,8 @@ function spendMoney(amount) {
 
 function sellFish(fishRarity) {
 
-  if (rarityPrices.hasOwnProperty(fishRarity)) {
-    inventory.money += rarityPrices[fishRarity];
+  if (rarityInfo.hasOwnProperty(fishRarity)) {
+    inventory.money += rarityInfo[fishRarity].price;
   } else {
     console.warn(`Unknown fish rarity: ${fishRarity}`);
   }
@@ -78,7 +78,8 @@ function renderInventory() {
   fishData.sort(([aName], [bName]) => {
     const aRarity = getFishRarity(aName);
     const bRarity = getFishRarity(bName);
-    const rarityCompare = rarityOrder[aRarity] - rarityOrder[bRarity];
+    const rarityCompare = rarityInfo[aRarity].order - rarityInfo[bRarity].order;
+
 
     if (rarityCompare !== 0) return rarityCompare;
     return aName.localeCompare(bName); // fallback to name
@@ -86,7 +87,7 @@ function renderInventory() {
 
   for (const [name, amount] of fishData) {
     const rarity = getFishRarity(name);
-    const [r, g, b] = rarityColorsRgb[rarity] || [255, 255, 255];
+    const [r, g, b] = rarityInfo[rarity].color || [255, 255, 255];
 
     const item = document.createElement("div");
     item.className = "inventory-item"; item.style.backgroundImage = `linear-gradient(to left, rgba(${r}, ${g}, ${b}, 0.1) 0%, rgba(${r}, ${g}, ${b}, 0.2) 100%)`;
@@ -95,9 +96,9 @@ function renderInventory() {
     item.style.borderLeft = `12px solid rgba(${r}, ${g}, ${b}, 1)`;
     item.style.borderRight = 'none';
 
-const styleColor = `style="color: rgba(${r}, ${g}, ${b}, 1)"`;
+    const styleColor = `style="color: rgba(${r}, ${g}, ${b}, 1)"`;
 
-const btnStyle = `
+    const btnStyle = `
   style="
     --btn-color: rgba(${r}, ${g}, ${b}, 1);
     --btn-hover-bg: rgba(${r}, ${g}, ${b}, 0.5);
@@ -108,29 +109,21 @@ const btnStyle = `
   class="button-hover"
 `;
 
-item.innerHTML = `
-  <span class="item-name" ${styleColor}>${amount}x ${name}</span>
-  <span class="item-actions">
+    item.innerHTML = `<span class="item-name" ${styleColor}>${amount}x ${name}</span>
+    <span class="item-actions">
     <small class="item-rarity" ${styleColor}>[${rarity}]</small>
     <button ${btnStyle} onclick="sellItem('${name}')">Sell</button>
-    <button ${btnStyle} onclick="inspectItem('${name}')">Inspect</button>
-  </span>
-`;
-
-
-
+    <button ${btnStyle} onclick="inspectItem('${name}')">Inspect</button></span>`;
     container.appendChild(item);
   }
-
   updateMoneyDisplay();
 }
 
 function inspectItem(name) {
   const rarity = getFishRarity(name);
-  const quote = inspect_quotes[rarity] || "A fine catch, well worth admiring";
+  const quote = rarityInfo[rarity].quote || "A fine catch, well worth admiring";
   showFishInspect(`<h3>${name} [${rarity}]</h3><br>${quote}`);
 }
-
 
 function saveInventory() {
   const data = {

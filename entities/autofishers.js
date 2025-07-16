@@ -100,7 +100,7 @@ function updateAutofishers() {
         const article = caughtFish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
         const message = `An autofisher caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
 
-        showFishAlert(message, rarityColorsRgb[caughtFish.rarity]);
+        showFishAlert(message, rarityInfo[caughtFish.rarity].color);
         catchUpdate(catchCount);
         saveFishdex();
         addItem("fish", caughtFish.name);
@@ -149,7 +149,6 @@ function drawAutofisherTrails() {
       const r = colors[0];
       const g = colors[1];
       const b = colors[2];
-
 
       ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
       ctx.fill();
