@@ -108,6 +108,9 @@ const fishdex = [
   { name: "Bloodfin Catfish", rarity: "Cursed" },
   { name: "Shadowscale Bass", rarity: "Cursed" },
   { name: "Doomtail Snapper", rarity: "Cursed" },
+
+  { name: "Chest", rarity: "Item" },
+  { name: "Key", rarity: "Item" },
 ];
 
 for (const fish of fishdex) {
@@ -172,26 +175,16 @@ const rarityInfo = {
 
   Mythical: {order: 0, price: 70, color: [200, 150, 255],
     quote: "A creature of legend, almost too magical to be real."
-  }
-};
+  },
 
-const rarityColorsRgb = {
-  Mythical: [200, 150, 255],
-  Legendary: [255, 200, 150],
-  Chromatic: [255, 180, 255],
-  Crystalline: [190, 255, 255],
-  Cursed: [140, 0, 50],
-  Ethereal: [210, 210, 255],
-  Twilight: [80, 80, 120],
-  Fireproof: [255, 100, 70],
-  Frozen: [100, 180, 255],
-  Rare: [180, 190, 255],
-  Uncommon: [180, 245, 200],
-  Common: [250, 250, 250]
+  Item: {order: 12, price: 70, color: [200, 150, 255],
+    quote: "A creature of legend, almost too magical to be real."
+  }
 };
 
 const poolWeights = {
   Base: {
+    Item: 1,
     Legendary: 3,
     Rare: 10,
     Uncommon: 22,
@@ -199,6 +192,7 @@ const poolWeights = {
   },
 
   Frozen: {
+    Item: 1,
     Mythical: 1,
     Legendary: 4,
     Rare: 8,
@@ -208,6 +202,7 @@ const poolWeights = {
   },
 
   Fireproof: {
+    Item: 1,
     Mythical: 1,
     Legendary: 5,
     Rare: 7,
@@ -217,6 +212,7 @@ const poolWeights = {
   },
 
   Twilight: {
+    Item: 1,
     Mythical: 1,
     Legendary: 6,
     Rare: 9,
@@ -227,6 +223,7 @@ const poolWeights = {
   },
 
   Ethereal: {
+    Item: 1,
     Mythical: 1,
     Legendary: 6,
     Rare: 9,

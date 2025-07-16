@@ -376,9 +376,16 @@ canvas {
   padding: 0.5rem;
   margin-bottom: 0.125rem;
   background-color: var(--col1);
-  border-radius: 12px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+}
+
+#inventory_fish_content .inventory-item {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+#inventory_item_content .inventory-item {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .item-name {
