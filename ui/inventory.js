@@ -113,16 +113,16 @@ function renderInventory() {
     <span class="item-actions">
     <small class="item-rarity" ${styleColor}>[${rarity}]</small>
     <button ${btnStyle} onclick="sellItem('${name}')">Sell</button>
-    <button ${btnStyle} onclick="inspectItem('${name}')">Inspect</button></span>`;
+    <button ${btnStyle} onclick="inspectItem('${name}', [${r}, ${g}, ${b}])">Inspect</button></span>`;
     container.appendChild(item);
   }
   updateMoneyDisplay();
 }
 
-function inspectItem(name) {
+function inspectItem(name, color) {
   const rarity = getFishRarity(name);
   const quote = rarityInfo[rarity].quote || "A fine catch, well worth admiring";
-  showFishInspect(`<h3>${name} [${rarity}]</h3><br>${quote}`);
+  showFishInspect(`<h3>${name} [${rarity}]</h3><br>${quote}`, color);
 }
 
 function saveInventory() {

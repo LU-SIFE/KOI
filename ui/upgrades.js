@@ -343,6 +343,14 @@ function switchPond(newPond) {
   updateUpgradeUI();
   update_overlay(currentPond);
   saveUpgrades();
+  updateQuoteColors()
+}
+
+function updateQuoteColors() {
+  const r = pondColors[currentPond][0]
+  const g = pondColors[currentPond][1]
+  const b = pondColors[currentPond][2]
+  document.getElementById("quotes").style.color = `rgba(${r}, ${g}, ${b}, 1)`;
 }
 
 function updatePondButtons() {
