@@ -148,3 +148,14 @@ function loadInventory() {
     inventory.money = data.money || 0;
   }
 }
+
+let alert_state = true;
+function toggleAlerts() {
+  if (alert_state == true) {
+    alert_state = false;
+    document.getElementById("fishAlert").style.display = "none";
+  } else {
+    alert_state = true;
+    document.getElementById("fishAlert").style.display = "block";
+  }
+}
