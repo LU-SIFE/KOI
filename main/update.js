@@ -54,7 +54,7 @@ function update() {
                     holdTime = 0;
                 }
 
-                holdTime += 16.67; // ~60fps frame time
+                holdTime += 16.67;
 
                 if (holdTime >= timeToCatch) {
                     const caughtFish = fishSpot.fish;
@@ -73,20 +73,19 @@ function update() {
                     renderInventory();
                     saveInventory();
 
-                    // Use spawnNewFishSpot helper here!
+                    // Replace the ripple
                     const newFishSpot = spawnNewFishSpot(fishSpots);
-
-                    // Replace the old spot with the new one
                     fishSpots[fishSpots.indexOf(fishSpot)] = newFishSpot;
 
                     isHolding = false;
                     holdTime = 0;
                 }
 
-                break; // exit loop when caught
+                break;
             }
         }
 
+        // ✨ This part ensures it resets if no ripple was found
         if (!inRipple) {
             isHolding = false;
             holdTime = 0;
@@ -95,6 +94,7 @@ function update() {
         isHolding = false;
         holdTime = 0;
     }
+
 
     if (keys["e"]) {
         if (menu_state === false) {
