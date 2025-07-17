@@ -2,10 +2,10 @@ window.addEventListener("keydown", e => keys[e.key.toLowerCase()] = true);
 window.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
 
 function update() {
-    SoundManager.updateToneBasedOnSpeed(diamond.speed, diamond.maxSpeed)
+    SoundManager.updateToneBasedOnSpeed(diamond.speed, diamond.maxSpeed);
     updateAutofishers();
 
-    speedMultiplier = keys["shift"] ? 2 : 1;
+    const speedMultiplier = keys["shift"] ? 2 : 1;
 
     // Accelerate / decelerate
     if (keys["w"]) {
@@ -69,7 +69,7 @@ function update() {
                     catchUpdate(catchCount);
                     SoundManager.playFishSfx();
                     saveFishdex();
-                    addItem("fish", caughtFish.name); // <-- This sets dirtyInventory = true
+                    addItem("fish", caughtFish.name);
 
                     const newFishSpot = spawnNewFishSpot(fishSpots);
                     fishSpots[fishSpots.indexOf(fishSpot)] = newFishSpot;
@@ -78,7 +78,7 @@ function update() {
                     holdTime = 0;
                 }
 
-                break; // exit loop
+                break; // exit loop after first valid fish spot
             }
         }
 
@@ -87,22 +87,19 @@ function update() {
             holdTime = 0;
         }
     } else {
-        // Do NOT save here!
         isHolding = false;
         holdTime = 0;
     }
-
-
 
     if (keys["e"]) {
         if (menu_state === false) {
             document.getElementById("menu").classList.remove("hide");
             document.getElementById("menu").classList.add("show");
-            setTimeout(function () { menu_state = true; }, 300);
+            setTimeout(() => { menu_state = true; }, 300);
         } else {
             document.getElementById("menu").classList.remove("show");
             document.getElementById("menu").classList.add("hide");
-            setTimeout(function () { menu_state = false; }, 300);
+            setTimeout(() => { menu_state = false; }, 300);
         }
     }
 
@@ -111,19 +108,18 @@ function update() {
             if (pond_select_state === false) {
                 document.getElementById("pond_select").classList.remove("hide");
                 document.getElementById("pond_select").classList.add("show");
-                setTimeout(function () { pond_select_state = true; }, 300);
+                setTimeout(() => { pond_select_state = true; }, 300);
             } else {
                 document.getElementById("pond_select").classList.remove("show");
                 document.getElementById("pond_select").classList.add("hide");
-                setTimeout(function () { pond_select_state = false; }, 300);
+                setTimeout(() => { pond_select_state = false; }, 300);
             }
         }
     }
 
-    if (dirtyInventory) {
-        renderInventory();   // update UI
-        saveInventory();     // persist changes
-        dirtyInventory = false;
+    // Save inventory only when dirty and spacebar is NOT pressed by player
+    if (dirtyInventory && !keys[" "]) {
+        console.log("💾 Saving inventory");
+        refreshInventory();
     }
-
 }

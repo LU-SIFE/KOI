@@ -12,7 +12,7 @@ function createAutofisher() {
     holding: false,
     holdTime: 0,
     target: null,
-    trail: [] // 🌟 autofisher trail
+    trail: []
   };
 }
 
@@ -20,7 +20,6 @@ function updateAutofishers() {
   const usedFish = new Set();
 
   for (const autofisher of autofishers) {
-    // ❗ If no valid target, or someone else claimed it, or it no longer exists — find a new one
     if (
       !autofisher.target ||
       usedFish.has(autofisher.target) ||
@@ -48,45 +47,38 @@ function updateAutofishers() {
     const target = autofisher.target;
     if (!target) continue;
 
-    usedFish.add(target); // Claim this ripple
+    usedFish.add(target);
 
     const dx = target.x - autofisher.x;
     const dy = target.y - autofisher.y;
     const angleToTarget = Math.atan2(dy, dx);
     const dist = Math.hypot(dx, dy);
 
-    // Rotate toward target
     const angleDiff = ((angleToTarget - autofisher.angle + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
     if (angleDiff < -0.01) autofisher.angle -= autofisher.turnSpeed;
     else if (angleDiff > 0.01) autofisher.angle += autofisher.turnSpeed;
 
-    // Clamp angle
     if (autofisher.angle > Math.PI) autofisher.angle -= Math.PI * 2;
     if (autofisher.angle < -Math.PI) autofisher.angle += Math.PI * 2;
 
-    // Accelerate if mostly facing the target
     if (Math.abs(angleDiff) < 0.3) {
       autofisher.speed = Math.min(autofisher.speed + autofisher.acceleration, autofisher.maxSpeed);
     } else {
       autofisher.speed = Math.max(0, autofisher.speed - autofisher.friction);
     }
 
-    // Move
     autofisher.x += Math.cos(autofisher.angle) * autofisher.speed;
     autofisher.y += Math.sin(autofisher.angle) * autofisher.speed;
 
-    // Wrap around screen
     if (autofisher.x < 0) autofisher.x = canvas.width;
     if (autofisher.x > canvas.width) autofisher.x = 0;
     if (autofisher.y < 0) autofisher.y = canvas.height;
     if (autofisher.y > canvas.height) autofisher.y = 0;
 
     autofisher.trail.push({ x: autofisher.x, y: autofisher.y, angle: autofisher.angle });
-    if (autofisher.trail.length > maxTrailLength) {
-      autofisher.trail.shift();
-    }
+    if (autofisher.trail.length > maxTrailLength) autofisher.trail.shift();
 
-    // Ripple fishing logic
+    // Autofisher fishing logic
     if (dist < rippleRadius) {
       autofisher.holding = true;
       autofisher.holdTime += 16.67;
@@ -104,10 +96,12 @@ function updateAutofishers() {
         catchUpdate(catchCount);
         saveFishdex();
         addItem("fish", caughtFish.name);
+        dirtyInventory = true;  // <-- force mark dirty before refreshing
+        refreshInventory();
 
-        // Use helper to spawn new fish spot, replacing old one
+
+
         const newFish = spawnNewFishSpot(fishSpots);
-
         const index = fishSpots.indexOf(target);
         if (index !== -1) fishSpots[index] = newFish;
 
@@ -122,13 +116,12 @@ function updateAutofishers() {
   }
 }
 
-
 function drawAutofisherTrails() {
   for (const autofisher of autofishers) {
     const trail = autofisher.trail;
     for (let i = 0; i < trail.length; i++) {
       const { x, y, angle } = trail[i];
-      const opacity = ((i + 1) / trail.length) * 0.35; // slightly subtler
+      const opacity = ((i + 1) / trail.length) * 0.35;
 
       const width = autofisher.size * 0.4;
       const height = autofisher.size * 0.15;

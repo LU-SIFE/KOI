@@ -9,7 +9,6 @@ function addItem(type, name, amount = 1) {
   dirtyInventory = true;
 }
 
-
 function spendMoney(amount) {
   if (inventory.money >= amount) {
     inventory.money -= amount;
@@ -71,7 +70,6 @@ function createInventoryItemElement(name, amount, rarity, isFish = true) {
   const item = document.createElement("div");
   item.className = "inventory-item";
 
-  // Gradient backgrounds and border styles
   const gradientSide = isFish ? "left" : "right";
   const borderLeft = isFish ? `12px solid rgba(${r}, ${g}, ${b}, 1)` : "none";
   const borderRight = isFish ? "none" : `12px solid rgba(${r}, ${g}, ${b}, 1)`;
@@ -90,7 +88,6 @@ function createInventoryItemElement(name, amount, rarity, isFish = true) {
     transition: background-color 0.1s ease;
   `;
 
-  // Buttons: fish have Sell + Inspect, items have Use or Inspect
   let buttonsHTML;
   if (isFish) {
     buttonsHTML = `
@@ -120,7 +117,6 @@ function renderInventory() {
   const fishContainer = document.getElementById("inventory_fish_content");
   fishContainer.innerHTML = "";
 
-  // Sort fish by rarity order then name
   const fishEntries = Object.entries(inventory.fish).sort(([a], [b]) => {
     const rarityCompare = rarityInfo[getFishRarity(a)].order - rarityInfo[getFishRarity(b)].order;
     return rarityCompare !== 0 ? rarityCompare : a.localeCompare(b);
@@ -147,7 +143,6 @@ function renderItems() {
   }
 }
 
-// === Inspect & Use ===
 function inspectItem(name) {
   const rarity = getFishRarity(name);
   const color = rarityInfo[rarity]?.color || [255, 255, 255];
@@ -178,7 +173,6 @@ function useItem(name) {
       decrementInventory("items", "Chest");
       decrementInventory("items", "Key");
 
-      // Reward logic 🎁
       const rewardMoney = Math.floor(Math.random() * 50) + 50;
       inventory.money += rewardMoney;
 
@@ -196,11 +190,9 @@ function useItem(name) {
   refreshInventory();
 }
 
-
 // === Save & Load ===
 
 function saveInventory() {
-  console.log("Saving inventory:", inventory); // DEBUG
   localStorage.setItem("inventoryData", JSON.stringify(inventory));
 }
 
@@ -214,16 +206,18 @@ function loadInventory() {
   }
 }
 
-// === UI Toggle Example ===
+// === UI Toggle ===
+
 let alert_state = true;
 function toggleAlerts() {
   alert_state = !alert_state;
   document.getElementById("fishAlert").style.display = alert_state ? "block" : "none";
 }
 
-// Refresh all inventory UI & save
+// Refresh all inventory UI & save immediately
 function refreshInventory() {
   renderInventory();
   updateMoneyDisplay();
   saveInventory();
+  dirtyInventory = false; // Reset dirty flag here to avoid double saving
 }
