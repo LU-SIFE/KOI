@@ -1,18 +1,3 @@
-const trail = [];
-const maxTrailLength = 40; // length of the streamer
-
-const diamond = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-  angle: 0,             // radians
-  size: 25,
-  speed: 0,
-  maxSpeed: 1.25,
-  acceleration: 0.015,
-  friction: 0.0175,
-  turnSpeed: 0.025,
-};
-
 function drawTrail() {
   for (let i = 0; i < trail.length; i++) {
     const { x, y, angle } = trail[i];

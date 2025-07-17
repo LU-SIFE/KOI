@@ -80,3 +80,18 @@ const rippleRadius = 50;
 const minDistanceBetweenFish = rippleRadius * 2.5;
 const fishSpawnPadding = 100;
 const maxSpawnAttempts = 100;
+
+const trail = [];
+const maxTrailLength = 40; // length of the streamer
+
+const diamond = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  angle: 0,             // radians
+  size: 25,
+  speed: 0,
+  maxSpeed: 1.25,
+  acceleration: 0.015,
+  friction: 0.0175,
+  turnSpeed: 0.025,
+};
