@@ -359,7 +359,6 @@ const poolWeights = {
     Mythical: 1,
     Legendary: 6,
     Rare: 9,
-    Frozen: 10,
     Twilight: 25,
     Uncommon: 18,
     Common: 30,
