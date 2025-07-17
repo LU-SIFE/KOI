@@ -104,8 +104,6 @@ function updateAutofishers() {
         catchUpdate(catchCount);
         saveFishdex();
         addItem("fish", caughtFish.name);
-        renderInventory();
-        saveInventory();
 
         // Use helper to spawn new fish spot, replacing old one
         const newFish = spawnNewFishSpot(fishSpots);

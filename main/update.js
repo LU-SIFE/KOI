@@ -54,7 +54,7 @@ function update() {
                     holdTime = 0;
                 }
 
-                holdTime += 16.67; // ~60fps frame time
+                holdTime += 16.67; // ~60fps
 
                 if (holdTime >= timeToCatch) {
                     const caughtFish = fishSpot.fish;
@@ -69,21 +69,16 @@ function update() {
                     catchUpdate(catchCount);
                     SoundManager.playFishSfx();
                     saveFishdex();
-                    addItem("fish", caughtFish.name);
-                    renderInventory();
-                    saveInventory();
+                    addItem("fish", caughtFish.name); // <-- This sets dirtyInventory = true
 
-                    // Use spawnNewFishSpot helper here!
                     const newFishSpot = spawnNewFishSpot(fishSpots);
-
-                    // Replace the old spot with the new one
                     fishSpots[fishSpots.indexOf(fishSpot)] = newFishSpot;
 
                     isHolding = false;
                     holdTime = 0;
                 }
 
-                break; // exit loop when caught
+                break; // exit loop
             }
         }
 
@@ -92,9 +87,12 @@ function update() {
             holdTime = 0;
         }
     } else {
+        // Do NOT save here!
         isHolding = false;
         holdTime = 0;
     }
+
+
 
     if (keys["e"]) {
         if (menu_state === false) {
@@ -121,4 +119,11 @@ function update() {
             }
         }
     }
+
+    if (dirtyInventory) {
+        renderInventory();   // update UI
+        saveInventory();     // persist changes
+        dirtyInventory = false;
+    }
+
 }

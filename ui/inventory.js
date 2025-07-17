@@ -1,13 +1,14 @@
 // === Inventory Helpers ===
 
 function addItem(type, name, amount = 1) {
-  // Auto-correct type for items miscategorized as fish
   if (type === "fish" && getFishRarity(name) === "Item") {
     type = "items";
   }
   if (!inventory[type][name]) inventory[type][name] = 0;
   inventory[type][name] += amount;
+  dirtyInventory = true;
 }
+
 
 function spendMoney(amount) {
   if (inventory.money >= amount) {
@@ -199,6 +200,7 @@ function useItem(name) {
 // === Save & Load ===
 
 function saveInventory() {
+  console.log("Saving inventory:", inventory); // DEBUG
   localStorage.setItem("inventoryData", JSON.stringify(inventory));
 }
 

@@ -16,6 +16,7 @@ let currentPond = "Base";
 let fishSpots = [];
 
 let fishMax = 1;
+let dirtyInventory = false;
 
 let quoteInterval;
 let lastQuoteIndex = -1;
