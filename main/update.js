@@ -72,6 +72,7 @@ function update() {
                     SoundManager.playFishSfx();
                     saveFishdex();
                     addItem("fish", caughtFish.name);
+                    update_compendium(caughtFish.name);
 
                     const newFishSpot = spawnNewFishSpot(fishSpots);
                     fishSpots[fishSpots.indexOf(fishSpot)] = newFishSpot;

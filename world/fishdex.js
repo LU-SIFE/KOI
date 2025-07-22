@@ -487,10 +487,6 @@ function build_compendium() {
 
 	const fragment = document.createDocumentFragment();
 
-	// Adjust as more images are added.
-	const maxLoadedImages = 11; 
-
-	// Sort fishdex by rarity order (high → low)
 	const sortedFish = fishdex
 		.filter(fish => fish.rarity !== "Item")
 		.sort((a, b) => {
@@ -499,82 +495,99 @@ function build_compendium() {
 			return orderB - orderA;
 		});
 
-	sortedFish.forEach((fish, index) => {
-		const [r, g, b] = rarityInfo[fish.rarity]?.color || [255, 255, 255];
-		const isCaught = fish.caught > 0;
-
-		const entry = document.createElement("div");
-		entry.className = "fish-entry";
-		entry.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.1)`;
-		entry.style.border = `2px solid rgba(${r}, ${g}, ${b}, 1)`;
-		entry.style.opacity = isCaught ? "1" : "0.5";
-		entry.style.cursor = isCaught ? "pointer" : "default";
-		entry.style.transition = "transform 0.1s ease";
-
-		entry.style.display = "flex";
-		entry.style.alignItems = "center";
-		entry.style.gap = "12px";
-
-		entry.addEventListener("mouseover", () => {
-			entry.style.transform = "scale(1.02)";
-		});
-		entry.addEventListener("mouseout", () => {
-			entry.style.transform = "scale(1)";
-		});
-
-		if (isCaught) {
-			entry.onclick = () => inspectItem(fish.name);
-		} else {
-			entry.onclick = () => inspectItem(fish.name, rarityInfo[fish.rarity].place);
-		}
-
-		// Text container
-		const textContainer = document.createElement("div");
-
-		// Fish name
-		const name = document.createElement("h3");
-		name.className = "fish-name";
-		name.textContent = isCaught ? fish.name : "???";
-		name.style.color = `rgba(${r}, ${g}, ${b}, 1)`;
-		name.style.margin = "0";
-
-		// Caught or hint text
-		const caught = document.createElement("p");
-		caught.className = "fish-caught";
-		caught.textContent = isCaught
-			? `Caught: ${fish.caught}`
-			: rarityInfo[fish.rarity]?.hint || "";
-		caught.style.color = `rgba(${r}, ${g}, ${b}, 1)`;
-		caught.style.margin = "0";
-
-		textContainer.appendChild(name);
-		textContainer.appendChild(caught);
-
-		entry.appendChild(textContainer);
-
-		// Only load image if index < maxLoadedImages
-		if (index < maxLoadedImages) {
-			const img = document.createElement("img");
-			const fishImageName = fish.name.toLowerCase().replace(/\s+/g, "");
-			img.src = `./assets/fish_assets/${fishImageName}.png`;
-			img.style.width = "32px";
-			img.style.height = "32px";
-			img.style.imageRendering = "pixelated";
-			img.style.borderRadius = "6px";
-
-			img.loading = "lazy"; // Lazy load images to reduce initial load
-
-			img.onerror = () => {
-				if (img.parentNode) {
-					img.parentNode.removeChild(img);
-				}
-			};
-
-			entry.appendChild(img);
-		}
-
+	sortedFish.forEach(fish => {
+		const entry = create_fish_entry(fish);
 		fragment.appendChild(entry);
 	});
 
 	container.appendChild(fragment);
+}
+
+function create_fish_entry(fish) {
+	const [r, g, b] = rarityInfo[fish.rarity]?.color || [255, 255, 255];
+	const isCaught = fish.caught > 0;
+
+	const entry = document.createElement("div");
+	entry.className = "fish-entry";
+	entry.id = `fish-entry-${fish.name.toLowerCase().replace(/\s+/g, "")}`;
+	entry.style.backgroundColor = `rgba(${r}, ${g}, ${b}, 0.1)`;
+	entry.style.border = `2px solid rgba(${r}, ${g}, ${b}, 1)`;
+	entry.style.opacity = isCaught ? "1" : "0.5";
+	entry.style.cursor = isCaught ? "pointer" : "default";
+	entry.style.transition = "transform 0.1s ease";
+
+	entry.style.display = "flex";
+	entry.style.alignItems = "center";
+	entry.style.gap = "12px";
+
+	entry.addEventListener("mouseover", () => {
+		entry.style.transform = "scale(1.02)";
+	});
+	entry.addEventListener("mouseout", () => {
+		entry.style.transform = "scale(1)";
+	});
+
+	entry.onclick = () => {
+		if (isCaught) {
+			inspectItem(fish.name);
+		} else {
+			inspectItem(fish.name, rarityInfo[fish.rarity].place);
+		}
+	};
+
+	// Text container
+	const textContainer = document.createElement("div");
+
+	const name = document.createElement("h3");
+	name.className = "fish-name";
+	name.textContent = isCaught ? fish.name : "???";
+	name.style.color = `rgba(${r}, ${g}, ${b}, 1)`;
+	name.style.margin = "0";
+
+	const caught = document.createElement("p");
+	caught.className = "fish-caught";
+	caught.textContent = isCaught
+		? `Caught: ${fish.caught}`
+		: rarityInfo[fish.rarity]?.hint || "";
+	caught.style.color = `rgba(${r}, ${g}, ${b}, 1)`;
+	caught.style.margin = "0";
+
+	textContainer.appendChild(name);
+	textContainer.appendChild(caught);
+	entry.appendChild(textContainer);
+
+	// Fish image
+	const img = document.createElement("img");
+	const fishImageName = fish.name.toLowerCase().replace(/\s+/g, "");
+	img.src = isCaught
+		? `./assets/fish_assets/${fishImageName}.png`
+		: `./assets/fish_assets/hidden.png`;
+
+	img.style.width = "32px";
+	img.style.height = "32px";
+	img.style.imageRendering = "pixelated";
+	img.style.borderRadius = "6px";
+	img.style.filter = `drop-shadow(0px 0px 6px rgba(${r}, ${g}, ${b}, 0.3))`;
+	img.loading = "lazy";
+
+	img.onerror = () => {
+		if (img.parentNode) {
+			img.src = './assets/fish_assets/hidden.png'
+		}
+	};
+
+	entry.appendChild(img);
+
+	return entry;
+}
+
+function update_compendium(fishName) {
+	const entryId = `fish-entry-${fishName.toLowerCase().replace(/\s+/g, "")}`;
+	const existing = document.getElementById(entryId);
+	const fish = fishdex.find(f => f.name.toLowerCase() === fishName.toLowerCase());
+
+	if (!fish || !existing) return;
+
+	const newEntry = create_fish_entry(fish);
+	existing.replaceWith(newEntry);
 }

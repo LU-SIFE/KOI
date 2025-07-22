@@ -98,6 +98,7 @@ function updateAutofishers() {
 				catchUpdate(catchCount);
 				saveFishdex();
 				addItem("fish", caughtFish.name);
+				update_compendium(caughtFish.name);
 				dirtyInventory = true;  // <-- force mark dirty before refreshing
 				refreshInventory();
 
