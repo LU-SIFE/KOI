@@ -58,8 +58,10 @@ function update() {
 
                 if (holdTime >= timeToCatch) {
                     const caughtFish = fishSpot.fish;
-                    caughtFish.caught++;
-                    catchCount++;
+                    if (caughtFish.rarity !== "Item") {
+                        caughtFish.caught++;
+                        catchCount++;
+                    }
                     localStorage.setItem("catchCount", catchCount);
 
                     const article = caughtFish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
