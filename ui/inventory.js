@@ -7,6 +7,7 @@ function addItem(type, name, amount = 1) {
   if (!inventory[type][name]) inventory[type][name] = 0;
   inventory[type][name] += amount;
   dirtyInventory = true;
+  build_compendium();
 }
 
 function spendMoney(amount) {
@@ -143,7 +144,7 @@ function renderItems() {
   }
 }
 
-function inspectItem(name) {
+function inspectItem(name, place) {
   const rarity = getFishRarity(name);
   const color = rarityInfo[rarity]?.color || [255, 255, 255];
   let quote;
@@ -155,8 +156,15 @@ function inspectItem(name) {
     case "Chest":
       quote = "A locked chest, waiting to be opened.";
       break;
+
     default:
-      quote = rarityInfo[rarity]?.quote || "A fine catch, well worth admiring";
+      quote = rarityInfo[rarity]?.quote || "A fine catch, well worth admiring.";
+  }
+
+  if (place) {
+    quote = place;
+    showFishInspect(`<h3>??? [${rarity}]</h3><br>${quote}`, color);
+    return;
   }
 
   showFishInspect(`<h3>${name} [${rarity}]</h3><br>${quote}`, color);
@@ -200,11 +208,25 @@ function loadInventory() {
   const saved = localStorage.getItem("inventoryData");
   if (saved) {
     const data = JSON.parse(saved);
-    inventory.fish = data.fish || {};
+    // Create a Set of valid fish names from fishdex for quick lookup
+    const validFishNames = new Set(fishdex.map(f => f.name));
+
+    // Filter inventory fish to only include valid fish names
+    const loadedFish = data.fish || {};
+    const filteredFish = {};
+
+    for (const fishName in loadedFish) {
+      if (validFishNames.has(fishName)) {
+        filteredFish[fishName] = loadedFish[fishName];
+      }
+    }
+
+    inventory.fish = filteredFish;
     inventory.items = data.items || {};
     inventory.money = data.money || 0;
   }
 }
+
 
 // === UI Toggle ===
 

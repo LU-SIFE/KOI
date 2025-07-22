@@ -91,18 +91,6 @@ function update() {
         holdTime = 0;
     }
 
-    if (keys["e"]) {
-        if (menu_state === false) {
-            document.getElementById("menu").classList.remove("hide");
-            document.getElementById("menu").classList.add("show");
-            setTimeout(() => { menu_state = true; }, 300);
-        } else {
-            document.getElementById("menu").classList.remove("show");
-            document.getElementById("menu").classList.add("hide");
-            setTimeout(() => { menu_state = false; }, 300);
-        }
-    }
-
     if (keys["f"]) {
         if (start_state) {
             if (pond_select_state === false) {
@@ -117,9 +105,51 @@ function update() {
         }
     }
 
+    // quick menu binds
+
+    //Open menu
+    if (keys["e"]) { toggle_menu(); }
+
+    //Compendium
+    if (keys["c"]) {
+        swap_menu('compendium');
+        show_menu();
+    }
+
+    if (keys["q"]) {
+        swap_menu('inventory');
+        show_menu();
+    }
+
+    if (keys["r"]) {
+        swap_menu('upgrade');
+        show_menu();
+    }
+
+    if (keys["t"]) {
+        swap_menu('market');
+        show_menu();
+    }
+
     // Save inventory only when dirty and spacebar is NOT pressed by player
     if (dirtyInventory && !keys[" "]) {
         console.log("💾 Saving inventory");
         refreshInventory();
+    }
+}
+
+function show_menu() {
+    document.getElementById("menu").classList.remove("hide");
+    document.getElementById("menu").classList.add("show");
+    setTimeout(() => { menu_state = true; }, 300);
+}
+
+function toggle_menu() {
+    if (menu_state === false) {
+        show_menu();
+    } else {
+        document.getElementById("menu").classList.remove("show");
+        document.getElementById("menu").classList.add("hide");
+        setTimeout(() => { menu_state = false; }, 300);
     }
 }

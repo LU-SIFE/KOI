@@ -53,6 +53,8 @@ function start() {
   updateUpgradeUI();
   loadPondStates();
   updatePondButtons();
+  loadFishdex();
+  build_compendium();
 
   const savedPond = localStorage.getItem("currentPond");
   if (savedPond) {

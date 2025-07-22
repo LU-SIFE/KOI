@@ -73,6 +73,7 @@ let catchCount = 0;
 let settings_state = false;
 let market_state = false;
 let inventory_state = false;
+let compendium_state = false;
 let upgrade_state = false;
 let start_state = false;
 
