@@ -7,7 +7,6 @@ function addItem(type, name, amount = 1) {
   if (!inventory[type][name]) inventory[type][name] = 0;
   inventory[type][name] += amount;
   dirtyInventory = true;
-  build_compendium();
 }
 
 function spendMoney(amount) {

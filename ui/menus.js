@@ -1,28 +1,39 @@
 function swap_menu(menu_value) {
-    if (start_state === false) {return;}
-    if (menu_value == "settings" && !settings_state) {
-        hide_current_menu();
+
+    // Check if the menu requested is already open
+    if (
+        (menu_value === "settings" && settings_state) ||
+        (menu_value === "market" && market_state) ||
+        (menu_value === "inventory" && inventory_state) ||
+        (menu_value === "upgrade" && upgrade_state) ||
+        (menu_value === "compendium" && compendium_state)
+    ) {
+        // Menu is already open, no need to swap or rebuild
+        return;
+    }
+
+    hide_current_menu();
+
+    // Now show the new menu
+    if (menu_value == "settings") {
         document.getElementById("settings").style.display = "block";
         settings_state = true;
 
-    } else if (menu_value == "market" && !market_state) {
-        hide_current_menu();
+    } else if (menu_value == "market") {
         document.getElementById("market").style.display = "block";
         market_state = true;
 
-    } else if (menu_value == "inventory" && !inventory_state) {
-        hide_current_menu();
+    } else if (menu_value == "inventory") {
         document.getElementById("inventory").style.display = "block";
         document.getElementById("menu").classList.add("wide");
         inventory_state = true;
 
-    } else if (menu_value == "upgrade" && !upgrade_state) {
-        hide_current_menu();
+    } else if (menu_value == "upgrade") {
         document.getElementById("upgrades").style.display = "block";
         upgrade_state = true;
 
     } else if (menu_value == "compendium") {
-        hide_current_menu();
+        build_compendium();
         document.getElementById("compendium").style.display = "block";
         compendium_state = true;
         document.getElementById("menu").classList.add("wide");

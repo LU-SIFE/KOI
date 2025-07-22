@@ -1,10 +1,15 @@
 /* === Root Variables === */
 :root {
-  --col1: rgba(30, 32, 34, 1);        /* Primary background */
-  --col1-l: rgba(30, 32, 34, 0.75);   /* Transparent variant */
-  --col2: rgba(255, 202, 212, 1);    /* Accent (pink) */
-  --col2-l: rgba(255, 202, 212, 0.5);    /* Accent (pink) */
-  --col5: rgba(236, 231, 224, 1);    /* Light background */
+  --col1: rgba(30, 32, 34, 1);
+  /* Primary background */
+  --col1-l: rgba(30, 32, 34, 0.75);
+  /* Transparent variant */
+  --col2: rgba(255, 202, 212, 1);
+  /* Accent (pink) */
+  --col2-l: rgba(255, 202, 212, 0.5);
+  /* Accent (pink) */
+  --col5: rgba(236, 231, 224, 1);
+  /* Light background */
 
   --green: rgba(180, 245, 200, 1),
 }
@@ -28,7 +33,8 @@ body {
 
 /* === Alert Box === */
 /* Shared styles for both alerts */
-#fishAlert, #fishInspect {
+#fishAlert,
+#fishInspect {
   color: var(--col2);
   position: absolute;
   padding: 1em;
@@ -44,7 +50,8 @@ body {
 /* fishAlert specific styles */
 #fishAlert {
   top: 1em;
-  left: -25em; /* hidden by default */
+  left: -25em;
+  /* hidden by default */
 }
 
 #fishAlert.show {
@@ -58,7 +65,8 @@ body {
 /* fishInspect specific styles */
 #fishInspect {
   left: 1em;
-  bottom: -7em; /* hidden by default */
+  bottom: -7em;
+  /* hidden by default */
   top: unset;
 }
 
@@ -114,7 +122,8 @@ body {
 }
 
 /* === Fullscreen Canvas === */
-#game, #glCanvas {
+#game,
+#glCanvas {
   width: 100vw;
   height: 100vh;
 }
@@ -158,6 +167,7 @@ hr {
 #settings button,
 #pond_select button,
 .inv_header button,
+.compendium_header button,
 a {
   font-size: 1rem;
   margin-bottom: 1em;
@@ -178,6 +188,7 @@ a {
 #settings button:hover,
 #pond_select button:hover,
 .inv_header button:hover,
+.compendium_header button:hover,
 a:hover {
   background-color: var(--col2-l);
 }
@@ -210,11 +221,12 @@ a:hover {
 
 .upgrade_row button {
   margin: 0;
-  flex: 0 0 9em; /* fixed width */
+  flex: 0 0 9em;
+  /* fixed width */
 }
 
 .upgrade_row button:hover {
-  background-color: var(--btn-hover-bg, rgba(255,255,255,0.1));
+  background-color: var(--btn-hover-bg, rgba(255, 255, 255, 0.1));
 }
 
 
@@ -259,9 +271,19 @@ a:hover {
 }
 
 @keyframes grid {
-  0%   { background-position: 0 0; opacity: 0.2; }
-  50%  { opacity: 0.5; }
-  100% { background-position: 100px 100px; opacity: 0.2; }
+  0% {
+    background-position: 0 0;
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    background-position: 100px 100px;
+    opacity: 0.2;
+  }
 }
 
 /* === Canvas Visual Effect === */
@@ -278,7 +300,10 @@ canvas {
 }
 
 /* === Section Containers (hidden initially) === */
-#settings, #market, #inventory, #compendium {
+#settings,
+#market,
+#inventory,
+#compendium {
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -322,7 +347,8 @@ canvas {
   text-align: center;
 }
 
-.settings_block button, .settings_block a {
+.settings_block button,
+.settings_block a {
   margin: 0 0.25em;
   margin-bottom: 1em;
 }
@@ -337,7 +363,8 @@ canvas {
   width: 100%;
 }
 
-.left_inv, .right_inv{  
+.left_inv,
+.right_inv {
   width: 50%;
   border-bottom: 2px solid var(--col2);
 }
@@ -350,8 +377,13 @@ canvas {
   width: 40%;
 }
 
-.left_inv {border-right: 1px solid var(--col2);}
-.right_inv {border-left: 1px solid var(--col2);}
+.left_inv {
+  border-right: 1px solid var(--col2);
+}
+
+.right_inv {
+  border-left: 1px solid var(--col2);
+}
 
 .inventory-grid {
   display: flex;
@@ -446,6 +478,7 @@ canvas {
 #pond_select.show {
   left: 1em;
 }
+
 #pond_select.hide {
   left: -15em;
 }
@@ -469,14 +502,14 @@ canvas {
   display: block;
 }
 
-.inv_header {
+.inv_header, .compendium_header {
   display: flex;
   align-items: center;
   position: relative;
   margin-bottom: 0.5em;
 }
 
-.inv_header button {
+.inv_header button, .compendium_header button {
   margin: 0;
   margin-right: 1em;
   height: 100%;
@@ -514,27 +547,52 @@ canvas {
   overflow: scroll;
   display: grid;
   height: 78vh;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 10px;
   border-bottom: 2px solid var(--col2);
-  
+
+}
+
+.compendium_header {
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+
+.compendium_header button {
+  position: absolute;
+  left: 0;
 }
 
 .fish-entry {
-    padding: 12px;
-    border-radius: 12px;
-
+  padding: 12px;
+  border-radius: 12px;
+  contain: layout style paint;
+  will-change: transform, opacity;
 }
 
 .fish-name {
-    font-weight: bold;
-    font-size: 1.2em;
-    margin-bottom: 4px;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 4px;
+  margin-top: 0;
 }
 
 .fish-caught {
-    margin: 0;
-    font-size: 0.95em;
-    color: #555;
+  margin: 0;
+  font-size: 0.95em;
+  color: #555;
+}
+
+.fish-entry div {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  margin-right: auto;
+}
+
+.fish-entry div * {
+  text-align: left;
+  font-weight: bold;
 }

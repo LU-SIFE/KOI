@@ -110,7 +110,10 @@ function update() {
     // quick menu binds
 
     //Open menu
-    if (keys["e"]) { toggle_menu(); }
+    if (keys["e"]) {
+        toggle_menu();
+        build_compendium();
+    }
 
     //Compendium
     if (keys["c"]) {
