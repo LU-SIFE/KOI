@@ -67,7 +67,8 @@ function update() {
                     const article = caughtFish.rarity.toLowerCase().startsWith("u") ? "an" : "a";
                     const message = `You caught ${article} ${caughtFish.rarity} ${caughtFish.name}!<br>Caught: ${caughtFish.caught}`;
 
-                    showFishAlert(message, rarityInfo[caughtFish.rarity].color);
+				    const fish_img_path = caughtFish.name.toLowerCase().replace(/\s+/g, "")
+				    showFishAlert(message, rarityInfo[caughtFish.rarity].color, `../assets/fish_assets/${fish_img_path}.png`, caughtFish.rarity);
                     catchUpdate(catchCount);
                     SoundManager.playFishSfx();
                     saveFishdex();

@@ -244,6 +244,7 @@ const fishdex = [
 
 	{ name: "Chest", rarity: "Item" },
 	{ name: "Key", rarity: "Item" },
+	{ name: "Forgotten Note", rarity: "Item"},
 ];
 
 for (const fish of fishdex) {
@@ -427,16 +428,47 @@ function createPopupHandler(elementId) {
 	const element = document.getElementById(elementId);
 	let timeout;
 
-	return function showPopup(message, color) {
+	return function showPopup(message, color, imagePath, type, name = "", rarity = "") {
 		if (timeout) clearTimeout(timeout);
+
+		// Apply color styles if provided
 		if (color) {
-			let r = color[0]
-			let g = color[1]
-			let b = color[2]
+			let r = color[0];
+			let g = color[1];
+			let b = color[2];
 			element.style.color = `rgba(${r}, ${g}, ${b}, 1)`;
 			element.style.borderColor = `rgba(${r}, ${g}, ${b}, 1)`;
+		} else {
+			element.style.color = '';
+			element.style.borderColor = '';
 		}
-		element.innerHTML = message;
+
+		// Build inner HTML with flex layout
+		if (imagePath && type !== 'Item') {
+			element.innerHTML = `
+				<div style="display: flex; gap: 1em; justify-content: center; align-items: center;">
+					<img src="${imagePath}" 
+						onerror="this.onerror=null;this.src='../assets/fish_assets/hidden.png';">
+					<div style="display: flex; flex-direction: column; justify-content: center; overflow: hidden;">
+						<div style="font-weight: bold;">
+							${name} <span style="font-weight: normal; opacity: 0.7;">${rarity}</span>
+						</div>
+						<div>${message}</div>
+					</div>
+				</div>
+			`;
+		} else {
+			// fallback layout without image
+			element.innerHTML = `
+				<div>
+					<div style="font-weight: bold; margin-bottom: 4px;">
+						${name} <span style="font-weight: normal; opacity: 0.7;">${rarity}</span>
+					</div>
+					<div>${message}</div>
+				</div>
+			`;
+		}
+
 		element.classList.remove("hide");
 		element.classList.add("show");
 
@@ -449,6 +481,9 @@ function createPopupHandler(elementId) {
 		}, 3000);
 	};
 }
+
+
+
 
 const showFishAlert = createPopupHandler("fishAlert");
 const showFishInspect = createPopupHandler("fishInspect");

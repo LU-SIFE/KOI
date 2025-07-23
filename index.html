@@ -40,6 +40,20 @@
     <!-- Sound Effects -->
     <audio id="fishUp" src="assets/splash.mp3" preload="auto"></audio>
 
+    <!-- Important Popup -->
+    <div id="blur-menu-container">
+        <div id="tutorial">
+            <h2>Welcome to <b>WEBKOI</b>!</h2><br>
+            <p>You can bring up the upgrade menu anytime by pressing <b>E</b>.</p><br>
+            <p>Move your bobber using <b>W/S</b>, and <b>A/D</b> to turn.</p><br>
+            <p>Once close to ripples, hold <b>SPACE</b> to catch a fish!</p><br>
+            <p>Open the pond selection menu with <b>F</b>.</p>
+            <button class="start" onclick="start();"><b>START</b></button>
+        </div>
+
+        <div id="lore_container"></div>
+    </div>
+
     <!-- Game UI Elements -->
     <!-- Fishing Progress Bar -->
     <div id="holdBarContainer">
@@ -65,16 +79,6 @@
 
     <!-- Main UI Container -->
     <div id="menu" class="hide ui-panel">
-
-        <!-- Tutorial Content -->
-        <div id="tutorial">
-            <h2>Welcome to <b>KOI</b>!</h2><br>
-            <p>You can bring up the upgrade menu anytime by pressing <b>E</b>.</p><br>
-            <p>Move your bobber using <b>W/S</b>, and <b>A/D</b> to turn.</p><br>
-            <p>Once close to ripples, hold <b>SPACE</b> to catch a fish!</p><br>
-            <p>Open the pond selection menu with <b>F</b>.</p>
-            <button class="start" onclick="start();"><b>START</b></button>
-        </div>
 
         <!-- Upgrade Content -->
         <div id="upgrades">
@@ -195,7 +199,8 @@
                     </div>
                     <div class="hotkey_row">
                         <span>Select Pond:</span><span>[ F ]</span>
-                    </div><br><hr><br>
+                    </div><br>
+                    <hr><br>
                     <div class="hotkey_row">
                         <span>Inventory:</span><span>[ Q ]</span>
                     </div>

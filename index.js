@@ -65,7 +65,7 @@ function start() {
 
 
   switchPond(currentPond);
-
+  hideBlurContainer();
 
   quote_cycle();
   quoteInterval = setInterval(quote_cycle, 15000);
@@ -80,8 +80,7 @@ window.onload = function () {
   if (start_state === true) {
     start();
   } else {
-    document.getElementById("menu").classList.remove("hide");
-    document.getElementById("menu").classList.add("show");
+    document.getElementById("tutorial").style.display = "block";
     document.getElementById("upgrades").style.display = "none";
   }
 
