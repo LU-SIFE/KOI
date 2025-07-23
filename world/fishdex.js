@@ -21,7 +21,6 @@ const fishdex = [
 	{ name: "Rudd", rarity: "Common" },
 	{ name: "Mudbelly", rarity: "Common" },
 
-
 	//Uncommon Fish
 	{ name: "Carp", rarity: "Uncommon" },
 	{ name: "Trout", rarity: "Uncommon" },
@@ -47,7 +46,6 @@ const fishdex = [
 	{ name: "Redeye Bass", rarity: "Uncommon" },
 	{ name: "Creek Chub", rarity: "Uncommon" },
 	{ name: "Weedy Goby", rarity: "Uncommon" },
-
 
 	//Rare Fish
 	{ name: "Pike", rarity: "Rare" },
@@ -75,7 +73,6 @@ const fishdex = [
 	{ name: "Icegill Marlin", rarity: "Rare" },
 	{ name: "Coralback Drum", rarity: "Rare" },
 
-
 	//Legendary Fish
 	{ name: "Marlin", rarity: "Legendary" },
 	{ name: "Voltfish", rarity: "Legendary" },
@@ -98,7 +95,6 @@ const fishdex = [
 	{ name: "Hellmaw Trout", rarity: "Legendary" },
 	{ name: "Spectral Sailfish", rarity: "Legendary" },
 	{ name: "Twilight Coelacanth", rarity: "Legendary" },
-
 
 	//Mythical Fish
 	{ name: "Nebulark", rarity: "Mythical" },
@@ -129,7 +125,6 @@ const fishdex = [
 	{ name: "Corona Sturgeon", rarity: "Mythical" },
 	{ name: "Startailed Koi", rarity: "Mythical" },
 
-
 	//Frozen Fish
 	{ name: "Glacier Ray", rarity: "Frozen" },
 	{ name: "Icefin Tetra", rarity: "Frozen" },
@@ -153,7 +148,6 @@ const fishdex = [
 	{ name: "Frostreel", rarity: "Frozen" },
 	{ name: "Hoarfrost Koi", rarity: "Frozen" },
 
-
 	//Fireproof Fish
 	{ name: "Magmafin", rarity: "Fireproof" },
 	{ name: "Lava Koi", rarity: "Fireproof" },
@@ -176,7 +170,6 @@ const fishdex = [
 	{ name: "Furnace Ray", rarity: "Fireproof" },
 	{ name: "Heatscale Swordfish", rarity: "Fireproof" },
 	{ name: "Kindlefin Sprat", rarity: "Fireproof" },
-
 
 	//Twilight Fish
 	{ name: "Twilight Ray", rarity: "Twilight" },
@@ -203,7 +196,6 @@ const fishdex = [
 	{ name: "Nightwhisker Cod", rarity: "Twilight" },
 	{ name: "Selenic Salmon", rarity: "Twilight" },
 
-
 	//Ethereal Fish
 	{ name: "Phantom Guppy", rarity: "Ethereal" },
 	{ name: "Celestail Koi", rarity: "Ethereal" },
@@ -228,7 +220,6 @@ const fishdex = [
 	{ name: "Mirage Cod", rarity: "Ethereal" },
 	{ name: "Driftwill Carp", rarity: "Ethereal" },
 	{ name: "Glimmersoul Tuna", rarity: "Ethereal" },
-
 
 	//Chromatic Fish
 	//{ name: "Prismscale Guppy", rarity: "Chromatic" },
@@ -563,8 +554,8 @@ function create_fish_entry(fish) {
 		? `./assets/fish_assets/${fishImageName}.png`
 		: `./assets/fish_assets/hidden.png`;
 
-	img.style.width = "32px";
-	img.style.height = "32px";
+	img.style.width = "48px";
+	img.style.height = "48px";
 	img.style.imageRendering = "pixelated";
 	img.style.borderRadius = "6px";
 	img.style.filter = `drop-shadow(0px 0px 6px rgba(${r}, ${g}, ${b}, 0.3))`;
