@@ -104,7 +104,19 @@ const loreArray = {
     Listen to the waves that crash far away, the waves which will topple you.<br>
     Do you even know what you're doing? The game you play, oblivious to the narrative?"<br><br>
     You don't know what to say. You are frustrated you don't know more.<br>
-    You toss the note away, but you never forget it.`
+    You toss the note away, but you never forget it.`,
+
+    `<i>Forgotten Note #6:</i><br><br>
+    "Ah, how beautiful!<br>
+    The stars, they shine, the magic which flows between the cosmos...<br>
+    You're still so far. It hurts, knowing many do not know the truth.<br>
+    But maybe you... maybe you can know.<br><br>
+    Explore the depths. Examine the truth behind the creatures you catch.<br>
+    Once you realize the truth hidden in each one, a new world will be revealed to you.<br><br>
+    Maybe you're stuck like I once was, and this doesn't make sense.<br>
+    A game? haha, yeah. The 'Compendium?' haha whatever you call it.<br>
+    Just do it and you'll see."<br><br>
+    You feel like you finally know something. You keep the note tucked close, reading it over and over as you fish.`
   ]
 };
 
