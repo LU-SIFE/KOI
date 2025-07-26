@@ -95,7 +95,16 @@ const loreArray = {
     Maybe you don't remember it all, but it was once beautiful.<br>
     Maybe one day, you'll see it again. Build it again.<br><br>
     Who knows?"<br><br>
-    You feel confused, placing the note into your pocket.`
+    You feel confused, placing the note into your pocket.`,
+
+    `<i>Forgotten Note #5:</i><br><br>
+    "There's... something here.<br><br>
+    Something more than fish. Something more than you.<br>
+    Look closely. Watch for the story behind the one you tell.<br>
+    Listen to the waves that crash far away, the waves which will topple you.<br>
+    Do you even know what you're doing? The game you play, oblivious to the narrative?"<br><br>
+    You don't know what to say. You are frustrated you don't know more.<br>
+    You toss the note away, but you never forget it.`
   ]
 };
 
