@@ -76,11 +76,26 @@ const loreArray = {
 
     `<i>Forgotten Note #2:</i><br><br>
     "They say the waters hold memories.<br><br>
-    Every ripple carries a story — of a fish caught, a dream chased.<br>
+    Every ripple carries a story, of a fish caught, a dream chased.<br>
     Or a quiet moment beneath the stars.<br><br>
     Sometimes, if you listen closely, you can hear whispers of those tales.<br><br>
     But they're meant for those patient enough to wait."<br><br>
-    You fold the note carefully and place it back in your pocket.`
+    You fold the note carefully and place it back in your pocket.`,
+
+    `<i>Forgotten Note #3:</i><br><br>
+    "It's a lot more than you think it is.<br><br>
+    Do you stop to think, and ponder, where you are?<br>
+    Where are you?<br><br>
+    Maybe you've yet to realize how deep the pond really is.<br>
+    Be Careful."<br><br>
+    You shudder for a moment, tossing the note into the pond and watch it dissolve.`,
+
+    `<i>Forgotten Note #4:</i><br><br>
+    "We think you've seen it.<br><br>
+    Maybe you don't remember it all, but it was once beautiful.<br>
+    Maybe one day, you'll see it again. Build it again.<br><br>
+    Who knows?"<br><br>
+    You feel confused, placing the note into your pocket.`
   ]
 };
 
