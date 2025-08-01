@@ -87,6 +87,12 @@ function update(deltaTime) {
 window.onload = function () {
     window.addEventListener('click', handleFirstInteraction);
     window.addEventListener('keydown', handleFirstInteraction);
+
+    if (compareVersions(load('version', '1.0.0'), '1.2.0') !== 0) {
+        localStorage.clear();
+        save('version', '1.2.0');
+    }
+
     states.extras.startState = load('startState', false);
 
     if (states.extras.startState === true) {
@@ -96,4 +102,14 @@ window.onload = function () {
         toggleMenu('blurMenu', 'container');
         toggleMenu('tutorialMenu', 'container');
     }
+}
+
+function compareVersions(a, b) {
+    const pa = a.split('.').map(Number);
+    const pb = b.split('.').map(Number);
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+        const diff = (pa[i] || 0) - (pb[i] || 0);
+        if (diff !== 0) return diff;
+    }
+    return 0;
 }
