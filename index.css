@@ -718,7 +718,7 @@ button:hover {
 .links {
 	margin: auto 1em 1em 1em;
 	display: flex;
-	justify-content: space-between;
+	justify-content: left;
 }
 
 .links a {
