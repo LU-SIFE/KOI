@@ -12,7 +12,6 @@ function upgradeItem(type) {
 
         if (inventory.money >= price) {
             inventory.money -= price;
-            document.getElementById('money').innerHTML = `$${inventory.money}`;
 
             const nextPond = states.ponds.list[nextIndex];
             if (nextPond) {
@@ -26,8 +25,9 @@ function upgradeItem(type) {
 
             save('inventory', inventory);
             switchPond(nextPond);
-        } else {
         }
+
+        document.getElementById('money').innerHTML = `$${inventory.money}`;
 
         return;
     }
