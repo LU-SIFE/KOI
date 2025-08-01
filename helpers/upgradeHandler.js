@@ -27,8 +27,6 @@ function upgradeItem(type) {
             switchPond(nextPond);
         }
 
-        document.getElementById('money').innerHTML = `$${inventory.money}`;
-
         return;
     }
 
@@ -79,6 +77,8 @@ function upgradeItem(type) {
 
 
 function updateUI() {
+
+    document.getElementById('money').innerHTML = `$${inventory.money}`;
     const pond = states.ponds.currentPond;
     const mult = upgradeStats[pond].priceMult;
 
