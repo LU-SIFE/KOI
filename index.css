@@ -51,6 +51,7 @@ body {
 	text-align: center;
 	transition: top 0.3s ease, bottom 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 	color: var(--col2);
+	left: 1em;
 }
 
 #fishAlert *,
@@ -133,6 +134,8 @@ body {
 	white-space: nowrap;
 	opacity: 0.5;
 	width: fit-content;
+	pointer-events: none;
+  	user-select: none;
 }
 
 #quotes.hide {
