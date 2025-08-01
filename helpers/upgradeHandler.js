@@ -12,6 +12,7 @@ function upgradeItem(type) {
 
         if (inventory.money >= price) {
             inventory.money -= price;
+            document.getElementById('money').innerHTML = `$${inventory.money}`;
 
             const nextPond = states.ponds.list[nextIndex];
             if (nextPond) {
