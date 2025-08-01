@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <title>WEBKOI</title>
+
     <style>
         /* Critical Styles */
         html,
@@ -30,8 +31,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet" defer>
 </head>
 
-<body>
 
+<script src="helpers/svgHandler.js"></script>
+
+<body>
     <!-- Audio Sources -->
     <!-- Ambience -->
     <audio id="sea-ambience" src="assets/sea-ambience.mp3" loop preload="auto"></audio>
@@ -40,18 +43,18 @@
     <!-- Sound Effects -->
     <audio id="fishUp" src="assets/splash.mp3" preload="auto"></audio>
 
-    <!-- Important Popup -->
-    <div id="blur-menu-container">
-        <div id="tutorial">
+    <!-- Tutorial and Lore -->
+    <div id="blurMenu" class="hide">
+        <div id="tutorialMenu" class="hide">
             <h2>Welcome to <b>WEBKOI</b>!</h2><br>
-            <p>You can bring up the upgrade menu anytime by pressing <b>E</b>.</p><br>
+            <hr><br>
+            <p>You can toggle the menu anytime by pressing <b>E</b>.</p><br>
             <p>Move your bobber using <b>W/S</b>, and <b>A/D</b> to turn.</p><br>
             <p>Once close to ripples, hold <b>SPACE</b> to catch a fish!</p><br>
             <p>Open the pond selection menu with <b>F</b>.</p>
             <button class="start" onclick="start();"><b>START</b></button>
         </div>
-
-        <div id="lore_container"></div>
+        <div id="loreMenu" class="defaultFade hide">lore...</div>
     </div>
 
     <!-- Game UI Elements -->
@@ -61,197 +64,234 @@
     </div>
 
     <!-- Fish Alert Box -->
-    <div id="fishAlert" class="ui-panel"></div>
+    <div id="fishAlert" class="uiPanel uiZ"></div>
 
     <!-- Fish Alert Box -->
-    <div id="fishInspect" class="ui-panel"></div>
+    <div id="fishInspect" class="uiPanel uiZ"></div>
 
     <!-- Quote Container -->
-    <div id="quotes"></div>
+    <div id="quotes" class="uiZ"></div>
 
-    <div id="pond_select" class="hide ui-panel">
-        <button class="hide button-hover" id="BaseBtn" onclick="switchPond('Base');">Beginner's Pond</button>
-        <button class="hide" id="FrozenBtn" onclick="switchPond('Frozen');">Frozen Pond</button>
-        <button class="hide" id="FireproofBtn" onclick="switchPond('Fireproof');">Lava Pond</button>
-        <button class="hide" id="TwilightBtn" onclick="switchPond('Twilight');">Twilight Pond</button>
-        <button class="hide" id="EtherealBtn" onclick="switchPond('Ethereal');">Ghost Pond</button>
+    <!-- Pond Select Menu -->
+    <div id="pondMenu" class="hide uiPanel uiZ">
+        <button class="hide" id="baseBtn" onclick="switchPond('base');">Beginner's Pond</button>
+        <button class="hide" id="frozenBtn" onclick="switchPond('frozen');">Frozen Pond</button>
+        <button class="hide" id="fireproofBtn" onclick="switchPond('fireproof');">Lava Pond</button>
+        <button class="hide" id="twilightBtn" onclick="switchPond('twilight');">Twilight Pond</button>
+        <button class="hide" id="etherealBtn" onclick="switchPond('ethereal');">Ghost Pond</button>
     </div>
 
-    <!-- Main UI Container -->
-    <div id="menu" class="hide ui-panel">
-
-        <!-- Upgrade Content -->
-        <div id="upgrades">
-            <h2 id="catchCount">Fish Caught: 0</h2><br>
-            <hr><br>
-
-            <h2>Upgrades:</h2>
-            <h5 id="money">$0</h5>
-
-            <div class="upgrade_container">
-                <div class="upgrade_row">
-                    <span id="speed_price">$20</span>
-                    <button onclick="upgradeUpgrade('Speed');">Fishing Speed</button>
-                    <span id="speed_info">10 Seconds</span>
-                </div>
-
-                <div class="upgrade_row">
-                    <span id="fish_price">$80</span>
-                    <button onclick="upgradeUpgrade('FishAmount');">Max Fish</button>
-                    <span id="fish_info">1 Max Fish</span>
-                </div>
-
-                <div class="upgrade_row">
-                    <span id="fisher_price">$300</span>
-                    <button onclick="upgradeUpgrade('Fishers');">Auto Fisher</button>
-                    <span id="fisher_info">0 Fishers</span>
-                </div>
-
-                <div class="upgrade_row">
-                    <span id="nextpond_price">$5000</span>
-                    <button onclick="this.blur(); upgradeUpgrade('NextPond');">Next Pond</button>
-                    <span id="nextpond_info">(Locked)</span>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Market Content -->
-        <div id="market">
-            <h2>Market</h2><br>
-            <hr><br>
-            Under Construction!
-        </div>
-
-        <!-- Inventory Content -->
-        <div id="inventory">
-            <h2>Inventory</h2><br>
-            <hr><br>
-            <!-- Fish caught, items, boosts, chests,  -->
-            <div class="inventory_container">
-                <div class="left_inv">
-                    <div class="inv_header">
+    <!-- Right Menu -->
+    <div class="uiZ hide" id="mainMenu">
+        <div id="menus" class="hide uiPanel uiZ">
+            <div class="hide" id="inventoryMenu">
+                <div class="inventoryHeaders">
+                    <div class="left">
                         <h2>Fish</h2>
-                        <button onclick="swap_menu('compendium');">Compendium</button>
-                        <button onclick="sellAllFish();">Sell All</button>
+                        <button onclick="sellAll('fish')">Sell All</button>
                     </div>
-                    <hr>
-                    <div id="inventory_fish_content" class="inventory-grid"></div>
-                </div>
 
-                <div class="right_inv">
-                    <div class="inv_header">
+                    <div class="right">
                         <h2>Items</h2>
+                        <button onclick="sellAll('items')">Sell All</button>
                     </div>
-                    <hr>
-                    <div id="inventory_item_content" class="inventory-grid"></div>
+                </div>
+                <hr>
+                <div class="inventoryContainer">
+                    <div id="fishContainer"></div>
+                    <div id="itemContainer"></div>
+
                 </div>
             </div>
-        </div>
+            <div class="hide" id="marketMenu">
+                <h2>Market</h2>
+                <hr>
+            </div>
 
-        <div id="compendium">
-            <div class="compendium_header">
+            <div class="hide" id="upgradesMenu">
+                <h2>Upgrades</h2>
+                <hr>
+                <span id="money">$0</span>
+                <!-- Speed Upgrade -->
+                <div class="upgradeRow" id="speedUpgrade">
+                    <span id="speedPrice" class="upgradePrice">$0</span>
+                    <button id="speedButton" onclick="upgradeItem('speed');" class="upgradeButton">Fishing
+                        Speed</button>
+                    <span id="speedInfo" class="upgradeInfo">10 Seconds</span>
+                </div>
+
+                <!-- Ripples (Fish Amount) Upgrade -->
+                <div class="upgradeRow" id="ripplesUpgrade">
+                    <span id="ripplesPrice" class="upgradePrice">$0</span>
+                    <button id="ripplesButton" onclick="upgradeItem('ripples');" class="upgradeButton">Max Fish</button>
+                    <span id="ripplesInfo" class="upgradeInfo">1 Max Fish</span>
+                </div>
+
+                <!-- Autofishers Upgrade -->
+                <div class="upgradeRow" id="autofishersUpgrade">
+                    <span id="autofishersPrice" class="upgradePrice">$0</span>
+                    <button id="autofishersButton" onclick="upgradeItem('autofishers');" class="upgradeButton">Auto
+                        Fisher</button>
+                    <span id="autofishersInfo" class="upgradeInfo">0 Fishers</span>
+                </div>
+
+                <!-- Unlock Next Pond -->
+                <div class="upgradeRow" id="nextPondUpgrade">
+                    <span id="nextPondPrice" class="upgradePrice">$0</span>
+                    <button id="nextPondButton" onclick="upgradeItem('nextPond');" class="upgradeButton">Unlock
+                        Pond</button>
+                    <span id="nextPondInfo" class="upgradeInfo">Unlock new location!</span>
+                </div>
+
+            </div>
+            <div class="hide" id="compendiumMenu">
                 <h2>Compendium</h2>
+                <hr>
+                <div id="compendiumContent">
+
+                </div>
             </div>
-            <hr>
-            <div id="compendium_content"></div>
-        </div>
 
-        <!-- Settings Content -->
-        <div id="settings">
-            <h2>Settings</h2><br>
-            <hr><br>
+            <div class="hide" id="settingsMenu">
+                <h2>Settings</h2>
+                <hr>
+                <div class="settingsContainer">
+                    <div class="settingsRow">
+                        <span>Fullscreen</span>
+                        <div class="toggleSwitch off" onclick="sliderToggle(this, 'fullscreen');">
+                            <div class="slider"></div>
+                        </div>
+                    </div>
+                    <div class="settingsRow">
+                        <span>Quotes</span>
+                        <div class="toggleSwitch on" onclick="sliderToggle(this, 'quotes');">
+                            <div class="slider"></div>
+                        </div>
+                    </div>
+                    <div class="settingsRow">
+                        <span>Alerts</span>
+                        <div class="toggleSwitch on" onclick="sliderToggle(this, 'alerts');">
+                            <div class="slider"></div>
+                        </div>
+                    </div>
+                    <div class="settingsRow">
+                        <span>Ambience</span>
+                        <div class="toggleSwitch on" onclick="sliderToggle(this, 'ambience');">
+                            <div class="slider"></div>
+                        </div>
+                    </div>
+                    <div class="settingsRow">
+                        <span>SFX</span>
+                        <div class="toggleSwitch on" onclick="sliderToggle(this, 'sfx');">
+                            <div class="slider"></div>
+                        </div>
+                    </div>
+                </div>
+                <h2>Hotkeys</h2>
+                <hr>
 
-            <div class="settings_block">
-                <button onclick="this.blur(); toggleFullscreen()">Fullscreen</button>
-                <button onclick="this.blur(); toggle_quotes();">Quotes</button>
-                <button onclick="this.blur(); SoundManager.muteAmbienceToggle();">Ambience</button>
-                <button onclick="this.blur(); SoundManager.muteSfxToggle();">SFX</button>
-            </div>
-            <div class="settings_block">
-                <button onclick="this.blur(); toggleAlerts();">Alerts</button>
-                <a href="roadmap/index.html">Roadmap</a>
-                <a href="changelog/index.html">Changelog</a>
-            </div>
-            <div class="settings_block">
-                <a href="http://coff.ee/lusife">Support me!</a>
-            </div><br>
+                <div class="hotkeyContainer">
+                    <div class="hotkeyRow">
+                        <span>Accelerate:</span>
+                        <span>[W/S]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Turn:</span>
+                        <span>[A/D]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Speed Up:</span>
+                        <span>[Shift]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Reel Fish:</span>
+                        <span>[Space]</span>
+                    </div>
+                    <hr class="hotkeySeperator">
+                    <div class="hotkeyRow">
+                        <span>Open/Close Menu:</span>
+                        <span>[E]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Select Pond:</span>
+                        <span>[F]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Inventory:</span>
+                        <span>[Q]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Market:</span>
+                        <span>[T]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Upgrades:</span>
+                        <span>[R]</span>
+                    </div>
+                    <div class="hotkeyRow">
+                        <span>Compendium:</span>
+                        <span>[C]</span>
+                    </div>
+                </div>
 
-            <h2>Hotkeys:</h2><br>
-            <hr>
-
-            <div class="hotkeys">
-                <div class="hotkey_container">
-                    <div class="hotkey_row">
-                        <span>Accelerate:</span><span>[ W/S ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Turn: </span><span>[ A/D ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Speed Up: </span><span>[ Shift ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Reel Fish:</span><span>[ Space ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Open/Close Menu:</span><span>[ E ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Select Pond:</span><span>[ F ]</span>
-                    </div><br>
-                    <hr><br>
-                    <div class="hotkey_row">
-                        <span>Inventory:</span><span>[ Q ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Market:</span><span>[ T ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Upgrades:</span><span>[ R ]</span>
-                    </div>
-                    <div class="hotkey_row">
-                        <span>Compendium:</span><span>[ C ]</span>
-                    </div>
+                <div class="links">
+                    <a href="changelog/index.html">Changelog</a>
+                    <a href="roadmap/index.html">Roadmap</a>
                 </div>
             </div>
         </div>
 
-        <!-- Menu Navigation -->
-        <div class="menu_block">
-            <button id="upgrades_btn" onclick="swap_menu('upgrade');" class="no-m">Upgrades</button>
-            <button id="market_btn" onclick="swap_menu('market');">Market</button>
-            <button id="inventory_btn" onclick="swap_menu('inventory');">Inventory</button>
-            <button id="settings_btn" onclick="swap_menu('settings');"><img src="assets/gear.svg"></button>
+        <!-- Navigation -->
+        <div id="navigation">
+            <button id="inventoryMenuBtn" class='active' onclick="toggleMenu('inventoryMenu', 'content');"><img
+                    src="assets/inventory.svg" onload="inlineSVG(this)"></button>
+            <button id="marketMenuBtn" onclick="toggleMenu('marketMenu', 'content');"><img src="assets/market.svg"
+                    onload="inlineSVG(this)"></button>
+
+            <button id="upgradesMenuBtn" onclick="toggleMenu('upgradesMenu', 'content');"><img src="assets/upgrades.svg"
+                    onload="inlineSVG(this)"></button>
+            <button id="compendiumMenuBtn" onclick="toggleMenu('compendiumMenu', 'content');"><img
+                    src="assets/compendium.svg" onload="inlineSVG(this)"></button>
+            <button id="settingsMenuBtn" onclick="toggleMenu('settingsMenu', 'content');">
+                <img src="assets/gear.svg" onload="inlineSVG(this)">
+            </button>
         </div>
+
     </div>
 
     <!-- Game & Overlay -->
-    <div id="overlay" class="overlay"></div>
+    <div id="overlay"></div>
     <canvas id="game"></canvas>
 </body>
 
-
 <!-- Javascript -->
-<script src="init.js"></script>
 
-<script src="ui/quotes.js"></script>
-<script src="ui/holdBar.js"></script>
-<script src="ui/inventory.js"></script>
-<script src="ui/upgrades.js"></script>
-<script src="ui/menus.js"></script>
-<script src="ui/fullscreen.js"></script>
+<script src="data/canvas.js"></script>
+<script src="data/states.js"></script>
+<script src="data/inventory.js"></script>
+<script src="data/entities.js"></script>
+<script src="data/fish.js"></script>
+<script src="data/colors.js"></script>
+<script src="data/upgrades.js"></script>
 
+<script src="helpers/storageHandler.js"></script>
 
-<!-- Load this First! -->
+<script src="helpers/keyHandler.js"></script>
+<script src="helpers/menuHandler.js"></script>
+<script src="helpers/itemHandler.js"></script>
+<script src="helpers/alertHandler.js"></script>
+<script src="helpers/holdHandler.js"></script>
+<script src="helpers/fishhandler.js"></script>
+<script src="helpers/autoHandler.js"></script>
+<script src="helpers/upgradeHandler.js"></script>
+<script src="helpers/pondHandler.js"></script>
+<script src="helpers/quoteHandler.js"></script>
+<script src="helpers/settingsHandler.js"></script>
+<script src="helpers/compendiumHandler.js"></script>
+<script src="helpers/loreHelper.js"></script>
+<script src="helpers/audioHandler.js"></script>
+<script src="helpers/fullscreenHandler.js"></script>
+
 <script src="index.js"></script>
-
-<!-- Most of these are dependent on index.js -->
-<script src="world/fishdex.js"></script>
-<script src="world/fishspots.js"></script>
-<script src="world/audio.js"></script>
-<script src="main/draw.js"></script>
-<script src="main/update.js"></script>
-<script src="entities/autofishers.js"></script>
 
 </html>

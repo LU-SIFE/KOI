@@ -20,39 +20,38 @@ const quote_array = [
     ["Even if the tide pulls you under, you will surface again."],
 ];
 
+let lastQuoteIndex = -1;
+
 function quote_cycle() {
-    const quoteElement = document.getElementById("quotes");
+  const quoteElement = document.getElementById("quotes");
 
-    // Start fade out
-    quoteElement.classList.add("hide");
+  if (!states.settings.quotes) {
+    quoteElement.style.display = "none";
+    return;
+  }
 
-    // After fade out duration (600ms), swap text and fade in
-    setTimeout(() => {
-        let newIndex;
-        do {
-            newIndex = Math.floor(Math.random() * quote_array.length);
-        } while (newIndex === lastQuoteIndex && quote_array.length > 1);
+  quoteElement.style.display = "block";
+  quoteElement.classList.add("hide");
 
-        lastQuoteIndex = newIndex;
+  setTimeout(() => {
+    let newIndex;
+    do {
+      newIndex = Math.floor(Math.random() * quote_array.length);
+    } while (newIndex === lastQuoteIndex && quote_array.length > 1);
 
-        // Set new quote text
-        if (!quote_array[newIndex][1]) {
-            quoteElement.innerHTML = quote_array[newIndex][0];
-        } else {
-            quoteElement.innerHTML = '"' + quote_array[newIndex][0] + '" — <i>' + quote_array[newIndex][1] + "</i>";
-        }
+    lastQuoteIndex = newIndex;
 
-        // Fade in
-        quoteElement.classList.remove("hide");
-    }, 600);
+    const quote = quote_array[newIndex];
+    quoteElement.innerHTML = quote[1]
+      ? `"${quote[0]}" — <i>${quote[1]}</i>`
+      : quote[0];
+
+    quoteElement.classList.remove("hide");
+  }, 600);
 }
 
-function toggle_quotes() {
-    if (quote_vis === true) {
-        quote_vis = false;
-        document.getElementById("quotes").style.display = "none";
-    } else {
-        quote_vis = true;
-        document.getElementById("quotes").style.display = "block";
-    }
+// Optional: call this whenever the setting is changed to update visibility
+function update_quote_visibility() {
+  const quoteElement = document.getElementById("quotes");
+  quoteElement.style.display = states.settings.quotes ? "block" : "none";
 }

@@ -185,7 +185,7 @@ const SoundManager = {
 
     const minFreq = 0;
     let maxFreq = 70;
-    if (typeof speedMultiplier !== 'undefined' && speedMultiplier === 2) {
+    if (typeof entities.player.speedMult !== 'undefined' && entities.player.speedMult === 2) {
       maxFreq = 80;
     }
 
@@ -224,6 +224,3 @@ function handleFirstInteraction() {
   window.removeEventListener('click', handleFirstInteraction);
   window.removeEventListener('keydown', handleFirstInteraction);
 }
-
-window.addEventListener('click', handleFirstInteraction);
-window.addEventListener('keydown', handleFirstInteraction);

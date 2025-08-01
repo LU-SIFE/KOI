@@ -1,554 +1,670 @@
 /* === Root Variables === */
 :root {
-  --col1: rgba(30, 32, 34, 1);
-  /* Primary background */
-  --col1-l: rgba(30, 32, 34, 0.75);
-  /* Transparent variant */
-  --col2: rgba(255, 202, 212, 1);
-  /* Accent (pink) */
-  --col2-l: rgba(255, 202, 212, 0.5);
-  /* Accent (pink) */
-  --col5: rgba(236, 231, 224, 1);
-  /* Light background */
-
-  --green: rgba(180, 245, 200, 1),
+	--col1: rgba(25, 25, 25, 1);
+	--col1-l: rgba(25, 25, 25, 0.75);
+	--col2: rgba(255, 202, 212, 1);
+	--col2-l: rgba(255, 202, 212, 0.5);
+	--col5: rgba(236, 231, 224, 1);
 }
 
 /* === Global Reset === */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Quicksand", sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Quicksand", sans-serif;
+	color: var(--col2);
+	transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
-/* === Base Layout === */
 html,
 body {
-  background-color: var(--col1);
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+	background-color: var(--col1);
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
 }
 
-/* === Alert Box === */
-/* Shared styles for both alerts */
+/* === Canvas === */
+#game {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));
+}
+
+/* === Alerts === */
 #fishAlert,
 #fishInspect {
-  color: var(--col2);
-  position: absolute;
-  padding: 1em;
-  border: 2px solid var(--col2);
-  border-radius: 12px;
-  font-weight: bold;
-  width: fit-content;
-  height: fit-content;
-  text-align: center;
-  transition: left 0.3s ease-in-out, bottom 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	gap: 1em;
+	padding: 1em;
+	border: 2px solid var(--col2);
+	border-radius: 12px;
+	font-weight: bold;
+	width: fit-content;
+	height: fit-content;
+	text-align: center;
+	transition: top 0.3s ease, bottom 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+	color: var(--col2);
 }
 
-/* fishAlert specific styles */
+#fishAlert *,
+#fishInspect * {
+	color: inherit;
+}
+
+#fishAlert img,
+#fishInspect img {
+	width: 32px;
+	height: 32px;
+	aspect-ratio: 1/1;
+	flex-shrink: 0;
+	image-rendering: pixelated;
+}
+
+#fishInspect div {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	text-align: left;
+}
+
 #fishAlert {
-  top: 1em;
-  left: -25em;
-  /* hidden by default */
+	top: -7em;
+}
+
+#fishInspect {
+	bottom: -7em;
 }
 
 #fishAlert.show {
-  left: 1em;
+	top: 1em;
 }
 
 #fishAlert.hide {
-  left: -25em;
-}
-
-/* fishInspect specific styles */
-#fishInspect {
-  left: 1em;
-  bottom: -7em;
-  /* hidden by default */
-  top: unset;
+	top: -7em;
 }
 
 #fishInspect.show {
-  bottom: 1em;
+	bottom: 1em;
 }
 
 #fishInspect.hide {
-  bottom: -7em;
-}
-
-/* === Side Menu Panel === */
-#menu {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-  bottom: 1em;
-  width: 25em;
-  border: 2px solid var(--col2-l);
-  border-radius: 12px;
-  padding: 1em;
-  background-color: var(--col1-l);
-  color: var(--col2);
-  text-align: center;
-  transition: right 0.3s ease-in-out, width 0.3s ease-in-out;
-}
-
-#menu.show {
-  right: 1em;
-}
-
-#menu.wide {
-  width: 50em;
-}
-
-#menu.hide {
-  right: -25em;
-  width: 25em;
-}
-
-/* === Fullscreen Canvas === */
-#game,
-#glCanvas {
-  width: 100vw;
-  height: 100vh;
+	bottom: -7em;
 }
 
 /* === Hold Bar === */
 #holdBarContainer {
-  position: absolute;
-  bottom: 1em;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 12px;
-  border: 2px solid var(--col2);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  display: none;
+	position: absolute;
+	bottom: 1em;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 200px;
+	height: 12px;
+	border: 2px solid var(--col2);
+	border-radius: 1em;
+	background: rgba(255, 255, 255, 0.1);
+	display: none;
+	overflow: hidden;
 }
 
 #holdBar {
-  height: 100%;
-  width: 0%;
-  background: var(--col2);
+	height: 100%;
+	width: 0%;
+	background: var(--col2);
 }
 
-/* === Divider Style === */
-hr {
-  border-color: var(--col2);
-}
-
-/* === Upgrade Panel Layout === */
-.upgrade_container {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1em;
-}
-
-/* === Button Styles === */
-.upgrade_row button,
-.menu_block button,
-#settings button,
-#pond_select button,
-.inv_header button,
-.compendium_header button,
-a {
-  font-size: 1rem;
-  margin-bottom: 1em;
-  padding: 0.75em;
-  font-weight: bold;
-  background-color: var(--col1-l);
-  border: 2px solid var(--col2);
-  border-radius: 12px;
-  color: var(--col2);
-}
-
-a {
-  text-decoration: none;
-}
-
-.upgrade_row button:hover,
-.menu_block button:hover,
-#settings button:hover,
-#pond_select button:hover,
-.inv_header button:hover,
-.compendium_header button:hover,
-a:hover {
-  background-color: var(--col2-l);
-}
-
-/* === Upgrade Labels === */
-.right_col span,
-.price_col span {
-  font-size: 1rem;
-  margin-bottom: 1em;
-  padding: 0.75em;
-  color: var(--col2);
-  font-weight: bold;
-}
-
-.upgrade_row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1em;
-  margin: 0.5em 0;
-}
-
-.upgrade_row span {
-  flex: 1;
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--col2);
-  text-align: center;
-}
-
-.upgrade_row button {
-  margin: 0;
-  flex: 0 0 9em;
-  /* fixed width */
-}
-
-.upgrade_row button:hover {
-  background-color: var(--btn-hover-bg, rgba(255, 255, 255, 0.1));
-}
-
-
-/* === Hidden by Default === */
-#upgrades {
-  display: none;
-}
-
-/* === Quotes Text === */
+/* === Quotes === */
 #quotes {
-  position: absolute;
-  top: 1em;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-  font-weight: 600;
-  font-style: italic;
-  color: var(--col2);
-  transition: opacity 0.6s ease-in-out;
-  width: fit-content;
-  white-space: nowrap;
-  opacity: 0.5;
+	position: absolute;
+	top: 1em;
+	left: 50%;
+	transform: translateX(-50%);
+	pointer-events: none;
+	font-weight: 600;
+	font-style: italic;
+	color: var(--col2);
+	transition: opacity 0.6s ease-in-out;
+	white-space: nowrap;
+	opacity: 0.5;
+	width: fit-content;
 }
 
 #quotes.hide {
-  opacity: 0;
+	opacity: 0;
 }
 
-/* === Decorative Overlay === */
-.overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(255, 202, 212, 1) 1px, transparent 2px);
-  background-size: 100px 100px;
-  transform: translate(-25%, 0);
-  animation: grid 15s linear infinite;
-  opacity: 0.2;
-  rotate: 20deg;
-  width: 175%;
-  height: 175%;
+/* === Misc === */
+hr {
+	border-color: var(--col2-l);
+}
+
+/* === Grid Overlay === */
+#overlay {
+	position: absolute;
+	inset: 0;
+	left: -50%;
+	top: -50%;
+	pointer-events: none;
+	background-image: radial-gradient(var(--col2) 1px, transparent 2px);
+	background-size: 100px 100px;
+	background-repeat: repeat;
+	transform: rotate(20deg);
+	animation: grid 15s linear infinite;
+	opacity: 0.2;
+	width: 200%;
+	height: 200%;
+	z-index: 0;
 }
 
 @keyframes grid {
-  0% {
-    background-position: 0 0;
-    opacity: 0.2;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
-
-  100% {
-    background-position: 100px 100px;
-    opacity: 0.2;
-  }
+	from {
+		background-position: 0 0;
+	}
+	to {
+		background-position: 100px 100px;
+	}
 }
 
-/* === Canvas Visual Effect === */
-canvas {
-  filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));
+
+/* === UI Panel === */
+.uiPanel {
+	padding: 1rem;
+	border-radius: 1rem;
+	backdrop-filter: blur(10px) brightness(1.2);
 }
 
-/* === General UI Panel === */
-.ui-panel {
-  z-index: 9;
-  padding: 1rem;
-  border-radius: 1rem;
-  backdrop-filter: blur(10px) brightness(1.2);
+.uiZ {
+	z-index: 9;
 }
 
-/* === Section Containers (hidden initially) === */
-#settings,
-#market,
-#inventory,
-#compendium {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
+/* === Main Menu === */
+#mainMenu {
+	position: absolute;
+	top: 1em;
+	bottom: 1em;
+	right: -25em;
+	width: 25em;
+	border-radius: 12px;
+	color: var(--col2);
+	text-align: center;
+	transition: right 0.3s ease, width 0.3s ease;
+	display: none;
+	flex-direction: column;
+	gap: 1em;
+	overflow: visible;
 }
 
-/* === Bottom Menu Buttons === */
-.menu_block {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding: 0 1em;
-  width: 100%;
-  text-align: right;
-  display: flex;
-  justify-content: flex-end;
+#mainMenu.show {
+	right: 1em;
+	display: flex;
 }
 
-.menu_block button {
-  margin-left: 0.5em;
-  text-align: center;
+#mainMenu.wide {
+	width: 50em;
 }
 
-/* === Settings Button === */
-#settings_btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+#mainMenu.hide {
+	right: -25em;
 }
 
-#settings_btn img {
-  height: 1.5rem;
+#mainMenu.wide.hide {
+	right: -50em;
 }
 
-/* === Settings Button Block === */
-.settings_block {
-  width: 100%;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+#menus {
+	padding: 0;
+	flex: 1;
+	overflow: hidden;
+	border: 2px solid var(--col2-l);
 }
 
-.settings_block button,
-.settings_block a {
-  margin: 0 0.25em;
-  margin-bottom: 1em;
+/* === Buttons === */
+button {
+	font-size: 1rem;
+	padding: 1em;
+	line-height: 1em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	background-color: var(--col1-l);
+	border: 2px solid var(--col2);
+	border-radius: 12px;
+	color: var(--col2);
+	transition: background-color 0.15s ease;
 }
 
-/* === Utility Class === */
-.no-m {
-  margin-left: 0em;
+button:hover {
+	background-color: var(--col2-l);
 }
 
-.inventory_container {
-  display: flex;
-  width: 100%;
+/* === Navigation Buttons === */
+#navigation {
+	width: 25em;
+	display: flex;
+	justify-content: right;
+	margin-left: auto;
 }
 
-.left_inv,
-.right_inv {
-  width: 50%;
-  border-bottom: 2px solid var(--col2);
+#navigation button {
+	margin-left: 0.5em;
+	border-radius: 5em;
 }
 
-.left_inv {
-  width: 60%;
+#navigation button svg {
+	height: 1.5rem;
+	color: var(--col2);
 }
 
-.right_inv {
-  width: 40%;
+#settingsBtn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.left_inv {
-  border-right: 1px solid var(--col2);
+/* === Pond Menu === */
+#pondMenu {
+	position: absolute;
+	top: 50%;
+	left: -15em;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+	padding: 0.5em;
+	border: 2px solid var(--col2-l);
+	transition: left 0.3s ease-in-out,  color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
-.right_inv {
-  border-left: 1px solid var(--col2);
+#pondMenu.show {
+	left: 1em;
 }
 
-.inventory-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  height: 70vh;
-  overflow-y: scroll;
+#pondMenu.hide {
+	left: -15em;
 }
 
-.inventory-item:first-child {
-  margin-top: 1em;
+#pondMenu button {
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	color: var(--color);
+	border-color: var(--color);
+	background-color: var(--bg-color);
+	display: none;
 }
 
-.inventory-item:last-child {
-  margin-bottom: 1em;
+#pondMenu button:hover {
+	background-color: var(--bg-hover-color);
 }
 
-.inventory-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem;
-  margin-bottom: 0.125rem;
-  background-color: var(--col1);
+#baseBtn {
+	--color: rgba(255, 202, 212, 1);
+	--bg-hover-color: rgba(255, 202, 212, 0.5);
 }
 
-#inventory_fish_content .inventory-item {
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
+#frozenBtn {
+	--color: rgba(150, 220, 255, 1);
+	--bg-hover-color: rgba(150, 220, 255, 0.5);
 }
 
-#inventory_item_content .inventory-item {
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
+#fireproofBtn {
+	--color: rgba(255, 100, 70, 1);
+	--bg-hover-color: rgba(255, 100, 70, 0.5);
 }
 
-.item-name {
-  font-weight: bold;
+#twilightBtn {
+	--color: rgba(80, 80, 120, 1);
+	--bg-hover-color: rgba(80, 80, 120, 0.5);
 }
 
-.item-amount {
-  margin-left: 0.5rem;
-  color: var(--col2);
+#etherealBtn {
+	--color: rgba(210, 210, 255, 1);
+	--bg-hover-color: rgba(210, 210, 255, 0.5);
 }
 
-.item-actions {
-  margin-left: auto;
-  margin-right: 0.4rem;
+/* === Blur Menu === */
+#blurMenu {
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(8px);
+	color: var(--col2);
+	display: none;
+	justify-content: center;
+	align-items: center;
+	transition: backdrop-filter 0.3s ease, opacity 0.3s ease;
 }
 
-.item-rarity {
-  font-size: 0.9em;
-  font-weight: bold;
+#blurMenu * {
+	opacity: 1;
+	transition: opacity 0.3s ease;
 }
 
-.item-actions button {
-  margin-left: 0.4rem;
-  background: var(--col1-l);
-  color: var(--col2);
+#blurMenu.hide {
+	backdrop-filter: none;
+	opacity: 0;
+	background-color: transparent;
+}
+
+#blurMenu.hide * {
+	opacity: 0;
+}
+
+#blurMenu *.show {
+	opacity: 1;
+}
+
+#loreMenu,
+#tutorialMenu {
+	opacity: 0;
+	background-color: var(--col1);
+	padding: 2em;
+	border-radius: 12px;
+	border: 2px solid var(--col2-l);
+	font-weight: bold;
+	text-align: left;
+	max-width: 60%;
+	line-height: 1.5em;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	transition: opacity 0.5s ease;
+}
+
+#tutorialMenu {
+	flex-direction: column;
+	gap: 0.5em;
+	text-align: center;
+}
+
+#loreMenu.show {
+	opacity: 1;
+}
+
+.start,
+#loreMenu button {
+	margin-top: 1.5em;
+	padding: 0.75em;
+	border: 2px solid var(--col2);
+	border-radius: 12px;
+	background-color: var(--col1-l);
+	color: var(--col2);
+	font-weight: bold;
+}
+
+.start:hover,
+#loreMenu button:hover {
+	background-color: var(--col2-l);
+}
+
+/* === Menu Transitions === */
+#menus>div {
+	display: none;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+#menus>div.show {
+	display: flex;
+	opacity: 1;
+}
+
+#menus>div.hide {
+	opacity: 0;
+}
+
+#money {
+	font-weight: bold;
+	margin-bottom: 1em;
+}
+
+.upgradeRow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 1em;
+	gap: 1em;
+	padding: 0 1em;
+}
+
+.upgradeRow * {
+	font-weight: bold;
+}
+
+.upgradeInfo {
+	flex: 1;
+	text-align: left;
+}
+
+.upgradePrice {
+	width: 15%;
+	text-align: right;
+}
+
+.upgradeButton {
+	width: 45%;
+}
+
+/* === Inventory === */
+#inventoryMenu {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	max-height: 100%;
+}
+
+.inventoryContainer {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+}
+
+#fishContainer,
+#itemContainer {
+	height: 100%;
+	overflow-y: auto;
+	border-color: var(--col2-l);
+}
+
+#fishContainer {
+	width: 60%;
+	padding-left: 1em;
+	border-right: 1px solid var(--col2-l);
+}
+
+#itemContainer {
+	width: 40%;
+	padding-right: 1em;
+	border-left: 1px solid var(--col2-l);
+}
+
+.inventoryHeaders {
+	display: flex;
+	width: 100%;
+}
+
+.inventoryHeaders div {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 0.5em 1em 0.5em 2em;
+	width: 50%;
+}
+
+.inventoryHeaders .left {
+	width: 60%;
+	border-right: 1px solid var(--col2-l);
+}
+
+.inventoryHeaders .right {
+	width: 40%;
+	border-left: 1px solid var(--col2-l);
+	padding-left: 1em;
+}
+
+.inventoryHeaders div button {
+	margin-left: auto;
+	padding: 0.25em 0.75em;
+	border-radius: 10em;
+	transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+.inventoryEntry {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	padding: 8px;
+	margin-top: 0.75em;
+	font-weight: bold;
+	border: 2px solid;
+	border-left-width: 12px;
+	border-radius: 12px 0 0 12px;
+	color: inherit;
+}
+
+#itemContainer .inventoryEntry {
+	border-radius: 0 12px 12px 0;
+	border-left-style: none;
+	border-right-width: 12px;
+	border-right-style: solid;
+}
+
+#fishContainer .inventoryEntry {
+	border-right-style: none;
+}
+
+.inventoryEntry * {
+	font-weight: inherit;
+	color: inherit;
+}
+
+.inventoryEntry button {
+	padding: 0.25em 0.75em;
+	margin-right: 0.5em;
+	border-radius: 10em;
+}
+
+.entryRarity {
+	margin-left: auto;
+}
+
+.inspectImage {
+	width: 32px;
+	height: 32px;
+	object-fit: contain;
+	image-rendering: pixelated;
+	aspect-ratio: 1/1;
+	cursor: pointer;
+}
+
+#settingsMenu, #upgradesMenu, #compendiumMenu, #marketMenu {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	max-height: 100%;
+}
+
+#compendiumContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+#settingsMenu h2, #upgradesMenu h2, #compendiumMenu h2, #marketMenu h2 {
+	padding: 0.5em 1em 0.25em;	
+}
+
+#settingsMenu hr, #upgradesMenu hr, #compendiumMenu hr, #marketMenu hr {
+	margin: 0.5em 0 1em;
+}
+
+/* slider button */
+
+.toggleSwitch {
+  width: 3em;
+  height: 1.5em;
+  background-color: transparent;
   border: 2px solid var(--col2);
-  padding: 0.5em;
-  border-radius: 12px;
+  border-radius: 3em;
+  position: relative;
   cursor: pointer;
-  font-weight: bold;
-}
-
-.button-hover {
-  border: 2px solid var(--btn-color);
-  color: var(--btn-color);
-  transition: background-color 0.3s ease;
-}
-
-.button-hover:hover {
-  background-color: var(--btn-hover-bg);
-}
-
-#pond_select {
-  position: absolute;
-  left: -15em;
-  top: 50%;
-  transform: translate(0, -50%);
-  height: fit-content;
-  width: fit-content;
-  display: flex;
-  border: 2px solid var(--col2-l);
-  flex-direction: column;
-  gap: 0.5em;
-  transition: left 0.3s ease-in-out;
-  padding: 0.5em;
-}
-
-#pond_select.show {
-  left: 1em;
-}
-
-#pond_select.hide {
-  left: -15em;
-}
-
-#pond_select button {
-  margin: 0;
-  border: 2px solid var(--btn-color);
-  color: var(--btn-color);
-}
-
-#pond_select button:hover {
-  background-color: var(--btn-hover-bg);
-
-}
-
-#pond_select .hide {
-  display: none;
-}
-
-#pond_select .show {
-  display: block;
-}
-
-.inv_header, .compendium_header {
   display: flex;
   align-items: center;
-  position: relative;
-  margin-bottom: 0.5em;
+  transition: background-color 0.3s;
 }
 
-.inv_header button, .compendium_header button {
-  margin: 0;
-  margin-right: 1em;
+.toggleSwitch .slider {
   height: 100%;
-  text-align: center;
-  padding: 0.25em 1em;
+  left: 0;
+  aspect-ratio: 1/1;
+  background-color: var(--col2);
+  border-radius: 50%;
+  position: absolute;
+  transition: left 0.3s, background-color 0.3s;
 }
 
-.inv_header h2 {
-  flex-grow: 1;
+/* === ON STATE === */
+.toggleSwitch.on {
+  background-color: var(--col2-l);
 }
 
-.hotkeys {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  padding: 0;
+.toggleSwitch.on .slider {
+  left: 25px;
+  background-color: var(--col2);
 }
 
-.hotkey_container {
-  margin-top: 1em;
+/* === OFF STATE === */
+.toggleSwitch.off {
+  background-color: transparent;
 }
 
-.hotkey_row span {
-  font-weight: bold;
+.toggleSwitch.off .slider {
+  left: 0px;
+  background-color: var(--col2);
 }
 
-.hotkey_row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.settingsRow, .hotkeyRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0em 4em 1em 4em;
+	gap: 3em;
 }
 
-#compendium_content {
+.hotkeyRow {
+	margin: 0em 4em 0.5em 4em;
+}
+
+.settingsRow span, .hotkeyRow span {
+	font-weight: bold;
+}
+
+#navigation button.active {
+	background-color: var(--col2-l);
+}
+
+#settingsMenu .hotkeySeperator {
+	margin: 0.75em 0 0.75em 0;
+}
+
+#compendiumContent {
+	
   overflow: scroll;
   display: grid;
-  height: 78vh;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  padding: 10px;
-  border-bottom: 2px solid var(--col2);
-
+  padding: 1em;
 }
 
-.compendium_header {
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-}
-
-.compendium_header button {
-  position: absolute;
-  left: 0;
+#compendiumMenu hr {
+	margin-bottom: 0;
 }
 
 .fish-entry {
@@ -587,62 +703,28 @@ canvas {
   filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6));
 }
 
-#blur-menu-container {
-  position: absolute;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(8px);
-  color: var(--col2);
-  transition: backdrop-filter 0.5s ease-in-out;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#loreMenu {
+	display: block !important;
+	flex-direction: column;
 }
 
-#blur-menu-container.no-blur {
-  backdrop-filter: none;
-  background-color: transparent;
+#loreMenu.show {
+	display: block !important;
 }
 
-#lore_container, #tutorial {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  background-color: var(--col1);
-  padding: 2em;
-  border-radius: 12px;
-  border: 2px solid var(--col2-l);
-  font-weight: bold;
-  text-align: left;
-  max-width: 60%;
-  line-height: 1.5em;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.links {
+	margin: auto 1em 1em 1em;
+	display: flex;
+	justify-content: space-between;
 }
 
-#tutorial {
-  display: none;
-  opacity: 1;
-  text-align: center;
+.links a {
+	font-weight: bold;
+	text-decoration: none;
+	border-bottom: 1px solid var(--col2);
 }
 
-/* === Start Button === */
-.start, #lore_container button {
-  margin-top: 1.5em;
-  padding: 0.75em;
-  border: 2px solid var(--col2);
-  border-radius: 12px;
-  background-color: var(--col1-l);
-  color: var(--col2);
-  font-weight: bold;
-}
-
-.start:hover, #lore_container button:hover {
-  background-color: var(--col2-l);
-}
-
-
-#fishAlert img, #fishInspect img {
-height:32px; width: 32px; flex-shrink: 0; image-rendering: pixelated;
+.links a:hover {
+	color: var(--col2-l);
+	border-bottom: 1px solid var(--col2-l);
 }
