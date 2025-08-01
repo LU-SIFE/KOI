@@ -130,12 +130,12 @@ body {
 	font-weight: 600;
 	font-style: italic;
 	color: var(--col2);
-	transition: opacity 0.6s ease-in-out;
 	white-space: nowrap;
 	opacity: 0.5;
 	width: fit-content;
 	pointer-events: none;
   	user-select: none;
+	transition: color 0.3s ease-in-out, opacity 0.6s ease-in-out;
 }
 
 #quotes.hide {
@@ -258,6 +258,7 @@ button:hover {
 #navigation button {
 	margin-left: 0.5em;
 	border-radius: 5em;
+	transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
 }
 
 #navigation button svg {
@@ -453,6 +454,7 @@ button:hover {
 
 .upgradeButton {
 	width: 45%;
+	transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 /* === Inventory === */
@@ -600,7 +602,7 @@ button:hover {
   cursor: pointer;
   display: flex;
   align-items: center;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
 }
 
 .toggleSwitch .slider {
