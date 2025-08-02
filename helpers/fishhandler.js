@@ -24,10 +24,25 @@ function getRandomFish() {
     for (const entry of weightedFish) {
         random -= entry.weight;
         if (random <= 0) {
-            if (entry.fish.name === 'Curse Remover' && (!['ethereal', 'twilight'].includes(states.ponds.currentPond) || !states.items.cursed)) {
-                entry.fish.name = 'Chest';
-            } else if (entry.fish.name === 'Void Stabilizer' && (states.ponds.currentPond !== 'chromatic' || !states.items.void)) {
-                entry.fish.name = 'Chest';
+            const rerollItem = () => {
+                const itemPool = fishdex.filter(f => f.rarity?.toLowerCase() === "item" && f.name !== entry.fish.name);
+                if (itemPool.length > 0) {
+                    const rerolled = itemPool[Math.floor(Math.random() * itemPool.length)];
+                    return rerolled;
+                }
+                return { name: "Chest", rarity: "Item" };
+            };
+
+            if (
+                entry.fish.name === 'Curse Remover' &&
+                (!['ethereal', 'twilight'].includes(states.ponds.currentPond) || !states.items.cursed)
+            ) {
+                return rerollItem();
+            } else if (
+                entry.fish.name === 'Void Stabilizer' &&
+                (states.ponds.currentPond !== 'chromatic' || !states.items.void)
+            ) {
+                return rerollItem();
             }
             return entry.fish;
         }
