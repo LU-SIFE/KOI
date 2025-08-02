@@ -2,6 +2,7 @@ function start() {
     states.extras.startState = true;
     save('startState', true);
 
+    setTimeout(function() {canvas.classList.remove('hide');}, 1000);
     if (states.containers.blurMenuOpen) toggleMenu('blurMenu', 'container');
     if (states.containers.tutorialMenuOpen) toggleMenu('tutorialMenu', 'container');
 

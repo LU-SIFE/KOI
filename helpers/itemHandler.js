@@ -1,231 +1,176 @@
+const getItemType = (item) =>
+    item?.rarity?.toLowerCase() === 'item' ? 'items' : 'fish';
+
+const getRarityKey = (name, type = 'fish') =>
+    getFishRarity(name, type) || (type === 'items' ? 'Item' : 'Common');
+
+const updateMoneyDisplay = () => {
+    document.getElementById('money').innerHTML = `$${inventory.money}`;
+};
+
 function addItem(item, amount = 1) {
-    let type;
-    if (item.rarity?.toLowerCase() === "item") {
-        type = "items";
-    } else {
-        type = "fish";
+    const type = getItemType(item);
+
+    if (type === 'fish') {
         item.caught = (item.caught || 0) + 1;
         entities.player.catchCount++;
-        save("catchCount", entities.player.catchCount);
+        save('catchCount', entities.player.catchCount);
     }
 
-    if (!inventory[type][item.name]) inventory[type][item.name] = 0;
-    inventory[type][item.name] += amount;
-
+    inventory[type][item.name] = (inventory[type][item.name] || 0) + amount;
     updateInventory(item, type);
 }
 
 function sellItem(name, type) {
     if (!inventory[type][name]) return;
 
-    const rarityKey = getFishRarity(name, type) || 'Item';  // <-- use 'name' here!
+    const rarityKey = getRarityKey(name, type);
     let price = rarityInfo[rarityKey]?.price ?? 0;
 
-    // Decrease count
+    if (rarityKey === 'Cursed' && states.items.cursed) price = -300;
+    else if (rarityKey === 'Void' && states.items.void) price = -1500;
+
     inventory[type][name]--;
 
-    if (rarityKey == 'Cursed' && states.items.cursed === true) {
-        price = -300;
-    } else if (rarityKey == 'Void' && states.items.void === true) {
-        price = -1500;
-    }
-
-    // Add money
-    inventory.money = (inventory.money || 0) + price;
-    if (inventory.money < 0) {
-        inventory.money = 0;
-    }
-    save(inventory, inventory);
-
-    // Remove or update entry
     const container = document.getElementById(`${type}-${name}`);
     if (inventory[type][name] <= 0) {
         delete inventory[type][name];
-        if (container) container.remove();
+        container?.remove(); // clean up if it still exists
     } else {
-        const countSpan = container?.querySelector('.count');
-        if (countSpan) countSpan.textContent = `x${inventory[type][name]} ${name}`;
+        const span = container?.querySelector('.count');
+        if (span) span.textContent = `x${inventory[type][name]} ${name}`;
     }
 
-    document.getElementById('money').innerHTML = `$${inventory.money}`;
+    inventory.money = Math.max(0, (inventory.money || 0) + price);
+    save(inventory, inventory);
+    updateMoneyDisplay();
 }
 
 function sellAll(type) {
     if (!inventory[type]) return;
 
-    let totalMoney = 0;
+    let total = 0;
 
-    // Go through all items/fish in the specified type
     for (const name in inventory[type]) {
-        if (!inventory[type].hasOwnProperty(name)) continue;
-
         const count = inventory[type][name];
         if (count <= 0) continue;
 
-        const rarityKey = getFishRarity(name, type) || (type === 'items' ? 'Item' : 'Common');
+        const rarityKey = getRarityKey(name, type);
         const price = rarityInfo[rarityKey]?.price ?? 0;
 
-        totalMoney += price * count;
-
-        // Remove all of that item from inventory
+        total += price * count;
         delete inventory[type][name];
-
-        // Also remove DOM element if present
-        const container = document.getElementById(`${type}-${name}`);
-        if (container) container.remove();
+        document.getElementById(`${type}-${name}`)?.remove();
     }
 
-    // Add total money to your inventory
-    inventory.money = (inventory.money || 0) + totalMoney;
-
+    inventory.money = (inventory.money || 0) + total;
     save(inventory, inventory);
-
-    // Update money display
-    document.getElementById('money').innerHTML = `$${inventory.money}`;
-
-    // Re-render inventory just in case (optional)
+    updateMoneyDisplay();
     renderInventory();
 }
 
-function useItem(itemName) {
+function useItem(name) {
     const type = 'items';
-    if (!inventory[type][itemName]) return;
+    if (!inventory[type][name]) return;
 
-    if (itemName === 'Forgotten Note') {
-        showLore(states.extras.loreIndex);
-        states.extras.loreIndex++;
-        if (states.extras.loreIndex >= loreArray.length) {
-            states.extras.loreIndex = 0;
-        }
+    switch (name) {
+        case 'Forgotten Note':
+            showLore(states.extras.loreIndex++);
+            if (states.extras.loreIndex >= loreArray.length) states.extras.loreIndex = 0;
+            break;
 
-    } else if (itemName === 'Chest') {
-        if ((inventory.items["Key"] ?? 0) < 1) {
-            return;
-        }
+        case 'Chest':
+            if ((inventory.items['Key'] ?? 0) < 1) return;
+            const cash = Math.floor(Math.random() * 41) + 80;
+            fishInspect({ name, rarity: 'Item' }, cash);
+            decrementInventory('items', 'Key');
+            inventory.money += cash;
+            updateMoneyDisplay();
+            updateInventory({ name: 'Key', rarity: 'Item' }, 'items');
+            break;
 
-        const randomMoney = Math.floor(Math.random() * (120 - 80 + 1)) + 80;
-        fishInspect({ name: itemName, rarity: 'Item' }, randomMoney);
-        decrementInventory('items', 'Key');
-        updateInventory({ name: 'Key', rarity: 'Item' }, type);
-        inventory.money += randomMoney;
-        document.getElementById('money').innerHTML = `$${inventory.money}`;
+        case 'Motor Oil':
+            states.items.oiled = true;
+            clearTimeout(states.items.oilTimeout);
+            states.items.oilTimeout = setTimeout(() => {
+                states.items.oiled = false;
+                states.items.oilTimeout = null;
+            }, 120000);
+            break;
 
-    } else if (itemName === 'Motor Oil') {
-        states.items.oiled = true;
+        case 'Curse Remover':
+            states.items.cursed = false;
+            save('curseState', false);
+            showLore(0, 'curse');
+            break;
 
-        if (states.items.oilTimeout) {clearTimeout(states.items.oilTimeout);}
-
-        states.items.oilTimeout = setTimeout(() => {
-            states.items.oiled = false;
-            states.items.oilTimeout = null;
-        }, 120000);
-
-    } else if (itemName === 'Curse Remover') {
-        states.items.cursed = false;
-        save('curseState', false);
-        showLore(0, 'curse');
-    } else if (itemName === 'Void Stabilizer') {
-        states.items.void = false;
-        save('voidState', false);
-        showLore(0, 'void');
+        case 'Void Stabilizer':
+            states.items.void = false;
+            save('voidState', false);
+            showLore(0, 'void');
+            break;
     }
 
-    inventory[type][itemName]--;
-
-    if (inventory[type][itemName] <= 0) {
-        delete inventory[type][itemName];
-    }
-
+    decrementInventory(type, name);
     save(inventory, inventory);
-
-    updateInventory({ name: itemName, rarity: 'Item' }, type);
+    updateInventory({ name, rarity: 'Item' }, type);
 }
 
 function decrementInventory(type, name, amount = 1) {
     if (!inventory[type][name]) return;
     inventory[type][name] -= amount;
-    if (inventory[type][name] <= 0) {
-        delete inventory[type][name];
-    }
+    if (inventory[type][name] <= 0) delete inventory[type][name];
 }
 
-function createInventoryEntry(itemName, type) {
-    const rarityKey = getFishRarity(itemName, type) || 'Item';
-    const rarity = rarityInfo[rarityKey] || rarityInfo.Common;
+function createInventoryEntry(name, type) {
+    const rarityKey = getRarityKey(name, type);
+    const rarity = rarityInfo[rarityKey];
     const [r, g, b] = rarity.color;
 
     const container = document.createElement('div');
-    container.classList.add('inventoryEntry');
-    container.id = `${type}-${itemName}`;
-
+    container.className = 'inventoryEntry';
+    container.id = `${type}-${name}`;
     container.style.borderColor = `rgb(${r}, ${g}, ${b})`;
-    container.style.backgroundImage = `linear-gradient(to right, rgba(${r}, ${g}, ${b}, 0.1), rgba(${r}, ${g}, ${b}, 0.05))`;
+    container.style.backgroundImage = `linear-gradient(to right, rgba(${r},${g},${b},0.1), rgba(${r},${g},${b},0.05))`;
     container.style.color = `rgb(${r}, ${g}, ${b})`;
 
     const nameSpan = document.createElement('span');
     nameSpan.className = 'count';
-    nameSpan.textContent = `x${inventory[type][itemName]} ${itemName}`;
+    nameSpan.textContent = `x${inventory[type][name]} ${name}`;
 
-    // Button element (Sell or Use or none)
-    let actionButton = null;
-    const safeClass = name => name.replace(/\s+/g, '-'); // used for both img + button
+    const safe = name.replace(/\s+/g, '-');
+    let button = null;
 
-    if (type === 'fish') {
-        actionButton = document.createElement('button');
-        actionButton.textContent = 'Sell';
-        actionButton.style.cursor = 'pointer';
-        actionButton.style.borderColor = `rgb(${r}, ${g}, ${b})`;
-        actionButton.onclick = () => sellItem(itemName, type);
+    if (type === 'fish' || (type === 'items' && name.toLowerCase() !== 'key')) {
+        button = document.createElement('button');
+        button.textContent = type === 'fish' ? 'Sell' : 'Use';
+        button.style.cursor = 'pointer';
+        button.style.borderColor = `rgb(${r}, ${g}, ${b})`;
+        button.classList.add(`${type === 'fish' ? 'sell' : 'use'}-btn-${safe}-${type}`);
+        button.onclick = () => (type === 'fish' ? sellItem(name, type) : useItem(name));
 
-        const btnClass = `sell-btn-${safeClass(itemName)}-${type}`;
-        actionButton.classList.add(btnClass);
-
-        const style = document.createElement('style');
-        style.textContent = `
-            .${btnClass}:hover {
+        const btnStyle = document.createElement('style');
+        btnStyle.textContent = `
+            .${button.className}:hover {
                 background-color: rgba(${r}, ${g}, ${b}, 0.5);
             }
         `;
-        document.head.appendChild(style);
-    } else if (type === 'items') {
-        if (itemName.toLowerCase() !== 'key') {
-            actionButton = document.createElement('button');
-            actionButton.textContent = 'Use';
-            actionButton.style.cursor = 'pointer';
-            actionButton.style.borderColor = `rgb(${r}, ${g}, ${b})`;
-            actionButton.style.marginLeft = 'auto';
-            actionButton.onclick = () => useItem(itemName);
-
-            const btnClass = `use-btn-${safeClass(itemName)}-${type}`;
-            actionButton.classList.add(btnClass);
-
-            const style = document.createElement('style');
-            style.textContent = `
-                .${btnClass}:hover {
-                    background-color: rgba(${r}, ${g}, ${b}, 0.5);
-                }
-            `;
-            document.head.appendChild(style);
-        }
+        document.head.appendChild(btnStyle);
     }
 
-    // Thumbnail image for inspect
-    const normalizedName = itemName.toLowerCase().replace(/\s+/g, '');
+    const img = document.createElement('img');
+    img.src = `/assets/fishAssets/${name.toLowerCase().replace(/\s+/g, '')}.png`;
+    img.alt = name;
+    img.className = 'inspectImage';
+    img.onclick = () => fishInspect({ name, type });
 
-    const fishImg = document.createElement('img');
-    fishImg.src = `/assets/fishAssets/${normalizedName}.png`;
-    fishImg.alt = `${itemName}`;
-    fishImg.className = 'inspectImage';
-    fishImg.onclick = () => fishInspect({ name: itemName, type });
-
-    // Fallback for missing image
-    fishImg.onerror = () => {
-        fishImg.onerror = null;
-        fishImg.src = '/assets/fishAssets/hidden.png';
+    img.onerror = () => {
+        img.onerror = null;
+        img.src = '/assets/fishAssets/hidden.png';
     };
 
-    const imgClass = `inspect-img-${type}-${safeClass(itemName)}`;
-    fishImg.classList.add(imgClass);
+    const imgClass = `inspect-img-${type}-${safe}`;
+    img.classList.add(imgClass);
 
     const imgStyle = document.createElement('style');
     imgStyle.textContent = `
@@ -235,22 +180,20 @@ function createInventoryEntry(itemName, type) {
     `;
     document.head.appendChild(imgStyle);
 
+    container.appendChild(img);
+
     const infoWrap = document.createElement('div');
-    container.appendChild(fishImg);
     infoWrap.appendChild(nameSpan);
     container.appendChild(infoWrap);
 
     if (type === 'fish') {
         const raritySpan = document.createElement('span');
-        raritySpan.textContent = `[${rarityKey}]`;
         raritySpan.className = 'entryRarity';
+        raritySpan.textContent = `[${rarityKey}]`;
         container.appendChild(raritySpan);
     }
 
-    if (actionButton) {
-        container.appendChild(actionButton);
-    }
-
+    if (button) container.appendChild(button);
     return container;
 }
 
@@ -261,80 +204,56 @@ function renderInventory() {
     fishContainer.innerHTML = '';
     itemContainer.innerHTML = '';
 
-    const fishEntries = Object.keys(inventory.fish).map(name => {
-        const rarityKey = getFishRarity(name, 'fish');
-        const order = rarityInfo[rarityKey]?.order ?? 99;
-        return { name, rarity: rarityKey, order };
-    }).sort((a, b) => {
-        if (a.order !== b.order) return a.order - b.order;
-        return a.name.localeCompare(b.name);
-    });
+    const sortEntries = (obj, type) => {
+        return Object.keys(obj).map(name => {
+            const rarityKey = getRarityKey(name, type);
+            return { name, order: rarityInfo[rarityKey]?.order ?? 99 };
+        }).sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+    };
 
-    const itemEntries = Object.keys(inventory.items).map(name => {
-        const rarityKey = 'Item';
-        const order = rarityInfo[rarityKey]?.order ?? 99;
-        return { name, rarity: rarityKey, order };
-    }).sort((a, b) => {
-        if (a.order !== b.order) return a.order - b.order;
-        return a.name.localeCompare(b.name);
-    });
+    for (const { name } of sortEntries(inventory.fish, 'fish')) {
+        fishContainer.appendChild(createInventoryEntry(name, 'fish'));
+    }
 
-
-    fishEntries.forEach(entry => {
-        fishContainer.appendChild(createInventoryEntry(entry.name, 'fish'));
-    });
-
-    itemEntries.forEach(entry => {
-        itemContainer.appendChild(createInventoryEntry(entry.name, 'items'));
-    });
+    for (const { name } of sortEntries(inventory.items, 'items')) {
+        itemContainer.appendChild(createInventoryEntry(name, 'items'));
+    }
 }
 
 function updateInventory(item, forcedType = null) {
-    const type = forcedType || (item.rarity?.toLowerCase() === 'item' ? 'items' : 'fish');
-    const containerId = `${type}-${item.name}`;
-    const container = document.getElementById(containerId);
+    const type = forcedType || getItemType(item);
+    const id = `${type}-${item.name}`;
+    const container = document.getElementById(id);
+    const count = inventory[type]?.[item.name] ?? 0;
 
-    // Get current count safely, 0 if missing
-    const currentCount = inventory[type]?.[item.name] ?? 0;
-
-    // If count is 0 or less, remove the container and return early
-    if (currentCount <= 0) {
-        if (container) container.remove();
+    if (count <= 0) {
+        container?.remove();
         return;
     }
 
-    const rarityKey = getFishRarity(item.name, type) || (type === 'items' ? 'Item' : 'Common');
-    const newOrder = rarityInfo[rarityKey]?.order ?? 99;
+    const rarityKey = getRarityKey(item.name, type);
+    const order = rarityInfo[rarityKey]?.order ?? 99;
 
     if (container) {
-        const countSpan = container.querySelector('.count');
-        if (countSpan) {
-            countSpan.textContent = `x${currentCount} ${item.name}`;
-        }
+        const span = container.querySelector('.count');
+        if (span) span.textContent = `x${count} ${item.name}`;
     } else {
         const newEntry = createInventoryEntry(item.name, type);
-        const parentContainer = document.getElementById(type === 'fish' ? 'fishContainer' : 'itemContainer');
+        const parent = document.getElementById(type === 'fish' ? 'fishContainer' : 'itemContainer');
 
         let inserted = false;
-        for (const existingEntry of parentContainer.children) {
-            const [existingType, ...existingNameParts] = existingEntry.id.split('-');
-            const existingName = existingNameParts.join('-');
+        for (const child of parent.children) {
+            const [existingType, ...parts] = child.id.split('-');
+            const existingName = parts.join('-');
+            const existingOrder = rarityInfo[getRarityKey(existingName, existingType)]?.order ?? 99;
 
-            const existingRarityKey = getFishRarity(existingName, existingType);
-            const existingOrder = rarityInfo[existingRarityKey]?.order ?? 99;
-
-            if (
-                newOrder < existingOrder ||
-                (newOrder === existingOrder && item.name.localeCompare(existingName) < 0)
-            ) {
-                parentContainer.insertBefore(newEntry, existingEntry);
+            if (order < existingOrder || (order === existingOrder && item.name < existingName)) {
+                parent.insertBefore(newEntry, child);
                 inserted = true;
                 break;
             }
         }
 
-        if (!inserted) {
-            parentContainer.appendChild(newEntry);
-        }
+        if (!inserted) parent.appendChild(newEntry);
     }
 }

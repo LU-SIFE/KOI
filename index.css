@@ -33,6 +33,12 @@ body {
 	width: 100vw;
 	height: 100vh;
 	filter: drop-shadow(5px 30px 4px rgba(255, 202, 212, 0.4));
+	transition: opacity 2s ease-in-out;
+	opacity: 1;
+}
+
+#game.hide {
+	opacity: 0;
 }
 
 /* === Alerts === */

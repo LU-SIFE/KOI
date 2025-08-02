@@ -1,62 +1,66 @@
-function getFishRarity(name) {
-    const fish = fishdex.find(f => f.name === name);
-    return fish?.rarity ?? "Common"; // default fallback
-}
-
 function getFishData(name) {
     return fishdex.find(f => f.name === name);
 }
 
+function getFishRarity(name) {
+    return getFishData(name)?.rarity ?? "Common";
+}
+
 function getRandomFish() {
-    // Map fish with weights based on rarity (default to 0 if missing)
-    const weightedFish = fishdex.map(fish => {
-        const weight = poolWeights[states.ponds.currentPond][fish.rarity.toLowerCase()] ?? 0;
-        return { fish, weight };
-    }).filter(entry => entry.weight > 0);  // filter out zero weight just in case
+    const currentPond = states.ponds.currentPond;
 
-    // Sum total weight
-    const totalWeight = weightedFish.reduce((sum, entry) => sum + entry.weight, 0);
+    // Filter and map in one pass
+    const weightedFish = fishdex
+        .map(fish => {
+            const rarity = fish.rarity?.toLowerCase() ?? "common";
+            const weight = poolWeights[currentPond]?.[rarity] ?? 0;
+            return weight > 0 ? { fish, weight } : null;
+        })
+        .filter(Boolean);
 
-    // Pick random number in [0, totalWeight)
+    const totalWeight = weightedFish.reduce((sum, { weight }) => sum + weight, 0);
     let random = Math.random() * totalWeight;
 
-    // Find fish by subtracting weights until <= 0
-    for (const entry of weightedFish) {
-        random -= entry.weight;
+    const rerollItem = (excludeName) => {
+        const itemPool = fishdex.filter(f => {
+            if (f.rarity?.toLowerCase() !== "item") return false;
+            if (f.name === excludeName) return false;
+            if (f.name === "Curse Remover" && !states.items.cursed) return false;
+            if (f.name === "Void Stabilizer" && !states.items.void) return false;
+            return true;
+        });
+
+        return itemPool.length > 0
+            ? itemPool[Math.floor(Math.random() * itemPool.length)]
+            : { name: "Chest", rarity: "Item" };
+    };
+
+    for (const { fish, weight } of weightedFish) {
+        random -= weight;
         if (random <= 0) {
-            const rerollItem = () => {
-                const itemPool = fishdex.filter(f => {
-                    if (f.rarity?.toLowerCase() !== "item") return false;
-                    if (f.name === entry.fish.name) return false;
-                    if (f.name === "Curse Remover" && !states.items.cursed) return false;
-                    if (f.name === "Void Stabilizer" && !states.items.void) return false;
-                    return true;
-                });
+            const { name } = fish;
 
-                if (itemPool.length > 0) {
-                    return itemPool[Math.floor(Math.random() * itemPool.length)];
-                }
-
-                return { name: "Chest", rarity: "Item" };
-            };
-
+            // Conditional rerolling
+            if (
+                name === "Curse Remover" &&
+                (!["ethereal", "twilight"].includes(currentPond) || !states.items.cursed)
+            ) {
+                return rerollItem(name);
+            }
 
             if (
-                entry.fish.name === 'Curse Remover' &&
-                (!['ethereal', 'twilight'].includes(states.ponds.currentPond) || !states.items.cursed)
+                name === "Void Stabilizer" &&
+                (currentPond !== "chromatic" || !states.items.void)
             ) {
-                return rerollItem();
-            } else if (
-                entry.fish.name === 'Void Stabilizer' &&
-                (states.ponds.currentPond !== 'chromatic' || !states.items.void)
-            ) {
-                return rerollItem();
+                return rerollItem(name);
             }
-            return entry.fish;
+
+            return fish;
         }
     }
 
-    return weightedFish[weightedFish.length - 1].fish;
+    // Fallback
+    return weightedFish.at(-1).fish;
 }
 
 function catchLogic(caughtFish) {
