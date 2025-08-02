@@ -402,7 +402,7 @@ const rarityInfo = {
     Verdant: {
         order: 4, price: 90, color: [140, 190, 110],
         quote: "A splash of life, thriving in the heart of nature.",
-        hint: "Lush greens and gentle currents nurture these fish.",
+        hint: "Lush greens nurture these fish.",
         place: "Found in ponds surrounded by dense, vibrant foliage."
     },
 
