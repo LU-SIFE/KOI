@@ -58,8 +58,16 @@ const loreArray = {
   ]
 };
 
-function showLore(index = 0) {
-  const text = loreArray.lore[index] || "Lore not found.";
+const special = [
+  `<i>Cursemark Vanquished.</i><br><br>
+  Cursed fish no longer take your money.`,
+
+  `<i>Void Stabilized.</i><br><br>
+  Void fish no longer take your money.`,
+];
+
+function showLore(index = 0, specialType) {
+  let text = loreArray.lore[index] || "Lore not found.";
 
   blurContainer.style.display = 'flex';
   blurContainer.classList.remove('no-blur');
@@ -67,8 +75,16 @@ function showLore(index = 0) {
   toggleMenu('loreMenu', 'container');
   toggleMenu('blurMenu', 'container');
 
+  if (specialType === 'curse') {
+    text = special[0];
+    save('curseState', false);
+  } else if (specialType === 'void') {
+    text = special[1];
+    save('voidState', false);
+  }
+
   loreContainer.innerHTML = text + `<br><br><button onclick="toggleMenu('blurMenu', 'container'); toggleMenu('loreMenu', 'container')">Close</button>`;
-  
+
   // Allow reflow before showing for smoother transition
   setTimeout(() => {
     loreContainer.style.opacity = 1;

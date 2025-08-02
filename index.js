@@ -30,6 +30,9 @@ function start() {
     entities.player.timeToCatch = (5 - (upgradeStats[states.ponds.currentPond].values.speed / 2)) * 1000;
     renderInventory();
 
+    states.items.cursed = load('curseState', true);
+    states.items.void = load('voidState', true);
+
 
     entities.ripples = [];
 
@@ -90,9 +93,9 @@ window.onload = function () {
     window.addEventListener('click', handleFirstInteraction);
     window.addEventListener('keydown', handleFirstInteraction);
 
-    if (compareVersions(load('version', '1.0.0'), '1.2.0') !== 0) {
+    if (compareVersions(load('version', '1.0.0'), '1.2.1') !== 0) {
         localStorage.clear();
-        save('version', '1.2.0');
+        save('version', '1.2.1');
     }
 
     states.extras.startState = load('startState', false);

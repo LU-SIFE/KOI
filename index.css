@@ -386,6 +386,7 @@ button:hover {
 #loreMenu,
 #tutorialMenu {
 	opacity: 0;
+	display: none;
 	background-color: var(--col1);
 	padding: 2em;
 	border-radius: 12px;

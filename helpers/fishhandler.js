@@ -24,6 +24,11 @@ function getRandomFish() {
     for (const entry of weightedFish) {
         random -= entry.weight;
         if (random <= 0) {
+            if (entry.fish.name === 'Curse Remover' && (states.ponds.currentPond != 'ethereal' || states.ponds.currentPond != 'twilight' || !states.items.cursed)) {
+                entry.fish.name = 'Chest';
+            } else if (entry.fish.name === 'Void Stabilizer' && (states.ponds.currentPond != 'chromatic' || !states.items.void)) {
+                entry.fish.name = 'Chest';
+            }
             return entry.fish;
         }
     }

@@ -29,7 +29,9 @@ const states = {
     },
 
     items: {
-        oiled: false
+        oiled: false,
+        cursed: true,
+        void: true,
     },
 
     settings: {
@@ -46,7 +48,7 @@ const states = {
 
     ponds: {
         currentPond: 'base',
-        list: ['base', 'frozen', 'fireproof', 'twilight', 'ethereal', 'crystalline'],
+        list: ['base', 'frozen', 'fireproof', 'twilight', 'ethereal', 'crystalline', 'chromatic'],
         unlockedPonds: ['base']
     },
 }

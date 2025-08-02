@@ -19,13 +19,22 @@ function sellItem(name, type) {
     if (!inventory[type][name]) return;
 
     const rarityKey = getFishRarity(name, type) || 'Item';  // <-- use 'name' here!
-    const price = rarityInfo[rarityKey]?.price ?? 0;
+    let price = rarityInfo[rarityKey]?.price ?? 0;
 
     // Decrease count
     inventory[type][name]--;
 
+    if (rarityKey == 'Cursed' && states.items.cursed === true) {
+        price = -300;
+    } else if (rarityKey == 'Void' && states.items.void === true) {
+        price = -1500;
+    }
+
     // Add money
     inventory.money = (inventory.money || 0) + price;
+    if (inventory.money < 0) {
+        inventory.money = 0;
+    }
     save(inventory, inventory);
 
     // Remove or update entry
@@ -103,7 +112,13 @@ function useItem(itemName) {
 
     } else if (itemName === 'Motor Oil') {
         states.items.oiled = true;
-        setTimeout(function() {states.items.oiled = false}, 60000)
+        setTimeout(function () { states.items.oiled = false }, 60000)
+    } else if (itemName === 'Curse Remover') {
+        states.items.cursed = false;
+        showLore(0, 'curse');
+    } else if (itemName === 'Void Stabilizer') {
+        states.items.void = false;
+        showLore(0, 'void');
     }
 
     inventory[type][itemName]--;
@@ -144,26 +159,44 @@ function createInventoryEntry(itemName, type) {
 
     // Button element (Sell or Use or none)
     let actionButton = null;
+    const safeClass = name => name.replace(/\s+/g, '-'); // used for both img + button
 
     if (type === 'fish') {
-        // For fish, SELL button as before
         actionButton = document.createElement('button');
         actionButton.textContent = 'Sell';
         actionButton.style.cursor = 'pointer';
         actionButton.style.borderColor = `rgb(${r}, ${g}, ${b})`;
         actionButton.onclick = () => sellItem(itemName, type);
+
+        const btnClass = `sell-btn-${safeClass(itemName)}-${type}`;
+        actionButton.classList.add(btnClass);
+
+        const style = document.createElement('style');
+        style.textContent = `
+            .${btnClass}:hover {
+                background-color: rgba(${r}, ${g}, ${b}, 0.5);
+            }
+        `;
+        document.head.appendChild(style);
     } else if (type === 'items') {
-        // For items except "Key", add USE button
         if (itemName.toLowerCase() !== 'key') {
             actionButton = document.createElement('button');
             actionButton.textContent = 'Use';
             actionButton.style.cursor = 'pointer';
             actionButton.style.borderColor = `rgb(${r}, ${g}, ${b})`;
             actionButton.style.marginLeft = 'auto';
-            actionButton.onclick = () => {
-                // Your useItem logic here
-                useItem(itemName);
-            };
+            actionButton.onclick = () => useItem(itemName);
+
+            const btnClass = `use-btn-${safeClass(itemName)}-${type}`;
+            actionButton.classList.add(btnClass);
+
+            const style = document.createElement('style');
+            style.textContent = `
+                .${btnClass}:hover {
+                    background-color: rgba(${r}, ${g}, ${b}, 0.5);
+                }
+            `;
+            document.head.appendChild(style);
         }
     }
 
@@ -176,33 +209,28 @@ function createInventoryEntry(itemName, type) {
     fishImg.className = 'inspectImage';
     fishImg.onclick = () => fishInspect({ name: itemName, type });
 
-    // 🛟 graceful fallback to hidden.png
+    // Fallback for missing image
     fishImg.onerror = () => {
         fishImg.onerror = null;
         fishImg.src = '/assets/fishAssets/hidden.png';
     };
 
-    // Hover effect with dynamic style
-    const safeClass = name => name.replace(/\s+/g, '-');
     const imgClass = `inspect-img-${type}-${safeClass(itemName)}`;
     fishImg.classList.add(imgClass);
 
-    const style = document.createElement('style');
-    style.textContent = `
+    const imgStyle = document.createElement('style');
+    imgStyle.textContent = `
         .${imgClass}:hover {
             filter: brightness(1.2) drop-shadow(0 0 6px rgba(${r}, ${g}, ${b}, 1));
         }
     `;
-    document.head.appendChild(style);
+    document.head.appendChild(imgStyle);
 
     const infoWrap = document.createElement('div');
-
     container.appendChild(fishImg);
     infoWrap.appendChild(nameSpan);
-
     container.appendChild(infoWrap);
 
-    // Add rarity span only for fish, NOT for items
     if (type === 'fish') {
         const raritySpan = document.createElement('span');
         raritySpan.textContent = `[${rarityKey}]`;
@@ -210,7 +238,6 @@ function createInventoryEntry(itemName, type) {
         container.appendChild(raritySpan);
     }
 
-    // Append button if it exists
     if (actionButton) {
         container.appendChild(actionButton);
     }

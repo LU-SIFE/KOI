@@ -222,12 +222,28 @@ const fishdex = [
     { name: "Glimmersoul Tuna", rarity: "Ethereal" },
 
     //Chromatic Fish
-    //{ name: "Prismscale Guppy", rarity: "Chromatic" },
-    //{ name: "Rainbowfin Tetra", rarity: "Chromatic" },
-    //{ name: "Spectrum Snapper", rarity: "Chromatic" },
-    //{ name: "Kaleidoscale Koi", rarity: "Chromatic" },
-    //{ name: "Iridescent Minnow", rarity: "Chromatic" },
-    //// Crystalline Fish
+    { name: "Prismscale Guppy", rarity: "Chromatic" },
+    { name: "Rainbowfin Tetra", rarity: "Chromatic" },
+    { name: "Spectrum Snapper", rarity: "Chromatic" },
+    { name: "Kaleidoscale Koi", rarity: "Chromatic" },
+    { name: "Iridescent Minnow", rarity: "Chromatic" },
+    { name: "Opaline Darter", rarity: "Chromatic" },
+    { name: "Lustreback Shimmerfish", rarity: "Chromatic" },
+    { name: "Gleambow Gudgeon", rarity: "Chromatic" },
+    { name: "Twinkletail Carp", rarity: "Chromatic" },
+    { name: "Aurora Lanternfish", rarity: "Chromatic" },
+    { name: "Hologlyph Haddock", rarity: "Chromatic" },
+    { name: "Radiant Shardfin", rarity: "Chromatic" },
+    { name: "Glowveil Gourami", rarity: "Chromatic" },
+    { name: "Nova Ribbonfish", rarity: "Chromatic" },
+    { name: "Chromawisp Fry", rarity: "Chromatic" },
+    { name: "Starlace Arowana", rarity: "Chromatic" },
+    { name: "Glintshell Danio", rarity: "Chromatic" },
+    { name: "Prismtail Ray", rarity: "Chromatic" },
+    { name: "Mirageflame Skipper", rarity: "Chromatic" },
+    { name: "Neonplume Flounder", rarity: "Chromatic" },
+
+    // Crystalline Fish
     { name: "Quartz Pike", rarity: "Crystalline" },
     { name: "Emerald Eel", rarity: "Crystalline" },
     { name: "Topaz Trout", rarity: "Crystalline" },
@@ -253,18 +269,54 @@ const fishdex = [
     { name: "Jade Jellyfish", rarity: "Crystalline" },
     { name: "Heliodor Haddock", rarity: "Crystalline" },
     { name: "Fluorite Flying Fish", rarity: "Crystalline" },
-    //
-    ////Cursed Fish
-    //{ name: "Wraith Pike", rarity: "Cursed" },
-    //{ name: "Hauntgill Eel", rarity: "Cursed" },
-    //{ name: "Bloodfin Catfish", rarity: "Cursed" },
-    //{ name: "Shadowscale Bass", rarity: "Cursed" },
-    //{ name: "Doomtail Snapper", rarity: "Cursed" },
+
+    //Cursed Fish
+    { name: "Wraith Pike", rarity: "Cursed" },
+    { name: "Hauntgill Eel", rarity: "Cursed" },
+    { name: "Bloodfin Catfish", rarity: "Cursed" },
+    { name: "Shadowscale Bass", rarity: "Cursed" },
+    { name: "Doomtail Snapper", rarity: "Cursed" },
+    { name: "Phantom Pike", rarity: "Cursed" },
+    { name: "Gravefin Lamprey", rarity: "Cursed" },
+    { name: "Cryptscale Carp", rarity: "Cursed" },
+    { name: "Specter Sturgeon", rarity: "Cursed" },
+    { name: "Ghoulgill Trout", rarity: "Cursed" },
+    { name: "Banshee Bass", rarity: "Cursed" },
+    { name: "Netherfin Perch", rarity: "Cursed" },
+    { name: "Coffinray", rarity: "Cursed" },
+    { name: "Mourning Minnow", rarity: "Cursed" },
+    { name: "Tombtail Tetra", rarity: "Cursed" },
+
+    { name: "Abyssal Wraith", rarity: "Void" },
+    { name: "Ebonshadow Lantern", rarity: "Void" },
+    { name: "Nullscale Serpent", rarity: "Void" },
+    { name: "Phantom Abyssfish", rarity: "Void" },
+    { name: "Voidflare Snapper", rarity: "Void" },
+    { name: "Darkrift Angler", rarity: "Void" },
+    { name: "Nethercoil Eel", rarity: "Void" },
+    { name: "Obsidian Drift", rarity: "Void" },
+    { name: "Starless Tetra", rarity: "Void" },
+    { name: "Gravecurrent Carp", rarity: "Void" },
+
+    { name: "Fernscale Guppy", rarity: "Verdant" },
+    { name: "Mossback Trout", rarity: "Verdant" },
+    { name: "Leaffin Shiner", rarity: "Verdant" },
+    { name: "Vinegill Bass", rarity: "Verdant" },
+    { name: "Thornscale Pike", rarity: "Verdant" },
+    { name: "Ivytail Minnow", rarity: "Verdant" },
+    { name: "Bramblefin Carp", rarity: "Verdant" },
+    { name: "Rootwhisker Catfish", rarity: "Verdant" },
+    { name: "Sproutjaw Perch", rarity: "Verdant" },
+    { name: "Greenbloom Angler", rarity: "Verdant" },
+
 
     { name: "Chest", rarity: "Item" },
     { name: "Key", rarity: "Item" },
     { name: "Forgotten Note", rarity: "Item" },
     { name: "Motor Oil", rarity: "Item" },
+
+    { name: "Curse Remover", rarity: "Item" },
+    { name: "Void Stabilizer", rarity: "Item" },
 ];
 
 for (const fish of fishdex) {
@@ -285,60 +337,75 @@ function loadCaughtFish() {
 
 const rarityInfo = {
     Common: {
-        order: 11, price: 1, color: [250, 250, 250],
+        order: 13, price: 1, color: [250, 250, 250],
         quote: "A humble fish, common but dependable.",
         hint: "Just a fishy little guy.",
         place: "Nibbling near the surface."
     },
 
     Uncommon: {
-        order: 10, price: 5, color: [180, 245, 200],
+        order: 12, price: 5, color: [180, 245, 200],
         quote: "A little rarer, showing promise beneath the waves.",
         hint: "Curious, but not shy.",
         place: "Often seen near lily pads."
     },
 
     Rare: {
-        order: 9, price: 15, color: [180, 190, 255],
+        order: 11, price: 15, color: [180, 190, 255],
         quote: "A prize catch that few have the skill to reel in.",
         hint: "Shimmering scales.",
         place: "Lurks in deeper parts of any pond."
     },
 
+    Legendary: {
+        order: 10, price: 50, color: [255, 200, 150],
+        quote: "A legendary catch, tales will be told of this one.",
+        hint: "A tale yet untold.",
+        place: "May appear to experts at any pond."
+    },
+
     Frozen: {
-        order: 8, price: 25, color: [100, 180, 255],
+        order: 9, price: 25, color: [100, 180, 255],
         quote: "Chilled by icy waters, with a frost-kissed glow.",
         hint: "Brrr... it's cold!",
         place: "Only found in icy depths."
     },
 
     Fireproof: {
-        order: 7, price: 28, color: [255, 100, 70],
+        order: 8, price: 28, color: [255, 100, 70],
         quote: "Forged in fiery currents, it defies the flames.",
         hint: "Kinda spicy.",
         place: "Found in the blistering heat of a lava pool."
     },
 
     Twilight: {
-        order: 6, price: 30, color: [80, 80, 120],
+        order: 7, price: 30, color: [80, 80, 120],
         quote: "This fish shines softly under the moon's watchful eye.",
         hint: "Only under fading skies.",
         place: "Appears only at dusk."
     },
 
     Ethereal: {
-        order: 5, price: 30, color: [210, 210, 255],
+        order: 6, price: 30, color: [210, 210, 255],
         quote: "A shimmering spirit of the water, barely caught between worlds.",
         hint: "You swear it vanished.",
         place: "Drifts through the mist in a ghostly pond."
     },
 
     Cursed: {
-        order: 4, price: 35, color: [140, 0, 50],
+        order: 5, price: 35, color: [140, 0, 50],
         quote: "Beware the shadows it carries, for fortune has a price.",
         hint: "It blinked at you.",
         place: "Fished from the cursed waters."
     },
+
+    Verdant: {
+        order: 4, price: 90, color: [140, 190, 110],
+        quote: "A splash of life, thriving in the heart of nature.",
+        hint: "Lush greens and gentle currents nurture these fish.",
+        place: "Found in ponds surrounded by dense, vibrant foliage."
+    },
+
 
     Crystalline: {
         order: 3, price: 40, color: [190, 255, 255],
@@ -351,14 +418,14 @@ const rarityInfo = {
         order: 2, price: 45, color: [255, 180, 255],
         quote: "A dazzling burst of colors, ever-changing and mesmerizing.",
         hint: "Every color at once!",
-        place: "Found in __"
+        place: "Found in a colorful pond."
     },
 
-    Legendary: {
-        order: 1, price: 50, color: [255, 200, 150],
-        quote: "A legendary catch, tales will be told of this one.",
-        hint: "A tale yet untold.",
-        place: "May appear to experts at any pond."
+    Void: {
+        order: 1, price: 150, color: [90, 70, 110],
+        quote: "Whispers from the abyss, where light dares not linger.",
+        hint: "Darkness hides secrets...",
+        place: "Found only in the deepest, darkest waters."
     },
 
     Mythical: {
@@ -369,7 +436,7 @@ const rarityInfo = {
     },
 
     Item: {
-        order: 12, price: 70, color: [200, 150, 255],
+        order: 14, price: 70, color: [200, 150, 255],
         quote: "What could this be...?"
     }
 };
@@ -408,7 +475,8 @@ const poolWeights = {
         mythical: 1,
         legendary: 6,
         rare: 9,
-        twilight: 25,
+        twilight: 20,
+        cursed: 5,
         uncommon: 18,
         common: 30,
     },
@@ -419,7 +487,8 @@ const poolWeights = {
         legendary: 6,
         rare: 9,
         ethereal: 10,
-        twilight: 25,
+        twilight: 15,
+        cursed: 10,
         uncommon: 18,
         common: 30,
     },
@@ -430,7 +499,21 @@ const poolWeights = {
         legendary: 6,
         rare: 17,
         crystalline: 25,
-        uncommon: 23,
-        common: 25,
+        uncommon: 20,
+        common: 24,
+        verdant: 4,
+    },
+
+    chromatic: {
+        item: 2,
+        mythical: 2,
+        legendary: 6,
+        rare: 12,
+        crystalline: 13,
+        chromatic: 25,
+        uncommon: 15,
+        common: 21,
+        void: 1,
+        verdant: 4
     }
 };
