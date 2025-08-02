@@ -44,7 +44,7 @@ function sellItem(name, type) {
         if (container) container.remove();
     } else {
         const countSpan = container?.querySelector('.count');
-        if (countSpan) countSpan.textContent = inventory[type][name];
+        if (countSpan) countSpan.textContent = `x${inventory[type][name]} ${name}`;
     }
 
     document.getElementById('money').innerHTML = `$${inventory.money}`;
