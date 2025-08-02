@@ -36,7 +36,6 @@ function upgradeItem(type) {
     const maxLevel = upgrades.types[type].max;
 
     if (currentLevel >= maxLevel) {
-        console.log(`${type} upgrade is already maxed out! 💡`);
         return;
     }
 

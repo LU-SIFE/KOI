@@ -28,6 +28,10 @@ const states = {
         loreIndex: 0
     },
 
+    items: {
+        oiled: false
+    },
+
     settings: {
         alerts: true,
         sounds: true,
@@ -35,9 +39,14 @@ const states = {
         quotes: true
     },
 
+    cosmetics: {
+        outline: false,
+        glow: false,
+    },
+
     ponds: {
         currentPond: 'base',
-        list: ['base', 'frozen', 'fireproof', 'twilight', 'ethereal'],
+        list: ['base', 'frozen', 'fireproof', 'twilight', 'ethereal', 'crystalline'],
         unlockedPonds: ['base']
     },
 }

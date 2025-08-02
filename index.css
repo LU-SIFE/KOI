@@ -308,29 +308,45 @@ button:hover {
 }
 
 #baseBtn {
-	--color: rgba(255, 202, 212, 1);
-	--bg-hover-color: rgba(255, 202, 212, 0.5);
+	--color: rgba(255, 210, 220, 1);
+	--bg-hover-color: rgba(255, 210, 220, 0.5);
 }
 
 #frozenBtn {
-	--color: rgba(150, 220, 255, 1);
-	--bg-hover-color: rgba(150, 220, 255, 0.5);
+	--color: rgba(180, 225, 255, 1);
+	--bg-hover-color: rgba(180, 225, 255, 0.5);
 }
 
 #fireproofBtn {
-	--color: rgba(255, 100, 70, 1);
-	--bg-hover-color: rgba(255, 100, 70, 0.5);
+	--color: rgba(255, 155, 130, 1);
+	--bg-hover-color: rgba(255, 155, 130, 0.5);
 }
 
 #twilightBtn {
-	--color: rgba(80, 80, 120, 1);
-	--bg-hover-color: rgba(80, 80, 120, 0.5);
+	--color: rgba(150, 140, 200, 1);
+	--bg-hover-color: rgba(150, 140, 200, 0.5);
 }
 
 #etherealBtn {
-	--color: rgba(210, 210, 255, 1);
-	--bg-hover-color: rgba(210, 210, 255, 0.5);
+	--color: rgba(220, 220, 255, 1);
+	--bg-hover-color: rgba(220, 220, 255, 0.5);
 }
+
+#crystallineBtn {
+	--color: rgba(200, 240, 255, 1);
+	--bg-hover-color: rgba(200, 240, 255, 0.5);
+}
+
+#cursedBtn {
+	--color: rgba(160, 60, 90, 1);
+	--bg-hover-color: rgba(160, 60, 90, 0.5);
+}
+
+#chromaticBtn {
+	--color: rgba(255, 200, 255, 1);
+	--bg-hover-color: rgba(255, 200, 255, 0.5);
+}
+
 
 /* === Blur Menu === */
 #blurMenu {
@@ -582,7 +598,7 @@ button:hover {
 	flex-direction: column;
 }
 
-#settingsMenu h2, #upgradesMenu h2, #compendiumMenu h2, #marketMenu h2 {
+#settingsMenu h2, #upgradesMenu h2, #marketMenu h2 {
 	padding: 0.5em 1em 0.25em;	
 }
 
@@ -732,4 +748,21 @@ button:hover {
 .links a:hover {
 	color: var(--col2-l);
 	border-bottom: 1px solid var(--col2-l);
+}
+
+.compendiumHeader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.compendiumHeader h2 {
+	padding: 0.5em 0em 0.25em 0em;	
+}
+
+.compendiumHeader #compendiumProgress {
+	position: absolute;
+	right: 1em;
+	font-weight: bold;
+	padding-right: 0;
 }

@@ -100,6 +100,10 @@ function useItem(itemName) {
         updateInventory({ name: 'Key', rarity: 'Item' }, type);
         inventory.money += randomMoney;
         document.getElementById('money').innerHTML = `$${inventory.money}`;
+
+    } else if (itemName === 'Motor Oil') {
+        states.items.oiled = true;
+        setTimeout(function() {states.items.oiled = false}, 60000)
     }
 
     inventory[type][itemName]--;
@@ -161,7 +165,6 @@ function createInventoryEntry(itemName, type) {
                 useItem(itemName);
             };
         }
-        // If item is a "Key", no button at all
     }
 
     // Thumbnail image for inspect

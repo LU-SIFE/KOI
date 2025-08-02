@@ -227,13 +227,32 @@ const fishdex = [
     //{ name: "Spectrum Snapper", rarity: "Chromatic" },
     //{ name: "Kaleidoscale Koi", rarity: "Chromatic" },
     //{ name: "Iridescent Minnow", rarity: "Chromatic" },
-    //
-    ////Crystalline Fish
-    //{ name: "Quartz Pike", rarity: "Crystalline" },
-    //{ name: "Emerald Eel", rarity: "Crystalline" },
-    //{ name: "Topaz Trout", rarity: "Crystalline" },
-    //{ name: "Diamondback Carp", rarity: "Crystalline" },
-    //{ name: "Sapphire Grouper", rarity: "Crystalline" },
+    //// Crystalline Fish
+    { name: "Quartz Pike", rarity: "Crystalline" },
+    { name: "Emerald Eel", rarity: "Crystalline" },
+    { name: "Topaz Trout", rarity: "Crystalline" },
+    { name: "Diamondback Carp", rarity: "Crystalline" },
+    { name: "Sapphire Grouper", rarity: "Crystalline" },
+    { name: "Amethyst Angler", rarity: "Crystalline" },
+    { name: "Garnet Gudgeon", rarity: "Crystalline" },
+    { name: "Opal Lanternfish", rarity: "Crystalline" },
+    { name: "Citrine Snapper", rarity: "Crystalline" },
+    { name: "Peridot Piranha", rarity: "Crystalline" },
+    { name: "Obsidian Skate", rarity: "Crystalline" },
+    { name: "Zircon Zander", rarity: "Crystalline" },
+    { name: "Onyx Flounder", rarity: "Crystalline" },
+    { name: "Moonstone Mackerel", rarity: "Crystalline" },
+    { name: "Spinel Swordfish", rarity: "Crystalline" },
+    { name: "Aquamarine Axolotl", rarity: "Crystalline" },
+    { name: "Beryl Barracuda", rarity: "Crystalline" },
+    { name: "Tourmaline Tuna", rarity: "Crystalline" },
+    { name: "Lapis Lionfish", rarity: "Crystalline" },
+    { name: "Tanzanite Tarpon", rarity: "Crystalline" },
+    { name: "Kyanite Koi", rarity: "Crystalline" },
+    { name: "Crystal Catfish", rarity: "Crystalline" },
+    { name: "Jade Jellyfish", rarity: "Crystalline" },
+    { name: "Heliodor Haddock", rarity: "Crystalline" },
+    { name: "Fluorite Flying Fish", rarity: "Crystalline" },
     //
     ////Cursed Fish
     //{ name: "Wraith Pike", rarity: "Cursed" },
@@ -245,6 +264,7 @@ const fishdex = [
     { name: "Chest", rarity: "Item" },
     { name: "Key", rarity: "Item" },
     { name: "Forgotten Note", rarity: "Item" },
+    { name: "Motor Oil", rarity: "Item" },
 ];
 
 for (const fish of fishdex) {
@@ -323,8 +343,8 @@ const rarityInfo = {
     Crystalline: {
         order: 3, price: 40, color: [190, 255, 255],
         quote: "Sparkling like gemstones, it's a treasure from the depths.",
-        hint: "Looks like a gem.",
-        place: "Found in __"
+        hint: "Looks like a gem?",
+        place: "Shimmers in a crystal pond."
     },
 
     Chromatic: {
@@ -355,52 +375,62 @@ const rarityInfo = {
 };
 
 const poolWeights = {
-	base: {
-		item: 1,
-		legendary: 3,
-		rare: 10,
-		uncommon: 22,
-		common: 65,
-	},
+    base: {
+        item: 1,
+        legendary: 3,
+        rare: 10,
+        uncommon: 22,
+        common: 65,
+    },
 
-	frozen: {
-		item: 1,
-		mythical: 1,
-		legendary: 4,
-		rare: 8,
-		frozen: 20,
-		uncommon: 22,
-		common: 25,
-	},
+    frozen: {
+        item: 1,
+        mythical: 1,
+        legendary: 4,
+        rare: 8,
+        frozen: 20,
+        uncommon: 22,
+        common: 25,
+    },
 
-	fireproof: {
-		item: 1,
-		mythical: 1,
-		legendary: 5,
-		rare: 7,
-		fireproof: 22,
-		uncommon: 22,
-		common: 23,
-	},
+    fireproof: {
+        item: 1,
+        mythical: 1,
+        legendary: 5,
+        rare: 7,
+        fireproof: 22,
+        uncommon: 22,
+        common: 23,
+    },
 
-	twilight: {
-		item: 1,
-		mythical: 1,
-		legendary: 6,
-		rare: 9,
-		twilight: 25,
-		uncommon: 18,
-		common: 30,
-	},
+    twilight: {
+        item: 1,
+        mythical: 1,
+        legendary: 6,
+        rare: 9,
+        twilight: 25,
+        uncommon: 18,
+        common: 30,
+    },
 
-	ethereal: {
-		item: 1,
-		mythical: 1,
-		legendary: 6,
-		rare: 9,
-		ethereal: 10,
-		twilight: 25,
-		uncommon: 18,
-		common: 30,
-	}
+    ethereal: {
+        item: 1,
+        mythical: 1,
+        legendary: 6,
+        rare: 9,
+        ethereal: 10,
+        twilight: 25,
+        uncommon: 18,
+        common: 30,
+    },
+
+    crystalline: {
+        item: 2,
+        mythical: 2,
+        legendary: 6,
+        rare: 17,
+        crystalline: 25,
+        uncommon: 23,
+        common: 25,
+    }
 };

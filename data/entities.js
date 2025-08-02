@@ -28,7 +28,13 @@ const entityTypes = {
 			trail: [],
 
 			update(deltaTime) {
-				this.speedMult = keys["shift"] ? 2 : 1;
+				if (states.items.oiled == true) {
+					this.speedMult = keys["shift"] ? 3 : 1.5;
+					this.friction = 0.04;
+				} else {
+					this.speedMult = keys["shift"] ? 2 : 1;
+					this.friction = 0.0175;
+				}
 
 				const accel = this.acceleration * this.speedMult;
 				const max = this.maxSpeed * this.speedMult;
@@ -145,7 +151,7 @@ const entityTypes = {
 				}
 			},
 
-			draw() {
+			draw(deltaTime) {
 
 				const rgb = pondColors[states.ponds.currentPond];
 				// Draw trail
@@ -166,7 +172,6 @@ const entityTypes = {
 					ctx.lineTo(0, -height * 0.5);
 					ctx.closePath();
 
-
 					ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${opacity})`;
 					ctx.fill();
 					ctx.restore();
@@ -186,7 +191,20 @@ const entityTypes = {
 				ctx.lineTo(-width, 0);
 				ctx.closePath();
 
-				ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
+				if (states.cosmetics.outline) {
+					ctx.strokeStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
+					ctx.lineWidth = 4;
+					ctx.stroke();
+					ctx.fillStyle = `rgba(25, 25, 25, 1)`;
+				} else {
+					ctx.fillStyle = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 1)`;
+				}
+
+				if (states.cosmetics.glow) {
+					ctx.shadowColor = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.75)`;
+					ctx.shadowBlur = 15;
+				}
+
 				ctx.fill();
 				ctx.restore();
 			}

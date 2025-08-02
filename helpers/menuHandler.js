@@ -60,8 +60,6 @@ function toggleMenu(menuID, type) {
             oldMenu.classList.add('hide');
             states.content[currentlyOpen] = false;
 
-            console.log(currentlyOpen);
-
             setTimeout(() => {
                 oldMenu.style.display = 'none';
 

@@ -94,7 +94,7 @@ function createFishEntry(fish) {
 	img.loading = "lazy";
 
 	img.onerror = () => {
-		this.onerror=null;
+		this.onerror = null;
 		img.src = './assets/fishAssets/hidden.png';
 	};
 
@@ -109,6 +109,15 @@ function updateCompendium(fishName) {
 
 	if (!fish || !existing) return;
 
+	updateProgress();
+
 	const updatedEntry = createFishEntry(fish);
 	existing.replaceWith(updatedEntry);
+}
+
+
+function updateProgress() {
+	const progress = fishdex.filter(fish => fish.caught >= 1 && fish.rarity !== "Item").length;
+	const total = fishdex.filter(fish => fish.rarity !== "Item").length;
+	document.getElementById('compendiumProgress').textContent = `${progress}/${total}`;
 }

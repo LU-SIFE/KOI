@@ -43,6 +43,8 @@ function start() {
         spawnAutofisher();
     }
 
+    updateProgress();
+
     updateUI();
 
     loop();
@@ -96,6 +98,7 @@ window.onload = function () {
     states.extras.startState = load('startState', false);
 
     if (states.extras.startState === true) {
+        console.log(`${fishdex.length} fish loaded!`);
         start();
     } else {
         //toggle on if it's the first time playing

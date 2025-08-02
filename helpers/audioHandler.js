@@ -136,7 +136,6 @@ const SoundManager = {
       this.startAmbientTrack(this.currentAmbientIndex);
     } else if (this.ambientPaused && this.currentAmbient) {
       this.currentAmbient.play().catch(() => {
-        console.log("Autoplay blocked — will try again on user input.");
       });
       this.ambientPaused = false;
     }
@@ -160,7 +159,6 @@ const SoundManager = {
           this.ambientPaused = false;
         })
         .catch(() => {
-          console.log("Autoplay blocked — will try again on user input.");
         });
     }
   },
@@ -185,7 +183,7 @@ const SoundManager = {
 
     const minFreq = 0;
     let maxFreq = 70;
-    if (typeof entities.player.speedMult !== 'undefined' && entities.player.speedMult === 2) {
+    if (typeof entities.player.speedMult !== 'undefined' && entities.player.speedMult >= 2) {
       maxFreq = 80;
     }
 
@@ -209,7 +207,6 @@ const SoundManager = {
     if (this.sfxMuted) return;
 
     fishUp.play().catch(() => {
-      console.log("Fish SFX play blocked.");
     });
   },
 };
