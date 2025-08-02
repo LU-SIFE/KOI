@@ -112,12 +112,21 @@ function useItem(itemName) {
 
     } else if (itemName === 'Motor Oil') {
         states.items.oiled = true;
-        setTimeout(function () { states.items.oiled = false }, 60000)
+
+        if (states.items.oilTimeout) {clearTimeout(states.items.oilTimeout);}
+
+        states.items.oilTimeout = setTimeout(() => {
+            states.items.oiled = false;
+            states.items.oilTimeout = null;
+        }, 120000);
+
     } else if (itemName === 'Curse Remover') {
         states.items.cursed = false;
+        save('curseState', false);
         showLore(0, 'curse');
     } else if (itemName === 'Void Stabilizer') {
         states.items.void = false;
+        save('voidState', false);
         showLore(0, 'void');
     }
 

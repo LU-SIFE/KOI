@@ -116,39 +116,6 @@ const entityTypes = {
 					this.holding = false;
 					this.holdTime = 0;
 				}
-
-				// inside player.update:
-				if (keys["f"]) {
-					if (!fKeyPressed) {
-						fKeyPressed = true;
-
-						const docked = entities.autofishers.filter(a => a.mode === "docked");
-						const last = docked[docked.length - 1];
-						if (last) {
-							const untargetedRipples = entities.ripples.filter(r =>
-								!entities.autofishers.some(a => a.targetRipple === r)
-							);
-
-							let closest = null;
-							let minDist = Infinity;
-
-							for (const ripple of untargetedRipples) {
-								const dist = Math.hypot(ripple.x - last.x, ripple.y - last.y);
-								if (dist < minDist) {
-									closest = ripple;
-									minDist = dist;
-								}
-							}
-
-							if (closest) {
-								last.targetRipple = closest;
-								last.mode = "fishing";
-							}
-						}
-					}
-				} else {
-					fKeyPressed = false;
-				}
 			},
 
 			draw(deltaTime) {
@@ -219,11 +186,191 @@ const entityTypes = {
 		const y = data.y ?? (padding + Math.random() * (canvas.height - 2 * padding));
 		const fish = data.fish ?? { rarity: "common" };
 
+		const rippleDrawers = {
+
+			Cursed(ripple, deltaTime, alpha, [r, g, b]) {
+				ripple.time ??= 0;
+				ripple.time += deltaTime;
+
+				const jaggedness = 0.15 + 0.05 * Math.sin(ripple.time * 0.002);
+				const spikes = 12;
+				const baseSize = ripple.size;
+
+				ctx.save();
+				ctx.translate(ripple.x, ripple.y);
+				ctx.beginPath();
+
+				for (let i = 0; i <= spikes; i++) {
+					const angle = (i / spikes) * Math.PI * 2;
+					const offset = Math.sin(i * 3 + ripple.time * 0.01) * jaggedness * baseSize;
+					const radius = baseSize + offset;
+					const x = Math.cos(angle) * radius;
+					const y = Math.sin(angle) * radius;
+					if (i === 0) ctx.moveTo(x, y);
+					else ctx.lineTo(x, y);
+				}
+
+				ctx.closePath();
+				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${(alpha).toFixed(3)})`;
+				ctx.stroke();
+				ctx.restore();
+			},
+
+			Void(ripple, deltaTime, alpha, [r, g, b]) {
+				ripple.time ??= 0;
+				ripple.time += deltaTime;
+
+				const t = ripple.time * 0.001;
+				const baseSize = ripple.size;
+				const pulse = 1 + 0.05 * Math.sin(t * 7);
+				const noise = (angle) => Math.sin(angle * 4 + t * 10) * 3;
+
+				ctx.save();
+				ctx.translate(ripple.x, ripple.y);
+				ctx.beginPath();
+
+				// Outer distorted ring
+				for (let i = 0; i <= 40; i++) {
+					const angle = (i / 40) * Math.PI * 2;
+					const distortion = noise(angle);
+					const radius = baseSize + distortion;
+					const x = Math.cos(angle) * radius;
+					const y = Math.sin(angle) * radius;
+					if (i === 0) ctx.moveTo(x, y);
+					else ctx.lineTo(x, y);
+				}
+				ctx.closePath();
+
+				// Lensing color effect
+				const hue = 240 + 40 * Math.sin(t * 0.7);
+				const sat = 80 + 10 * Math.cos(t * 0.9);
+				const light = 40 + 10 * Math.sin(t * 1.3);
+				ctx.strokeStyle = `hsla(${hue}, ${sat}%, ${light}%, ${alpha.toFixed(3)})`;
+				ctx.shadowColor = `hsla(${hue}, ${sat}%, ${light + 20}%, ${alpha * 0.8})`;
+				ctx.shadowBlur = 12 + 4 * Math.sin(t * 0.5);
+				ctx.lineWidth = 1.5 + 0.3 * Math.cos(t * 1.5);
+				ctx.stroke();
+
+				// Echo inner ripple (reverse glow)
+				ctx.beginPath();
+				ctx.arc(0, 0, baseSize * 0.5 * pulse, 0, Math.PI * 2);
+				ctx.strokeStyle = `hsla(${hue}, ${sat - 30}%, 10%, ${alpha * 0.4})`;
+				ctx.lineWidth = 0.6;
+				ctx.setLineDash([1, 4]);
+				ctx.stroke();
+				ctx.setLineDash([]);
+
+				ctx.restore();
+			},
+
+			Verdant(ripple, deltaTime, alpha, [r, g, b]) {
+				ripple.time ??= 0;
+				ripple.time += deltaTime;
+
+				const t = ripple.time * 0.001;
+				const baseSize = ripple.size;
+				const pulse = 1 + 0.05 * Math.sin(t * 2);
+
+				ctx.save();
+				ctx.translate(ripple.x, ripple.y);
+
+				// Main ripple ring with soft pulsing
+				ctx.beginPath();
+				ctx.arc(0, 0, baseSize * pulse, 0, Math.PI * 2);
+				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+				ctx.lineWidth = 1;
+				ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha * 0.4})`;
+				ctx.shadowBlur = 6;
+				ctx.stroke();
+
+				// Soft golden echo ring
+				ctx.beginPath();
+				ctx.arc(0, 0, baseSize * 0.6 * pulse, 0, Math.PI * 2);
+				ctx.strokeStyle = `rgba(240, 220, 160, ${alpha * 0.2})`;
+				ctx.lineWidth = 0.5;
+				ctx.setLineDash([1, 4]);
+				ctx.stroke();
+				ctx.setLineDash([]);
+
+				// Rotating nature glyphs (optional!)
+				const glyphCount = 4;
+				const glyphRadius = baseSize * 0.8;
+				for (let i = 0; i < glyphCount; i++) {
+					const angle = (Math.PI * 2 * i) / glyphCount + t * 0.5;
+					const x = Math.cos(angle) * glyphRadius;
+					const y = Math.sin(angle) * glyphRadius;
+
+					ctx.beginPath();
+					ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+					ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha * 0.6})`;
+					ctx.fill();
+				}
+
+				ctx.restore();
+			},
+
+			Mythical(ripple, deltaTime, alpha, [r, g, b]) {
+				ripple.time ??= 0;
+				ripple.time += deltaTime;
+
+				const t = ripple.time * 0.001;
+				const baseSize = ripple.size;
+				const pulse = 1 + 0.1 * Math.sin(t * 3);
+
+				ctx.save();
+				ctx.translate(ripple.x, ripple.y);
+
+				// Outer glowing ring with shimmer
+				ctx.beginPath();
+				ctx.arc(0, 0, baseSize * pulse, 0, Math.PI * 2);
+				ctx.strokeStyle = `rgba(200, 160, 255, ${alpha * 0.8})`;
+				ctx.shadowColor = `rgba(255, 200, 255, ${alpha * 0.6})`;
+				ctx.shadowBlur = 15;
+				ctx.lineWidth = 2;
+				ctx.stroke();
+
+				// Sparkles
+				const sparkleCount = 3;
+				for (let i = 0; i < sparkleCount; i++) {
+					const angle = (Math.PI * 2 * i) / sparkleCount + t * 2;
+					const sparkleRadius = baseSize * 0.8;
+					const x = Math.cos(angle) * sparkleRadius;
+					const y = Math.sin(angle) * sparkleRadius;
+
+					const sparkleAlpha = alpha * (0.5 + 0.5 * Math.sin(t * 10 + i));
+					ctx.beginPath();
+					ctx.arc(x, y, 2, 0, Math.PI * 2);
+					ctx.fillStyle = `rgba(255, 255, 255, ${sparkleAlpha.toFixed(3)})`;
+					ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+					ctx.shadowBlur = 6;
+					ctx.fill();
+				}
+
+				ctx.restore();
+			},
+
+			default(ripple, deltaTime, alpha, [r, g, b]) {
+
+				ctx.save();
+				ctx.translate(ripple.x, ripple.y);
+
+				ctx.beginPath();
+				ctx.arc(0, 0, ripple.size, 0, Math.PI * 2);
+				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+				ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+				ctx.shadowBlur = 12;
+				ctx.lineWidth = 2;
+				ctx.stroke();
+				ctx.restore();
+			}
+		};
+
 		return {
 			x,
 			y,
 			radius,
 			size: Math.random() * (radius * 1.75),
+			time: 0,
 			padding,
 			fish,
 
@@ -232,18 +379,15 @@ const entityTypes = {
 				if (this.size > this.radius * 1.75) this.size = 0;
 			},
 
-			draw() {
+			draw(deltaTime) {
 				const alpha = 1 - (this.size / this.radius);
 				const [r, g, b] = rarityInfo[this.fish.rarity]?.color || [160, 216, 239];
-
-				ctx.beginPath();
-				ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-				ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(3)})`;
-				ctx.lineWidth = 1;
-				ctx.stroke();
+				const drawer = rippleDrawers[this.fish.rarity] || rippleDrawers.default;
+				drawer(this, deltaTime, alpha, [r, g, b]);
 			}
 		};
 	},
+
 
 	autofisher(data = {}) {
 		return {
@@ -264,6 +408,14 @@ const entityTypes = {
 			timeToCatch: (10 - upgradeStats[states.ponds.currentPond].values.speed) * 1000,
 
 			update(deltaTime) {
+				if (states.items.oiled == true) {
+					this.maxSpeed = 1.75;
+					this.friction = 0.04;
+				} else {
+					this.maxSpeed = 1.25
+					this.friction = 0.0175;
+				}
+
 				// Find closest untargeted ripple if no target or target invalid
 				if (
 					!this.targetRipple ||

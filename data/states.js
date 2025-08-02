@@ -32,6 +32,7 @@ const states = {
         oiled: false,
         cursed: true,
         void: true,
+        oilTimeout: null
     },
 
     settings: {

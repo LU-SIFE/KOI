@@ -77,10 +77,8 @@ function showLore(index = 0, specialType) {
 
   if (specialType === 'curse') {
     text = special[0];
-    save('curseState', false);
   } else if (specialType === 'void') {
     text = special[1];
-    save('voidState', false);
   }
 
   loreContainer.innerHTML = text + `<br><br><button onclick="toggleMenu('blurMenu', 'container'); toggleMenu('loreMenu', 'container')">Close</button>`;

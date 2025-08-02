@@ -25,13 +25,21 @@ function getRandomFish() {
         random -= entry.weight;
         if (random <= 0) {
             const rerollItem = () => {
-                const itemPool = fishdex.filter(f => f.rarity?.toLowerCase() === "item" && f.name !== entry.fish.name);
+                const itemPool = fishdex.filter(f => {
+                    if (f.rarity?.toLowerCase() !== "item") return false;
+                    if (f.name === entry.fish.name) return false;
+                    if (f.name === "Curse Remover" && !states.items.cursed) return false;
+                    if (f.name === "Void Stabilizer" && !states.items.void) return false;
+                    return true;
+                });
+
                 if (itemPool.length > 0) {
-                    const rerolled = itemPool[Math.floor(Math.random() * itemPool.length)];
-                    return rerolled;
+                    return itemPool[Math.floor(Math.random() * itemPool.length)];
                 }
+
                 return { name: "Chest", rarity: "Item" };
             };
+
 
             if (
                 entry.fish.name === 'Curse Remover' &&
