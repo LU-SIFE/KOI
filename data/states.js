@@ -25,7 +25,9 @@ const states = {
         alertTimeout: null,
         inspectTimeout: null,
         quoteInterval: null,
-        loreIndex: 0
+        loreIndex: 0,
+        voidLore: false,
+        curseLore: false
     },
 
     items: {

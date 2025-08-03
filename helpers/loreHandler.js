@@ -64,6 +64,12 @@ const special = [
 
   `<i>Void Stabilized.</i><br><br>
   Void fish no longer take your money.`,
+
+  `<i>Beware of the curse.</i><br><br>
+  Fortune <i>always</i> has a price.`,
+
+  `<i>Beware of the void.</i><br><br>
+  Fortune <i>always</i> has a price.`
 ];
 
 function showLore(index = 0, specialType) {
@@ -79,6 +85,10 @@ function showLore(index = 0, specialType) {
     text = special[0];
   } else if (specialType === 'void') {
     text = special[1];
+  } else if (specialType === 'curseNotification') {
+    text = special[2]
+  } else if (specialType === 'voidNotification') {
+    text = special[3]
   }
 
   loreContainer.innerHTML = text + `<br><br><button onclick="toggleMenu('blurMenu', 'container'); toggleMenu('loreMenu', 'container')">Close</button>`;

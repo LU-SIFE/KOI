@@ -63,9 +63,23 @@ function getRandomFish() {
     return weightedFish.at(-1).fish;
 }
 
+function specialCatch(fish) {
+    const rarity = fish?.rarity?.toLowerCase();
+    if (!rarity) return;
+
+    if (rarity === 'void' && !states.extras.voidLore) {
+        showLore(0, 'voidNotification');
+        states.extras.voidLore = true;
+    } else if (rarity === 'cursed' && !states.extras.curseLore) {
+        showLore(0, 'curseNotification');
+        states.extras.curseLore = true;
+    }
+}
+
 function catchLogic(caughtFish) {
     addItem(caughtFish);
     fishAlert(caughtFish);
     saveCaughtFish();
+    specialCatch(caughtFish);
     updateCompendium(caughtFish.name);
 }
